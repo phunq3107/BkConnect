@@ -1,0 +1,61 @@
+openapi: 3.0.0
+servers:
+  - description: Local - For dev purpose only
+    url: http://127.0.0.1:8080
+info:
+  description: BkConnect API
+  version: "1.0.0"
+  title: BkConnect API
+  contact:
+    email: phunguyen3107@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: non-logged
+    description: Non-logged User
+  - name: logged
+    description: Logged User
+  - name: admin
+    description: Admin only
+  - name: tutor
+    description: For Tutor only
+  - name: student
+    description: Student only
+
+paths:
+  /session/login:
+    post:
+      tags:
+        - non-logged
+      summary: Login
+      parameters:
+        - in: query
+          name: username
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/LoginRs'
+  /session/getCurrentUser:
+    get:
+      tags:
+        - logged
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/GetCurrentUserRs'
+
