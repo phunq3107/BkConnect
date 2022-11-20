@@ -1,45 +1,37 @@
-name: Deploy GitHub Pages
+name: Deploy API specification on Github Page
 
 on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/deploy-api-specification.yml
+      - openapi/**
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  generate-openapi-spec:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 5.0.100
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Install tools
-        run: dotnet tool restore
-      - name: Generate openapi.json
-        run: dotnet nswag run nswag.json
-      - name: Upload specification.yaml
-        uses: actions/upload-artifact@v3
-        with:
-          name: spec-file
-          path: ./openapi/specification.yaml
-  deploy:
-    needs: generate-openapi-spec
+  deploy-to-github-pages:
     runs-on: ubuntu-latest
     steps:
-      - name: Download openapi.json
-        uses: actions/download-artifact@v3
-        with:
-          name: spec-file
+      - uses: actions/checkout@v2
+
+      - name: Install swagger-cli and redoc-cli
+        run: npm install -g swagger-cli redoc-cli
+
+      - name: Convert multiple .yaml file to single .json file
+        run: swagger-cli bundle -o target/openapi/openapi.json openapi/specification.yaml
+
       - name: Generate Swagger UI
-        uses: Legion2/swagger-ui-action@v1
+        run: redoc-cli build -o target/openapi/index.html target/openapi/openapi.json
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          output: swagger-ui
-          spec-file: openapi.json
+          path: 'target/openapi/'
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: swagger-ui
+        id: deployment
+        uses: actions/deploy-pages@v1
