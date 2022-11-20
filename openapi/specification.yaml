@@ -24,22 +24,34 @@ tags:
     description: Student only
 
 paths:
+  /session/register:
+    post:
+      tags:
+        - non-logged
+      summary: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './schema/request.yaml#/components/schemas/RegisterRq'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/RegisterRs'
+
   /session/login:
     post:
       tags:
         - non-logged
       summary: Login
-      parameters:
-        - in: query
-          name: username
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: password
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './schema/request.yaml#/components/schemas/LoginRq'
       responses:
         default:
           description: ""
@@ -51,6 +63,7 @@ paths:
     get:
       tags:
         - logged
+      summary: Get current user
       responses:
         default:
           description: ""

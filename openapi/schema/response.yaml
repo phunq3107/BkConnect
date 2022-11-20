@@ -6,6 +6,11 @@ info:
 paths: {}
 components:
   schemas:
+    RegisterRs:
+      type: object
+      properties:
+        accessToken:
+          type: string
     LoginRs:
       type: object
       properties:
@@ -18,6 +23,8 @@ components:
           type: string
         fullname:
           type: string
+        role:
+          type: integer
         avatar:
           type: string
           description: url link
