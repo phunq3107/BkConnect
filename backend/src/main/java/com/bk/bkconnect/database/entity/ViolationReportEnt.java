@@ -12,6 +12,7 @@ public class ViolationReportEnt extends AbstractEnt {
     public Long handleTime;
     public Long createTime;
     public String description;
+
     public enum ViolationReportKind {
 
     }

@@ -1,7 +1,7 @@
 package com.bk.bkconnect.common.rest;
 
 public abstract class Msg<T> {
-    public int code = HttpCode.OK;
+    public int code = ResponseCode.ok;
 
     public static <T> SuccessMsg<T> success(T data) {
         return new SuccessMsg<>(data);

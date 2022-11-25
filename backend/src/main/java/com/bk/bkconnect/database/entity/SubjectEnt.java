@@ -8,7 +8,7 @@ public class SubjectEnt extends AbstractEnt {
 
     public String name;
     public Integer groupSubjectOrder;
-    
+
     @ManyToOne
     public GroupSubjectEnt groupSubject;
 }
