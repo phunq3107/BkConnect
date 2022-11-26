@@ -71,13 +71,13 @@ paths:
               schema:
                 $ref: './schema/response.yaml#/components/schemas/RegisterRs'
 
-  /user/get:
+  /user/get/{id}:
     get:
       tags:
         - non-logged
       summary: Get user by id
       parameters:
-        - in: query
+        - in: path
           name: id
       responses:
         default:
@@ -87,10 +87,13 @@ paths:
               schema:
                 $ref: './schema/response.yaml#/components/schemas/GetUserRs'
 
-  /user/update:
+  /user/update/{id}:
     post:
       tags:
         - logged
+      parameters:
+        - in: path
+          name: id
       requestBody:
         content:
           application/json:
@@ -127,13 +130,13 @@ paths:
                   allOf:
                     - $ref: './schema/response.yaml#/components/schemas/GetUserRs'
 
-  /tutor/get:
+  /tutor/get/{id}:
     get:
       tags:
         - non-logged
       summary: Get tutor by id
       parameters:
-        - in: query
+        - in: path
           name: id
       responses:
         default:
@@ -164,10 +167,13 @@ paths:
                   allOf:
                     - $ref: './schema/response.yaml#/components/schemas/GetTutorRs'
 
-  /tutor/update:
+  /tutor/update/{id}:
     post:
       tags:
         - tutor
+      parameters:
+        - in: path
+          name: id
       requestBody:
         content:
           application/json:
