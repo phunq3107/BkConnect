@@ -1,0 +1,46 @@
+openapi: 3.0.3
+
+info:
+  title: Component
+  version: "1.0.0"
+paths: {}
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        province:
+          type: string
+        district:
+          type: string
+        ward:
+          type: string
+        detail:
+          type: string
+        longitude:
+          type: number
+          format: double
+        latitude:
+          type: number
+          format: double
+    AvailableTime:
+      type: object
+      properties:
+        time:
+          type: string
+    TutorSubject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: subject id
+        name:
+          type: string
+        level:
+          type: string
+          description: multiple values, separate by comma
+        expectedFee:
+          type: number
+        certificates:
+          type: string
+          description: multiple values, separate by comma

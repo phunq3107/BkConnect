@@ -19,6 +19,8 @@ components:
     GetCurrentUserRs:
       type: object
       properties:
+        id:
+          type: string
         username:
           type: string
         fullname:
@@ -28,3 +30,67 @@ components:
         avatar:
           type: string
           description: url link
+    GetUserRs:
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          type: string
+        username:
+          type: string
+        phone:
+          type: string
+        address:
+          type: object
+          oneOf:
+            - $ref: './common.yaml#/components/schemas/Address'
+        email:
+          type: string
+        gender:
+          type: string
+        fullname:
+          type: string
+        dob:
+          type: string
+        avatar:
+          type: string
+          description: url link
+        updateAt:
+          type: string
+        createAt:
+          type: string
+        role:
+          type: string
+    GetTutorRs:
+      allOf:
+        - $ref: '#/components/schemas/GetUserRs'
+        - properties:
+            selfDescription:
+              type: string
+            teachingLocations:
+              type: array
+              items:
+                allOf:
+                  - $ref: './common.yaml#/components/schemas/Address'
+            subjects:
+              type: array
+              items:
+                allOf:
+                  - $ref: './common.yaml#/components/schemas/TutorSubject'
+            availableTimes:
+              allOf:
+                - $ref: './common.yaml#/components/schemas/AvailableTime'
+    GetPostRs: {} #todo
+    RecommendationRs:
+      type: array
+      items:
+        allOf:
+          - properties:
+              tutorId:
+                type: string
+              isMatch:
+                type: boolean
+              recommendation:
+                type: string
+

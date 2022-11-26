@@ -15,12 +15,16 @@ components:
         password:
           type: string
           required: true
+        fullname:
+          type: string
+          required: true
         email:
           type: string
           required: true
         role:
           type: integer
           required: true
+
     LoginRq:
       type: object
       properties:
@@ -30,3 +34,71 @@ components:
         password:
           type: string
           required: true
+
+    GetUserFilter:
+      type: object
+      properties: {}#TODO: for admin
+
+    UpdateUserRq:
+      type: object
+      properties:
+        fullname:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: number
+        address:
+          type: object
+          allOf:
+            - $ref: './common.yaml#/components/schemas/Address'
+        email:
+          type: string
+        phone:
+          type: string
+        avatar:
+          type: string
+
+    GetTutorFilter:
+      type: object
+      properties:
+        fee:
+          type: string
+          description: min,max
+        subject:
+          type: string
+          description: multiple ','
+        level:
+          type: string
+        gender:
+          type: string
+        availableTime:
+          type: object
+          allOf:
+            - $ref: './common.yaml#/components/schemas/AvailableTime'
+        location:
+          type: array
+          items:
+            allOf:
+              - $ref: './common.yaml#/components/schemas/Address'
+        distance:
+          type: string
+    UpdateTutorRq:
+      type: object
+      properties:
+        availableTime:
+          allOf:
+            - $ref: './common.yaml#/components/schemas/AvailableTime'
+        subjects:
+          type: array
+          allOf:
+            - $ref: './common.yaml#/components/schemas/TutorSubject'
+        teachingLocations:
+          type: array
+          allOf:
+            - $ref: './common.yaml#/components/schemas/Address'
+        selfDescription:
+          type: string
+
+
+

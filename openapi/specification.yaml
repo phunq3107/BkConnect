@@ -24,24 +24,6 @@ tags:
     description: Student only
 
 paths:
-  /session/register:
-    post:
-      tags:
-        - non-logged
-      summary: Register
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './schema/request.yaml#/components/schemas/RegisterRq'
-      responses:
-        default:
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: './schema/response.yaml#/components/schemas/RegisterRs'
-
   /session/login:
     post:
       tags:
@@ -71,4 +53,137 @@ paths:
             application/json:
               schema:
                 $ref: './schema/response.yaml#/components/schemas/GetCurrentUserRs'
+  /user/add:
+    post:
+      tags:
+        - non-logged
+      summary: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './schema/request.yaml#/components/schemas/RegisterRq'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/RegisterRs'
+
+  /user/get:
+    get:
+      tags:
+        - non-logged
+      summary: Get user by id
+      parameters:
+        - in: query
+          name: id
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/GetUserRs'
+
+  /user/update:
+    post:
+      tags:
+        - logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:
+                './schema/request.yaml#/components/schemas/UpdateUserRq'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/GetUserRs'
+
+  /user/getAll: # TODO: not impl
+    get:
+      tags:
+        - non-logged
+      summary: Get all user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:
+                './schema/request.yaml#/components/schemas/GetUserFilter'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: './schema/response.yaml#/components/schemas/GetUserRs'
+
+  /tutor/get:
+    get:
+      tags:
+        - non-logged
+      summary: Get tutor by id
+      parameters:
+        - in: query
+          name: id
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: './schema/response.yaml#/components/schemas/GetPostRs'
+  /tutor/getAll:
+    get:
+      tags:
+        - non-logged
+      summary: Get all user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:
+                './schema/request.yaml#/components/schemas/GetTutorFilter'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: './schema/response.yaml#/components/schemas/GetTutorRs'
+
+  /tutor/update:
+    post:
+      tags:
+        - tutor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:
+                './schema/request.yaml#/components/schemas/UpdateTutorRq'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: './schema/response.yaml#/components/schemas/GetTutorRs'
+
+
 
