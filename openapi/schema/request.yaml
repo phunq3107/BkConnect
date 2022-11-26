@@ -22,7 +22,7 @@ components:
           type: string
           required: true
         role:
-          type: integer
+          type: string
           required: true
 
     LoginRq:
@@ -73,9 +73,7 @@ components:
         gender:
           type: string
         availableTime:
-          type: object
-          allOf:
-            - $ref: './common.yaml#/components/schemas/AvailableTime'
+          type: string
         location:
           type: array
           items:
@@ -87,8 +85,7 @@ components:
       type: object
       properties:
         availableTime:
-          allOf:
-            - $ref: './common.yaml#/components/schemas/AvailableTime'
+          type: string
         subjects:
           type: array
           allOf:

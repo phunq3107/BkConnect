@@ -79,8 +79,7 @@ components:
                 allOf:
                   - $ref: './common.yaml#/components/schemas/TutorSubject'
             availableTimes:
-              allOf:
-                - $ref: './common.yaml#/components/schemas/AvailableTime'
+              type: string
     GetPostRs: {} #todo
     RecommendationRs:
       type: array
