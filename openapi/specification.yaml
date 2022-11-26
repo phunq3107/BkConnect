@@ -144,12 +144,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './schema/response.yaml#/components/schemas/GetPostRs'
+                $ref: './schema/response.yaml#/components/schemas/GetTutorRs'
   /tutor/getAll:
     get:
       tags:
         - non-logged
-      summary: Get all user
+      summary: Get all tutor
       requestBody:
         content:
           application/json:
