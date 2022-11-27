@@ -62,7 +62,6 @@ components:
     GetTutorFilter:
       type: object
       properties:
-
         fee:
           type: string
           description: min,max
@@ -97,6 +96,42 @@ components:
             - $ref: './common.yaml#/components/schemas/Address'
         selfDescription:
           type: string
+    AddPostRq:
+      type: object
+      properties:
+        title:
+          type: string
+        subject:
+          type: string
+          description: subjectId
+        hoursPerLesson:
+          type: string
+        timesPerWeek:
+          type: string
+        availableTime:
+          type: string
+        location:
+          allOf:
+            - $ref: './common.yaml#/components/schemas/Address'
+        fee:
+          type: string
+          description: min,max || default
+        level:
+          type: string
+          description: default
+        gender:
+          type: string
+          description: default
+        age:
+          type: string
+          description: default
+        noStudents:
+          type: number
+        description:
+          type: string
+        isGroup:
+          type: boolean
+
 
 
 

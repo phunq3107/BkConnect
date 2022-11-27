@@ -150,6 +150,11 @@ paths:
       tags:
         - non-logged
       summary: Get all tutor
+      parameters:
+        - in: query
+          name: pageNumber
+        - in: query
+          name: pageSize
       requestBody:
         content:
           application/json:
@@ -190,6 +195,62 @@ paths:
                 items:
                   allOf:
                     - $ref: './schema/response.yaml#/components/schemas/GetTutorRs'
+
+  /subject/getAll:
+    get:
+      tags:
+        - non-logged
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: './schema/response.yaml#/components/schemas/GetSubjectRs'
+
+  /post/get/{id}:
+    get:
+      tags:
+        - non-logged
+      parameters:
+        - in: path
+          name: id
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: './schema/response.yaml#/components/schemas/GetPostRs'
+
+
+  /post/add:
+    post:
+      tags:
+        - logged
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:
+                './schema/request.yaml#/components/schemas/AddPostRq'
+      responses:
+        default:
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: './schema/response.yaml#/components/schemas/GetPostRs'
+
 
 
 

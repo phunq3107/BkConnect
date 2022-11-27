@@ -28,6 +28,7 @@ components:
       properties:
         time:
           type: string
+
     TutorSubject:
       type: object
       properties:
@@ -44,3 +45,17 @@ components:
         certificates:
           type: string
           description: multiple values, separate by comma
+
+    UserBrief:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        fullname:
+          type: string
+        avatar:
+          type: string
+        extInfo:
+          type: string
