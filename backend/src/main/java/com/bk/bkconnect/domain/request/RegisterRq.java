@@ -6,6 +6,8 @@ import com.bk.bkconnect.config.Constant;
 import com.bk.bkconnect.database.entity.UserEnt;
 import com.bk.bkconnect.util.HashingUtils;
 
+import java.util.Locale;
+
 public class RegisterRq extends GenericRq {
     public String username;
     public String password;
@@ -25,7 +27,7 @@ public class RegisterRq extends GenericRq {
             failReason = ResponseMsg.invalidPassword;
             return false;
         }
-        if (role == null || (!role.equals(UserEnt.UserRole.TUTOR) && !role.equals(UserEnt.UserRole.STUDENT))) {
+        if (role == null || (!role.equalsIgnoreCase(UserEnt.UserRole.TUTOR) && !role.equalsIgnoreCase(UserEnt.UserRole.STUDENT))) {
             failCode = ResponseCode.invalidUserRole;
             failReason = ResponseMsg.invalidUserRole;
             return false;
@@ -40,7 +42,7 @@ public class RegisterRq extends GenericRq {
         student.password = HashingUtils.hashMd5(password);
         student.userInfo.fullname = fullname;
         student.userInfo.email = email;
-        student.role = role;
+        student.role = role.toUpperCase();
     }
 
 }

@@ -55,7 +55,7 @@ class UserService implements IUserService, UserDetailsService {
         if (getUserEntByUsername(rq.username) != null) {
             return FailMsg.fail(ResponseCode.existedUsername, ResponseMsg.existedUsername);
         }
-        UserEnt user = switch (rq.role) {
+        UserEnt user = switch (rq.role.toUpperCase()) {
             case UserEnt.UserRole.STUDENT -> new StudentEnt();
             case UserEnt.UserRole.TUTOR -> new TutorEnt();
             default -> null;
