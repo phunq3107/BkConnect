@@ -12,7 +12,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {app_colors} from "../../../constants";
+import {app_colors, app_paths} from "../../../constants";
 import {ArrowForward} from "@mui/icons-material";
 
 LoginForm.propTypes = {
@@ -84,12 +84,12 @@ function LoginForm(props) {
             </Button>
             <Grid container sx={{mt: 2, mb: 1 }}>
                 <Grid item xs>
-                    <Link href="/auth/register" variant="body2" underline="none" color={app_colors._primaryPurple} fontWeight="bold">
+                    <Link href={app_paths.register} variant="body2" underline="none" color={app_colors._primaryPurple} fontWeight="bold">
                         Đăng kí ngay
                     </Link>
                 </Grid>
                 <Grid item>
-                    <Link href="#" variant="body2" underline="none" color={app_colors._primaryGrey} fontWeight="bold">
+                    <Link href={app_paths.forgotPassword} variant="body2" underline="none" color={app_colors._primaryGrey} fontWeight="bold">
                         Quên mật khẩu
                     </Link>
                 </Grid>

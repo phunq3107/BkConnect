@@ -10,8 +10,6 @@ import { Box, createTheme, CssBaseline, Grid, Paper, ThemeProvider} from "@mui/m
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
 import ErrorModal from "../../../../commons/Modal";
-import {unwrapResult} from "@reduxjs/toolkit";
-import userApi from "../../../../apis/userApi";
 
 const theme = createTheme();
 

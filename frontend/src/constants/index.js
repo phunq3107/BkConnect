@@ -6,6 +6,12 @@ export const app_colors = {
     _primaryGrey: "#999999"
 }
 
+export const app_paths = {
+    register: "/auth/register",
+    forgotPassword: "/auth/forgot-password",
+    login: "/auth/login"
+}
+
 
 export default {
     ACCESS_TOKEN_KEY: 'access_token',

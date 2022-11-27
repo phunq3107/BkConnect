@@ -10,7 +10,7 @@ import {
     Link, Radio, RadioGroup,
     TextField,
 } from "@mui/material";
-import {app_colors} from "../../../constants";
+import {app_colors, app_paths} from "../../../constants";
 import {ArrowForward} from "@mui/icons-material";
 
 RegisterForm.propTypes = {
@@ -118,12 +118,12 @@ function RegisterForm(props) {
             />
             <Grid container sx={{mt: 2, mb: 1 }}>
                 <Grid item xs>
-                    <Link href="/auth/login" variant="body2" underline="none" color={app_colors._primaryPurple} fontWeight="bold">
+                    <Link href={app_paths.login} variant="body2" underline="none" color={app_colors._primaryPurple} fontWeight="bold">
                         Đăng nhập
                     </Link>
                 </Grid>
                 <Grid item>
-                    <Link href="#" variant="body2" underline="none" color={app_colors._primaryGrey} fontWeight="bold">
+                    <Link href={app_paths.forgotPassword} variant="body2" underline="none" color={app_colors._primaryGrey} fontWeight="bold">
                         Quên mật khẩu
                     </Link>
                 </Grid>
