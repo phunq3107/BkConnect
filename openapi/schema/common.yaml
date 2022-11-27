@@ -31,7 +31,7 @@ components:
     TutorSubject:
       type: object
       properties:
-        id:
+        subjectId:
           type: string
           description: subject id
         name:
