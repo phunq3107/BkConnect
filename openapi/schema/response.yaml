@@ -133,7 +133,7 @@ components:
         createBy:
           type: object
           oneOf:
-            - $ref: '/common.yaml#/components/schemas/UserBrief'
+            - $ref: './common.yaml#/components/schemas/UserBrief'
         lastUpdate:
           type: string
         state:
@@ -141,11 +141,11 @@ components:
         takeBy:
           type: object
           oneOf:
-            - $ref: '/common.yaml#/components/schemas/UserBrief'
+            - $ref: './common.yaml#/components/schemas/UserBrief'
         attendees:
           type: array
           allOf:
-            - $ref: '/common.yaml#/components/schemas/UserBrief'
+            - $ref: './common.yaml#/components/schemas/UserBrief'
 
     RecommendationRs:
       type: array
