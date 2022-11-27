@@ -5,7 +5,12 @@ const SESSION_API_ENDPOINT = '/session'
 const sessionApi = {
     login: (data) => {
         const url = SESSION_API_ENDPOINT + '/login';
-        return axiosClient.post(url,data);
+        const config = {
+            headers:{
+                Authorization:null
+            },
+        }
+        return axiosClient.post(url,data,config);
     },
 
     getCurrentUser: () => {

@@ -1,12 +1,24 @@
 import React, {useEffect} from 'react';
 import LoginForm from "../../components/LoginForm";
 import {useDispatch, useSelector} from "react-redux";
-import {getCurrentUser, login} from "../../sessionSlice";
+import {setCurrentUser, setSessionError} from "../../sessionSlice";
+import constants from "../../../../constants";
+import sessionApi from "../../../../apis/sessionApi";
+import {HandleResponse} from "../../../../utils/ResponseHandler";
+import {saveItemToLocalStorage} from "../../../../utils/Storage";
+import { Box, createTheme, CssBaseline, Grid, Paper, ThemeProvider} from "@mui/material";
+import LeftBanner from "../../components/LeftBanner";
+import FormTitle from "../../components/FormTitle";
+import ErrorModal from "../../../../commons/Modal";
+import {unwrapResult} from "@reduxjs/toolkit";
+import userApi from "../../../../apis/userApi";
 
+const theme = createTheme();
 
 function Login(props) {
 
     const dispatch = useDispatch();
+    const error = useSelector(state => state.session.error)
     // const currentUser = useSelector(state => state.session.currentUser)
 
     // useEffect(() => {
@@ -15,17 +27,47 @@ function Login(props) {
 
     const handleLogin = async (data) =>{
         try{
-            const loginResult = await dispatch(login(data));
-            // const getCurrentUserResult = await dispatch(getCurrentUser());
-            // alert.log(currentUser.username);
-        } catch (error){
-            console.log(error);
+            const response = await sessionApi.login(data);
+            const responseData = HandleResponse(response, setSessionError);
+            if (responseData) {
+                const accessToken = responseData.accessToken
+                saveItemToLocalStorage(constants.ACCESS_TOKEN_KEY,accessToken)
+                const res = await sessionApi.getCurrentUser();
+                const currentUser = HandleResponse(res, setSessionError);
+                dispatch(setCurrentUser(currentUser))
+            }
+        } catch (err){
+            console.log(err);
         }
     }
+
     return (
-        <div>
-            <LoginForm onSubmit={handleLogin}/>
-        </div>
+            <ThemeProvider theme={theme}>
+                <Grid container component="main" sx={{ height: '100vh' }}>
+                    <CssBaseline />
+                    <LeftBanner/>
+                    <Grid item xs={12} sm={8} md={5} alignSelf="center">
+                        <Box
+                            sx={{
+                                my: 8,
+                                mx: 4,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <FormTitle/>
+                            <LoginForm onSubmit={handleLogin}/>
+                        </Box>
+                    </Grid>
+                </Grid>
+                {error &&
+                    <ErrorModal
+                    open={true}
+                    description={error.message}
+                    title="Lỗi"
+                    errorSetter={setSessionError(null)}/>}
+            </ThemeProvider>
     );
 }
 
