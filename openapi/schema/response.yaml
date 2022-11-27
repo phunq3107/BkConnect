@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Component
   version: "1.0.0"
-paths: {}
+paths: { }
 components:
   schemas:
     RegisterRs:
@@ -66,6 +66,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/GetUserRs'
         - properties:
+            isMatch:
+              type: string
+            likelyDescription:
+              type: string
             selfDescription:
               type: string
             teachingLocations:
@@ -80,7 +84,69 @@ components:
                   - $ref: './common.yaml#/components/schemas/TutorSubject'
             availableTimes:
               type: string
-    GetPostRs: {} #todo
+    GetSubjectRs:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        group:
+          type: string
+        order:
+          type: string
+    GetPostRs:
+      type: object
+      properties:
+        title:
+          type: string
+        subject:
+          type: string
+          description: subjectId
+        hoursPerLesson:
+          type: string
+        timesPerWeek:
+          type: string
+        availableTime:
+          type: string
+        location:
+          allOf:
+            - $ref: './common.yaml#/components/schemas/Address'
+        fee:
+          type: string
+          description: min,max || default
+        level:
+          type: string
+          description: default
+        gender:
+          type: string
+          description: default
+        age:
+          type: string
+          description: default
+        noStudents:
+          type: number
+        description:
+          type: string
+        isGroup:
+          type: boolean
+        createBy:
+          type: object
+          oneOf:
+            - $ref: '/common.yaml#/components/schemas/UserBrief'
+        lastUpdate:
+          type: string
+        state:
+          type: string
+        takeBy:
+          type: object
+          oneOf:
+            - $ref: '/common.yaml#/components/schemas/UserBrief'
+        attendees:
+          type: array
+          allOf:
+            - $ref: '/common.yaml#/components/schemas/UserBrief'
+
     RecommendationRs:
       type: array
       items:
