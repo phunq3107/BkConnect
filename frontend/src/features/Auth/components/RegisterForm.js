@@ -37,13 +37,9 @@ function RegisterForm(props) {
 
     const handleRegisterSubmit = (e) =>{
         e.preventDefault();
-        if (!isAgree){
-            //TODO: handle not agree policy
-        }
         const {onSubmit} = props;
         if (onSubmit) {
-            onSubmit(formData);
-            console.log(formData)
+            onSubmit(formData)
         };
     }
 
@@ -111,6 +107,7 @@ function RegisterForm(props) {
                     fontFamily: "outfit",
                     fontWeight: "bold"
                 }}
+                disabled={!isAgree}
             >
                 Đăng kí
                 <ArrowForward/>
