@@ -62,6 +62,7 @@ components:
     GetTutorFilter:
       type: object
       properties:
+
         fee:
           type: string
           description: min,max

@@ -23,7 +23,7 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] WHITE_LIST = {
+    public static final String[] WHITE_LIST = {
             "/webjars/**",
             "/h2-console/**",
             "/session/login",

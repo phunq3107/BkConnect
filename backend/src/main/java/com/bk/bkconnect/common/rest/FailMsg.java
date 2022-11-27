@@ -8,9 +8,9 @@ public class FailMsg<T> extends Msg<T> {
         this.message = message;
     }
 
-    public FailMsg(String message, int code) {
-        this.message = message;
+    public FailMsg(int code,String message) {
         this.code = code;
+        this.message = message;
     }
 
 }

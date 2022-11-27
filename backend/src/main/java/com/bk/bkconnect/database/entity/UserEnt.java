@@ -22,9 +22,9 @@ public abstract class UserEnt extends AbstractEnt {
     public UserInfo userInfo = new UserInfo();
 
     public static class UserRole {
-        static public String ADMIN = "ADMIN";
-        static public String TUTOR = "TUTOR";
-        static public String STUDENT = "STUDENT";
+        static public final String ADMIN = "ADMIN";
+        static public final String TUTOR = "TUTOR";
+        static public final String STUDENT = "STUDENT";
     }
 
     @Override

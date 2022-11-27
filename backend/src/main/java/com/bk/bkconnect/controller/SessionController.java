@@ -1,13 +1,12 @@
 package com.bk.bkconnect.controller;
 
 import com.bk.bkconnect.common.rest.GenericResponse;
+import com.bk.bkconnect.domain.request.LoginRq;
+import com.bk.bkconnect.domain.response.GetCurrentUserRs;
 import com.bk.bkconnect.domain.response.LoginRs;
 import com.bk.bkconnect.service.ISessionService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/session")
@@ -17,8 +16,14 @@ public class SessionController {
     private final ISessionService sessionService;
 
     @PostMapping("/login")
-    GenericResponse<LoginRs> login(@RequestParam String username, @RequestParam String password) {
-        var msg = sessionService.login(username, password);
+    public GenericResponse<LoginRs> login(@RequestBody LoginRq loginRq) {
+        var msg = sessionService.login(loginRq);
+        return GenericResponse.parse(msg);
+    }
+
+    @GetMapping("/getCurrentUser")
+    public GenericResponse<GetCurrentUserRs> getCurrentUser() {
+        var msg = sessionService.getCurrentUser();
         return GenericResponse.parse(msg);
     }
 

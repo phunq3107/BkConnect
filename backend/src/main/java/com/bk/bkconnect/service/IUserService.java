@@ -1,51 +1,113 @@
 package com.bk.bkconnect.service;
 
-import com.bk.bkconnect.common.rest.Msg;
-import com.bk.bkconnect.common.rest.ResponseCode;
-import com.bk.bkconnect.common.rest.ResponseMsg;
-import com.bk.bkconnect.common.rest.SuccessMsg;
+import com.bk.bkconnect.DataStore;
+import com.bk.bkconnect.common.rest.*;
+import com.bk.bkconnect.database.driver.StudentDAO;
+import com.bk.bkconnect.database.driver.TutorDAO;
 import com.bk.bkconnect.database.driver.UserDAO;
-import com.bk.bkconnect.database.entity.AdminEnt;
+import com.bk.bkconnect.database.entity.StudentEnt;
+import com.bk.bkconnect.database.entity.TutorEnt;
 import com.bk.bkconnect.database.entity.UserEnt;
+import com.bk.bkconnect.domain.request.RegisterRq;
+import com.bk.bkconnect.domain.request.UpdateUserRq;
+import com.bk.bkconnect.domain.response.GetUserRs;
+import com.bk.bkconnect.domain.response.RegisterRs;
 import com.bk.bkconnect.security.SessionUser;
+import com.bk.bkconnect.util.JwtUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 public interface IUserService {
+    // for api
+    Msg<RegisterRs> addUser(RegisterRq rq);
 
-    Msg<UserEnt> getUserByUsername(String username);
+    Msg<GetUserRs> getUserById(UUID userId);
+
+    Msg<GetUserRs> updateUserInfo(UUID userId, UpdateUserRq rq);
+
+    // for system
+    UserEnt getUserEntByUsername(String username);
 
 }
 
 @Service
 @AllArgsConstructor
+@Transactional
+@Slf4j
 class UserService implements IUserService, UserDetailsService {
 
     private final UserDAO userDAO;
+    private final StudentDAO studentDAO;
+    private final TutorDAO tutorDAO;
 
     @Override
-    public Msg<UserEnt> getUserByUsername(String username) {
-        // TODO: 26/11/2022 dev only
-        if ("admin".equals(username)) {
-            //admin:admin
-            UserEnt admin = new AdminEnt();
-            admin.username = "admin";
-            admin.password = "mHrd7rqGM2c44284d51a57c91a29b2e35a0a51b6f0";
-            admin.role = UserEnt.UserRole.ADMIN;
-            return Msg.success(admin);
+    public Msg<RegisterRs> addUser(RegisterRq rq) {
+        if (!rq.verify()) {
+            return FailMsg.fail(rq);
         }
-        UserEnt user = userDAO.getUserEntByUsername(username);
-        if (user == null) return Msg.fail(ResponseMsg.notFound, ResponseCode.notFound);
-        return Msg.success(user);
+        if (getUserEntByUsername(rq.username) != null) {
+            return FailMsg.fail(ResponseCode.existedUsername, ResponseMsg.existedUsername);
+        }
+        UserEnt user = switch (rq.role) {
+            case UserEnt.UserRole.STUDENT -> new StudentEnt();
+            case UserEnt.UserRole.TUTOR -> new TutorEnt();
+            default -> null;
+        };
+        user.id = UUID.randomUUID();
+        rq.flush(user);
+
+        user = userDAO.saveAndFlush(user);
+        DataStore.updateUser(user);
+        log.info("Add user {}", rq.username);
+
+        RegisterRs rs = new RegisterRs(JwtUtils.createToken(user.username, user.role));
+        return SuccessMsg.success(rs);
+    }
+
+    @Override
+    public Msg<GetUserRs> getUserById(UUID userId) {
+        UserEnt user = DataStore.users.get(userId);
+        if (user == null) {
+            return FailMsg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
+        }
+        var rs = GetUserRs.build(user);
+        return Msg.success(rs);
+    }
+
+    @Override
+    public Msg<GetUserRs> updateUserInfo(UUID userId, UpdateUserRq rq) {
+        if (!rq.verify()) {
+            return FailMsg.fail(rq.failCode, rq.failReason);
+        }
+        UserEnt user = DataStore.users.get(userId);
+        if (user == null) {
+            return FailMsg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
+        }
+        rq.flush(user);
+        user = userDAO.saveAndFlush(user);
+        DataStore.updateUser(user);
+        return getUserById(user.id);
+    }
+
+    @Override
+    public UserEnt getUserEntByUsername(String username) {
+        return DataStore.users.values().stream()
+                .filter(u -> username.equals(u.username))
+                .findFirst().orElse(null);
+
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (getUserByUsername(username) instanceof SuccessMsg<UserEnt> rs) {
-            var user = rs.data;
+        var user = getUserEntByUsername(username);
+        if (user != null) {
             return new SessionUser(user.id, user.username, user.password, user.role);
         }
         throw new UsernameNotFoundException(ResponseMsg.userNotFound);

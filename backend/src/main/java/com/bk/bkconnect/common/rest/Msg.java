@@ -1,5 +1,7 @@
 package com.bk.bkconnect.common.rest;
 
+import com.bk.bkconnect.domain.request.GenericRq;
+
 public abstract class Msg<T> {
     public int code = ResponseCode.ok;
 
@@ -7,7 +9,12 @@ public abstract class Msg<T> {
         return new SuccessMsg<>(data);
     }
 
-    public static <T> FailMsg<T> fail(String message, int code) {
-        return new FailMsg<>(message, code);
+
+    public static <T> FailMsg<T> fail(int code, String message) {
+        return new FailMsg<>(code, message);
+    }
+
+    public static <T> FailMsg<T> fail(GenericRq rq) {
+        return new FailMsg<>(rq.failCode, rq.failReason);
     }
 }
