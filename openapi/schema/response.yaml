@@ -101,8 +101,9 @@ components:
         title:
           type: string
         subject:
-          type: string
-          description: subjectId
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/GetSubjectRs'
         hoursPerLesson:
           type: string
         timesPerWeek:

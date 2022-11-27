@@ -81,6 +81,8 @@ components:
               - $ref: './common.yaml#/components/schemas/Address'
         distance:
           type: string
+        getAll:
+          type: boolean
     UpdateTutorRq:
       type: object
       properties:
