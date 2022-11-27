@@ -4,5 +4,4 @@ import javax.persistence.Entity;
 
 @Entity
 public class AdminEnt extends UserEnt {
-    public String admin;
 }

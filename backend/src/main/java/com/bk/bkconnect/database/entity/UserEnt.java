@@ -1,5 +1,7 @@
 package com.bk.bkconnect.database.entity;
 
+import com.bk.bkconnect.database.entity.ext.Address;
+import com.bk.bkconnect.database.entity.ext.Image;
 import com.bk.bkconnect.database.entity.ext.UserInfo;
 
 import javax.persistence.Embedded;
@@ -17,13 +19,18 @@ public abstract class UserEnt extends AbstractEnt {
     public Long updateAt;
     public String role;
     @Embedded
-    public UserInfo userInfo;
+    public UserInfo userInfo = new UserInfo();
 
-    public class UserRole {
+    public static class UserRole {
         static public String ADMIN = "ADMIN";
         static public String TUTOR = "TUTOR";
         static public String STUDENT = "STUDENT";
     }
 
-
+    @Override
+    public void initNullField() {
+        if(userInfo == null) userInfo = new UserInfo();
+        if(userInfo.avatar == null) userInfo.avatar = new Image();
+        if(userInfo.address == null) userInfo.address = new Address();
+    }
 }

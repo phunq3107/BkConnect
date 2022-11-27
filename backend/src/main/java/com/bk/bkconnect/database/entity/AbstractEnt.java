@@ -2,7 +2,6 @@ package com.bk.bkconnect.database.entity;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.UUID;
@@ -11,9 +10,12 @@ import java.util.UUID;
 public abstract class AbstractEnt {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     @Type(type = "uuid-char")
     public UUID id;
-    public Integer state;
+    public String state;
     public Boolean disable;
+
+    public void initNullField() {
+    }
 }

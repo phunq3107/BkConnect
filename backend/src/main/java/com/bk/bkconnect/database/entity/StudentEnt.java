@@ -4,5 +4,4 @@ import javax.persistence.Entity;
 
 @Entity
 public class StudentEnt extends UserEnt {
-    public String student;
 }

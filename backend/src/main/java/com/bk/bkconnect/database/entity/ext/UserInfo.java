@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 public class UserInfo {
     public String phone;
     @Embedded
-    public Address address;
+    public Address address = new Address();
     public String email;
     public Integer gender;
     public String fullname;
-    public LocalDateTime dob;
+    public Long dob;
     @Embedded
-    public Image avatar;
+    public Image avatar = new Image();
 }
