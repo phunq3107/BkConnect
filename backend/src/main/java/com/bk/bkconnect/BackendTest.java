@@ -1,17 +1,14 @@
 package com.bk.bkconnect;
 
-import com.bk.bkconnect.controller.SessionController;
-import com.bk.bkconnect.controller.TutorController;
-import com.bk.bkconnect.controller.UserController;
+import com.bk.bkconnect.controller.*;
+import com.bk.bkconnect.database.constant.UserRole;
 import com.bk.bkconnect.database.driver.*;
 import com.bk.bkconnect.database.entity.*;
 import com.bk.bkconnect.database.entity.ext.TutorSubject;
 import com.bk.bkconnect.database.entity.ext.UserInfo;
-import com.bk.bkconnect.domain.request.UpdateTutorRq;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,24 +18,29 @@ public class BackendTest {
     UserController userController;
     SessionController sessionController;
     TutorController tutorController;
+    SubjectController subjectController;
+    PostController postController;
 
     UserDAO userDAO;
     TutorDAO tutorDAO;
     StudentDAO studentDAO;
     GroupSubjectDAO groupSubjectDAO;
     SubjectDAO subjectDAO;
+    PostDAO postDAO;
     static UUID adminId = UUID.fromString("68dcb2e7-5f35-4cf7-a683-5b349ead2cb1");
     static UUID tutor1Id = UUID.fromString("5240568a-48b9-407c-bf95-868bc1053dd5");
     static UUID student1Id = UUID.fromString("4496e9b4-13b1-4007-a376-ad3ad619b4a3");
     static UUID groupSubject1Id = UUID.fromString("ebf5df4d-14d6-4734-a988-d6b5a5e90718");
     static UUID subject1Id = UUID.fromString("7f4a2e93-564e-417b-99ba-9181f880e1fa");
     static UUID subject2Id = UUID.fromString("4b0a27c5-7056-414f-8903-d7636dd5ec40");
+    static UUID post1Id = UUID.fromString("6f3c6513-d87d-4f77-9148-61a0fb47b5aa");
 
     public void initData() {
         initAdmin();
         initSubject();
         initTutor();
         initStudent();
+        initPost();
 
     }
 
@@ -72,18 +74,23 @@ public class BackendTest {
 //            System.out.println(rs.toJson());
         }
         {
-            System.out.println(tutorController.getTutorById(tutor1Id.toString()).toJson());
+//            System.out.println(tutorController.getTutorById(tutor1Id.toString()).toJson());
         }
         {
-            ;
-            var rq = new UpdateTutorRq();
-            rq.selfDescription = "My name is Tutor";
-            rq.subjects = List.of(
-                    TutorSubject.builder().subjectId(subject1Id).level("1,2").expectedFee(200L).build(),
-                    TutorSubject.builder().subjectId(subject2Id).level("1,2,3").expectedFee(100L).build()
-            );
-            System.out.println(tutorController.updateTutorInfo(tutor1Id.toString(), rq).toJson());
-            System.out.println(tutorController.getTutorById(tutor1Id.toString()).toJson());
+//            var rq = new UpdateTutorRq();
+//            rq.selfDescription = "My name is Tutor";
+//            rq.subjects = List.of(
+//                    TutorSubject.builder().subjectId(subject1Id).level("1,2").expectedFee(200L).build(),
+//                    TutorSubject.builder().subjectId(subject2Id).level("1,2,3").expectedFee(100L).build()
+//            );
+//            System.out.println(tutorController.updateTutorInfo(tutor1Id.toString(), rq).toJson());
+//            System.out.println(tutorController.getTutorById(tutor1Id.toString()).toJson());
+        }
+        {
+//            System.out.println(subjectController.getAll().toJson());
+        }
+        {
+            System.out.println(postController.getById(post1Id.toString()).toJson());
         }
     }
 
@@ -92,7 +99,7 @@ public class BackendTest {
         admin.id = adminId;
         admin.username = "admin";
         admin.password = "0DTzga2OUQ838bd9941f9d88b43d3840db46eab2ee"; //12345678
-        admin.role = UserEnt.UserRole.ADMIN;
+        admin.role = UserRole.ADMIN;
         admin.userInfo = new UserInfo();
         userDAO.saveAndFlush(admin);
     }
@@ -123,7 +130,7 @@ public class BackendTest {
         tutor1.id = tutor1Id;
         tutor1.username = "tutor";
         tutor1.password = "0DTzga2OUQ838bd9941f9d88b43d3840db46eab2ee"; //12345678
-        tutor1.role = UserEnt.UserRole.TUTOR;
+        tutor1.role = UserRole.TUTOR;
         tutor1.userInfo = new UserInfo();
         tutor1.subjects = Set.of(
                 TutorSubject.builder().subjectId(subject1Id).level("1,2,3").expectedFee(100L).build()
@@ -136,7 +143,22 @@ public class BackendTest {
         student.id = student1Id;
         student.username = "student";
         student.password = "0DTzga2OUQ838bd9941f9d88b43d3840db46eab2ee"; //12345678
-        student.role = UserEnt.UserRole.STUDENT;
+        student.role = UserRole.STUDENT;
         studentDAO.saveAndFlush(student);
+    }
+
+    private void initPost() {
+        {
+            PostEnt post = new PostEnt();
+            post.id = post1Id;
+            var sub = new SubjectEnt();
+            sub.id = subject1Id;
+            post.subject = sub;
+            var u = new StudentEnt();
+            u.id = student1Id;
+            post.createBy = u;
+            postDAO.saveAndFlush(post);
+        }
+
     }
 }

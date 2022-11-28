@@ -24,8 +24,10 @@ public class TutorController {
         return GenericResponse.parse(rs);
     }
 
-    public GenericResponse<List<GetTutorRs>> getAllTutor(@RequestBody GetTutorFilter filter) {
-        var rs = tutorService.getAllTutor(filter);
+    @GetMapping("/getAll")
+    public GenericResponse<List<GetTutorRs>> getAllTutor(
+            @RequestBody GetTutorFilter filter, @RequestParam int pageSize, @RequestParam int pageNumber) {
+        var rs = tutorService.getAllTutor(filter, pageSize, pageNumber);
         return GenericResponse.parse(rs);
     }
 

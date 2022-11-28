@@ -4,14 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class TutorPostRel extends AbstractEnt {
+public class TutorPostRel extends AbstractRel<TutorEnt, PostEnt> {
 
     public Long createTime;
     public String requester;
 
-    @ManyToOne
-    public TutorEnt tutor;
-
-    @ManyToOne
-    public PostEnt post;
 }

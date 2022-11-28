@@ -1,6 +1,5 @@
 package com.bk.bkconnect.domain.request;
 
-import com.bk.bkconnect.converter.GenderConvert;
 import com.bk.bkconnect.converter.ImageConverter;
 import com.bk.bkconnect.database.entity.UserEnt;
 import com.bk.bkconnect.database.entity.ext.Address;
@@ -22,7 +21,7 @@ public class UpdateUserRq extends GenericRq {
     public void flush(UserEnt user) {
         user.initNullField();
         user.userInfo.fullname = fullname;
-        user.userInfo.gender = GenderConvert.convert(gender);
+        user.userInfo.gender = gender == null ? null : gender.toUpperCase();
         user.userInfo.dob = dob;
         user.userInfo.address = address;
         user.userInfo.email = email;

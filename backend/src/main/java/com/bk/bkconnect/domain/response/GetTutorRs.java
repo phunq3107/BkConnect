@@ -1,7 +1,6 @@
 package com.bk.bkconnect.domain.response;
 
 import com.bk.bkconnect.DataStore;
-import com.bk.bkconnect.converter.GenderConvert;
 import com.bk.bkconnect.converter.ImageConverter;
 import com.bk.bkconnect.database.entity.TutorEnt;
 import com.bk.bkconnect.database.entity.ext.Address;
@@ -30,6 +29,8 @@ public class GetTutorRs extends GenericRs<GetTutorRs> {
     public List<Address> teachingLocations;
     public Set<TutorSubject> subjects = new HashSet<>();
     public String availableTimes;
+    public boolean isMatch;
+    public String likelyDescription;
 
     public static GetTutorRs build(TutorEnt tutor) {
         var rs = new GetTutorRs();
@@ -40,7 +41,7 @@ public class GetTutorRs extends GenericRs<GetTutorRs> {
             rs.phone = tutor.userInfo.phone;
             rs.address = tutor.userInfo.address;
             rs.email = tutor.userInfo.email;
-            rs.gender = GenderConvert.convert(tutor.userInfo.gender);
+            rs.gender = tutor.userInfo.gender;
             rs.fullname = tutor.userInfo.fullname;
             rs.dob = tutor.userInfo.dob;
             rs.avatar = ImageConverter.convert(tutor.userInfo.avatar);
@@ -55,6 +56,7 @@ public class GetTutorRs extends GenericRs<GetTutorRs> {
         if (rs.subjects != null) {
             rs.subjects.forEach(i -> i.name = DataStore.subjects.get(i.subjectId).name);
         }
+        rs.isMatch = true;
         return rs;
     }
 }

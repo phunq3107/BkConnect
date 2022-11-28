@@ -21,16 +21,10 @@ public abstract class UserEnt extends AbstractEnt {
     @Embedded
     public UserInfo userInfo = new UserInfo();
 
-    public static class UserRole {
-        static public final String ADMIN = "ADMIN";
-        static public final String TUTOR = "TUTOR";
-        static public final String STUDENT = "STUDENT";
-    }
-
     @Override
     public void initNullField() {
-        if(userInfo == null) userInfo = new UserInfo();
-        if(userInfo.avatar == null) userInfo.avatar = new Image();
-        if(userInfo.address == null) userInfo.address = new Address();
+        if (userInfo == null) userInfo = new UserInfo();
+        if (userInfo.avatar == null) userInfo.avatar = new Image();
+        if (userInfo.address == null) userInfo.address = new Address();
     }
 }

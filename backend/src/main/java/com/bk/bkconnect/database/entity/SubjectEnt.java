@@ -1,5 +1,7 @@
 package com.bk.bkconnect.database.entity;
 
+import lombok.Builder;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 

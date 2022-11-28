@@ -1,7 +1,6 @@
 package com.bk.bkconnect.service;
 
 import com.bk.bkconnect.common.rest.*;
-import com.bk.bkconnect.converter.ImageConverter;
 import com.bk.bkconnect.database.entity.UserEnt;
 import com.bk.bkconnect.domain.request.LoginRq;
 import com.bk.bkconnect.domain.response.GetCurrentUserRs;
@@ -43,7 +42,8 @@ class SessionService implements ISessionService {
     public Msg<GetCurrentUserRs> getCurrentUser() {
         SessionUser sessionUser = ApplicationContext.currentUser();
         UserEnt user = userService.getUserEntByUsername(sessionUser.username);
-        GetCurrentUserRs rs = new GetCurrentUserRs(user.id, user.username, user.userInfo.fullname, user.role, ImageConverter.convert(user.userInfo.avatar));
+
+        var rs = GetCurrentUserRs.build(user);
         return Msg.success(rs);
     }
 }

@@ -1,6 +1,5 @@
 package com.bk.bkconnect.domain.response;
 
-import com.bk.bkconnect.converter.GenderConvert;
 import com.bk.bkconnect.converter.ImageConverter;
 import com.bk.bkconnect.database.entity.UserEnt;
 import com.bk.bkconnect.database.entity.ext.Address;
@@ -29,7 +28,7 @@ public class GetUserRs extends GenericRs<GetUserRs> {
             rs.phone = user.userInfo.phone;
             rs.address = user.userInfo.address;
             rs.email = user.userInfo.email;
-            rs.gender = GenderConvert.convert(user.userInfo.gender);
+            rs.gender = user.userInfo.gender;
             rs.fullname = user.userInfo.fullname;
             rs.dob = user.userInfo.dob;
             rs.avatar = ImageConverter.convert(user.userInfo.avatar);
