@@ -113,10 +113,11 @@ function UserInfoForm(props) {
                             size="small"
                             name="gender"
                             onChange={handleChange}
-                            defaultValue={userInfo.gender === 'male' || userInfo.gender === 'female' ? userInfo.gender : ""}
+                            defaultValue={userInfo.gender.toLowerCase() === 'male' || userInfo.gender.toLowerCase() === 'female' ? userInfo.gender.toLowerCase() : ''}
                         >
                                 <MenuItem value='male'>Nam</MenuItem>
                                 <MenuItem value='female'>Nữ</MenuItem>
+                                <MenuItem value='' sx={{display:"none"}}></MenuItem>
                         </Select>
                     </Grid>
                 </Grid>
