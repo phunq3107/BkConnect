@@ -1,6 +1,6 @@
 import React from 'react';
 import {Typography} from "@mui/material";
-import constants, {app_colors} from "../../../constants";
+import constants, {app_colors, app_fonts} from "../../../constants";
 
 
 function FormTitle(props) {
@@ -13,7 +13,7 @@ function FormTitle(props) {
                 color={app_colors._primaryPurple}
                 fontWeight="Bold"
                 fontSize={constants.bigFontSize}
-                fontFamily="outfit"
+                fontFamily={app_fonts._primaryFont}
             >
                 Welcome!
             </Typography>
@@ -23,7 +23,7 @@ function FormTitle(props) {
                 gutterBottom
                 fontWeight="Bold"
                 fontSize={30}
-                fontFamily="outfit"
+                fontFamily={app_fonts._primaryFont}
             >
                 It's really nice to see you
             </Typography>

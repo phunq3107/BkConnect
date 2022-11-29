@@ -10,6 +10,7 @@ import { Box, createTheme, CssBaseline, Grid, Paper, ThemeProvider} from "@mui/m
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
 import ErrorModal from "../../../../commons/Modal";
+import {useNavigate} from "react-router-dom";
 
 const theme = createTheme();
 
@@ -17,6 +18,7 @@ function Login(props) {
 
     const dispatch = useDispatch();
     const error = useSelector(state => state.session.error)
+    const navigate = useNavigate();
     // const currentUser = useSelector(state => state.session.currentUser)
 
     // useEffect(() => {
@@ -33,6 +35,7 @@ function Login(props) {
                 const res = await sessionApi.getCurrentUser();
                 const currentUser = HandleResponse(res, setSessionError);
                 dispatch(setCurrentUser(currentUser))
+                navigate("/")
             }
         } catch (err){
             console.log(err);

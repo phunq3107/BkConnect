@@ -8,9 +8,14 @@ const userApi = {
         return axiosClient.post(url, data);
     },
 
-    getById:(params) =>{
-        const url = USER_API_END_POINT + '/get';
+    getById:(id,params) =>{
+        const url = USER_API_END_POINT + `/get/${id}`;
         return axiosClient.get(url, {params});
+    },
+
+    update:(id, data) => {
+        const url = USER_API_END_POINT + `/update/${id}`
+        return axiosClient.post(url,data)
     },
 
     getAll:(params) =>{

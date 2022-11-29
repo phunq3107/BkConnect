@@ -10,7 +10,7 @@ import {
     Link, Radio, RadioGroup,
     TextField,
 } from "@mui/material";
-import {app_colors, app_paths} from "../../../constants";
+import {app_colors, app_fonts, app_paths} from "../../../constants";
 import {ArrowForward} from "@mui/icons-material";
 
 RegisterForm.propTypes = {
@@ -104,7 +104,7 @@ function RegisterForm(props) {
                     mb: 2 ,
                     backgroundColor: app_colors._primaryPurple,
                     '&:hover': {backgroundColor:app_colors._hoverPurple,},
-                    fontFamily: "outfit",
+                    fontFamily: app_fonts._primaryFont,
                     fontWeight: "bold"
                 }}
                 disabled={!isAgree}
@@ -128,7 +128,7 @@ function RegisterForm(props) {
                     </Link>
                 </Grid>
             </Grid>
-            <Divider sx={{fontFamily: "outfit",color:app_colors._primaryGrey}}>OR</Divider>
+            <Divider sx={{fontFamily: app_fonts._primaryFont,color:app_colors._primaryGrey}}>OR</Divider>
             <Button
                 type="submit"
                 fullWidth
