@@ -28,7 +28,6 @@ function UserInfoForm(props) {
     const [address, setAddress] = React.useState(userInfo.address)
     const [dobValue, setDobValue] = React.useState(()=> dayjs(userInfo.dob));
 
-    console.log(dayjs(userInfo.dob).format("DD/MM/YYYY"))
 
     const handleChange = event => {
         setFormData({
@@ -113,7 +112,7 @@ function UserInfoForm(props) {
                             size="small"
                             name="gender"
                             onChange={handleChange}
-                            defaultValue={userInfo.gender.toLowerCase() === 'male' || userInfo.gender.toLowerCase() === 'female' ? userInfo.gender.toLowerCase() : ''}
+                            defaultValue={userInfo.gender && (userInfo.gender.toLowerCase() === 'male' || userInfo.gender.toLowerCase() === 'female') ? userInfo.gender.toLowerCase() : ''}
                         >
                                 <MenuItem value='male'>Nam</MenuItem>
                                 <MenuItem value='female'>Nữ</MenuItem>

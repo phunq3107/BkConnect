@@ -47,7 +47,6 @@ function AddressSelect(props) {
             ward: selectedWard ? selectedWard.codename : null
         }
         props.handleChangeAddress(address)
-        console.log(address)
     },[selectedProvince,selectedDistrict,selectedWard])
 
     const handleChangeProvince = (e) => {

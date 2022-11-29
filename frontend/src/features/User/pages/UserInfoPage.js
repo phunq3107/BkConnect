@@ -1,25 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../../commons/Header";
 import {
-    Button,
     CssBaseline,
     Divider,
     Grid,
     Typography
 } from "@mui/material";
-import constants, {app_colors, app_fonts} from "../../../constants";
-import Avatar from "@mui/material/Avatar";
+import {app_colors} from "../../../constants";
 import UserInfoForm from "../components/UserInfoForm";
 import {useDispatch, useSelector} from "react-redux";
 import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import sessionApi from "../../../apis/sessionApi";
-import {setCurrentUser, setSessionError} from "../../Auth/sessionSlice";
+import {setCurrentUser} from "../../Auth/sessionSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import addressApi from "../../../apis/addressApi";
-import {saveItemToLocalStorage} from "../../../utils/Storage";
 import {setUserError} from "../userSlice";
-import {Save} from "@mui/icons-material";
+import AvatarCard from "../components/AvatarCard";
 
 
 function UserInfoPage(props) {
@@ -81,42 +78,8 @@ function UserInfoPage(props) {
             <Header/>
             <Grid container component="main" sx={{bgcolor: app_colors._primaryBackground, height:'90vh' }} pt={6}>
                 <Grid item md={1.5}/>
-                <Grid
-                    container
-                    item
-                    xs={false}
-                    sm={8} md={2}
-                    sx={{bgcolor: app_colors._whiteText, height:'60vh'}}
-                    borderRadius={1}
-                    justifyContent="center"
-                    boxShadow={3}
-                    py={3}
-                    px={2}
-                >
-                    <Grid item>
-                    {userInfo && <Avatar src={userInfo.avatar}  sx={{ width: 150, height: 150 }} />}
-                    </Grid>
-                    <Grid item width="100%">
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            component="label"
-                            name="avatar"
-                            sx={{
-                                backgroundColor: app_colors._primaryPurple,
-                                '&:hover': {backgroundColor:app_colors._hoverPurple,},
-                                fontFamily: app_fonts._primaryFont,
-                                fontWeight: "bold"
-                            }}
-                        >
-                            Cập nhật ảnh
-                            <input
-                                type="file"
-                                hidden
-                            />
-                        </Button>
-                    </Grid>
-                </Grid>
+
+                <AvatarCard user={currentUser}/>
 
                 <Grid item md={0.5}/>
 
