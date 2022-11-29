@@ -113,6 +113,7 @@ components:
         availableTime:
           type: string
         location:
+          type: array
           allOf:
             - $ref: './common.yaml#/components/schemas/Address'
         fee:

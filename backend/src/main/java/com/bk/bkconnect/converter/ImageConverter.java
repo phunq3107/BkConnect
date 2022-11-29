@@ -6,6 +6,7 @@ public class ImageConverter {
 
     public static String convert(Image image) {
         // TODO: 26/11/2022
+        if (image == null) return null;
         return image.url;
     }
 

@@ -57,5 +57,7 @@ components:
           type: string
         avatar:
           type: string
+        role:
+          type: string
         extInfo:
           type: string

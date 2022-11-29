@@ -14,6 +14,7 @@ public class GetTutorFilter extends GenericRq {
     public String availableTime;
     public List<Address> location;
     public Double distance;
+    public boolean getAll;
 
     public List<UUID> getSubjects() {
         return Arrays.stream(subject.split(",")).map(UUID::fromString).toList();

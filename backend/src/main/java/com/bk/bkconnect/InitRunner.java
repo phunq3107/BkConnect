@@ -1,12 +1,8 @@
 package com.bk.bkconnect;
 
-import com.bk.bkconnect.controller.SessionController;
-import com.bk.bkconnect.controller.UserController;
-import com.bk.bkconnect.database.driver.StudentDAO;
+import com.bk.bkconnect.database.driver.PostDAO;
 import com.bk.bkconnect.database.driver.SubjectDAO;
-import com.bk.bkconnect.database.driver.TutorDAO;
 import com.bk.bkconnect.database.driver.UserDAO;
-import com.bk.bkconnect.domain.request.UpdateUserRq;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
@@ -15,16 +11,15 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class InitRunner implements CommandLineRunner {
 
-    UserDAO userDAO;
-    TutorDAO tutorDAO;
-    StudentDAO studentDAO;
-    SubjectDAO subjectDAO;
+    private final UserDAO userDAO;
+    private final SubjectDAO subjectDAO;
+    private final PostDAO postDAO;
 
     //
     BackendTest backendTest;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         //todo: dev only
         backendTest.initData();
         // end
@@ -32,6 +27,7 @@ public class InitRunner implements CommandLineRunner {
         subjectDAO.findAll().forEach(subject -> {
             DataStore.subjects.put(subject.id, subject);
         });
+        postDAO.findAll().forEach(DataStore::updatePost);
 
 
         backendTest.test();

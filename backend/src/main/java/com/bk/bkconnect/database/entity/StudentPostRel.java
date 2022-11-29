@@ -2,15 +2,25 @@ package com.bk.bkconnect.database.entity;
 
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import java.util.UUID;
 
 @Entity
-public class StudentPostRel extends AbstractEnt {
+public class StudentPostRel extends AbstractRel<StudentEnt, PostEnt> {
 
-    public Long joinTime;
+    public Long updateTime;
 
-    @ManyToOne
-    public UserEnt user;
-    @ManyToOne
-    public PostEnt post;
+
+    public static StudentPostRel create(UUID studentId, UUID postId, String state) {
+        var rs = new StudentPostRel();
+        var student = new StudentEnt();
+        student.id = studentId;
+        var post = new PostEnt();
+        post.id = postId;
+        rs.updateTime = System.currentTimeMillis();
+        rs.left = student;
+        rs.right = post;
+        rs.id = new RelId(studentId, postId);
+        rs.state = state;
+        return rs;
+    }
 }

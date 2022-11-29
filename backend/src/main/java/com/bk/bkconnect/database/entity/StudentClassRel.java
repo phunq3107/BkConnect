@@ -4,13 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class StudentClassRel extends AbstractEnt {
+public class StudentClassRel extends AbstractRel<StudentEnt, TutorEnt> {
     public Long joinTime;
     public String feedBack;
 
-    @ManyToOne
-    public StudentEnt student;
-
-    @ManyToOne
-    public TutorEnt tutor;
 }

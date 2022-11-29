@@ -2,6 +2,7 @@ package com.bk.bkconnect.service;
 
 import com.bk.bkconnect.DataStore;
 import com.bk.bkconnect.common.rest.*;
+import com.bk.bkconnect.database.constant.UserRole;
 import com.bk.bkconnect.database.driver.StudentDAO;
 import com.bk.bkconnect.database.driver.TutorDAO;
 import com.bk.bkconnect.database.driver.UserDAO;
@@ -56,8 +57,8 @@ class UserService implements IUserService, UserDetailsService {
             return FailMsg.fail(ResponseCode.existedUsername, ResponseMsg.existedUsername);
         }
         UserEnt user = switch (rq.role.toUpperCase()) {
-            case UserEnt.UserRole.STUDENT -> new StudentEnt();
-            case UserEnt.UserRole.TUTOR -> new TutorEnt();
+            case UserRole.STUDENT -> new StudentEnt();
+            case UserRole.TUTOR -> new TutorEnt();
             default -> null;
         };
         user.id = UUID.randomUUID();

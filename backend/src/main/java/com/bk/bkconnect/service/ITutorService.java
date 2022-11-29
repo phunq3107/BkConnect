@@ -17,7 +17,7 @@ public interface ITutorService {
     // for api
     Msg<GetTutorRs> getTutorById(UUID tutorId);
 
-    Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter);
+    Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageSize, int pageNumber);
 
     Msg<GetTutorRs> updateTutorInfo(UUID tutorId, UpdateTutorRq rq);
 
@@ -41,7 +41,7 @@ class TutorService implements ITutorService {
     }
 
     @Override
-    public Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter) {
+    public Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageSize, int pageNumber) {
         if (!filter.verify()) {
             return FailMsg.fail(filter.failCode, filter.failReason);
         }

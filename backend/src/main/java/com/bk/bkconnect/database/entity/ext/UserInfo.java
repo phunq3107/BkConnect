@@ -10,7 +10,7 @@ public class UserInfo {
     @Embedded
     public Address address = new Address();
     public String email;
-    public Integer gender;
+    public String gender;
     public String fullname;
     public Long dob;
     @Embedded
