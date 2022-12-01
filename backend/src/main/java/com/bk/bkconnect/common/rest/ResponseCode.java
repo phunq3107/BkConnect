@@ -5,6 +5,7 @@ public class ResponseCode {
 
     public static final int authFail = 401;
     public static final int forbidden = 403;
+    public static final int notAllow = 405;
 
     public static final int wrongPassword = 401;
 

@@ -10,18 +10,19 @@ import java.util.UUID;
 
 public class AddPostRq extends GenericRq {
     public String title;
-    public String subject;
-    public Integer timesPerWeek;
-    public Float hoursPerLesson;
-    public String availableTime;
+    public String subject; // subjectId
+    public Integer timesPerWeek; // int
+    public Float hoursPerLesson; // float
+    public String availableTime; // 7*24
     public List<Address> location;
-    public String fee;
-    public String level;
-    public String gender;
-    public Integer age;
-    public String noStudents;
-    public String description;
-    public Boolean isGroup;
+    public String fee; // int, default = -1 // change: min, max
+    public String level; // all, 1: sinh vien, 2: giao vien, 3: gia su
+    public String gender; // all / male / female
+    public Float distance;
+    public String age; // all / min,max
+    public String noStudents; // all / min,max
+    public String description; // string
+    public Boolean isGroup; // true/false
 
     @Override
     public boolean verify() {
@@ -44,6 +45,7 @@ public class AddPostRq extends GenericRq {
         post.classInfo.noStudents = noStudents;
         post.classInfo.description = description;
         post.isGroup = isGroup;
+        post.distance = distance;
 
     }
 }

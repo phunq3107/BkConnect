@@ -4,10 +4,10 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address {
-    public String province;
-    public String district;
-    public String ward;
-    public String detail;
+    public String province; //code_name
+    public String district;//code_name
+    public String ward;//code_name
+    public String detail; // userPlace, tutorPlace
 
     public Double longitude;
     public Double latitude;

@@ -1,5 +1,5 @@
 package com.bk.bkconnect.database.constant;
 
 public class PostState {
-    public final String ACTIVE = "ACTIVE";
+    public static final String ACTIVE = "ACTIVE";
 }

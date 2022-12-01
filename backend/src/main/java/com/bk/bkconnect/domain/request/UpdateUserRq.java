@@ -7,7 +7,7 @@ import com.bk.bkconnect.database.entity.ext.Address;
 public class UpdateUserRq extends GenericRq {
     public String fullname;
     public String gender;
-    public Long dob;
+    public Long dob; // millis
     public Address address = new Address();
     public String email;
     public String phone;

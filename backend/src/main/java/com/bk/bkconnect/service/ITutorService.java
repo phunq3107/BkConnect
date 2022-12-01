@@ -1,7 +1,10 @@
 package com.bk.bkconnect.service;
 
 import com.bk.bkconnect.DataStore;
-import com.bk.bkconnect.common.rest.*;
+import com.bk.bkconnect.common.rest.Msg;
+import com.bk.bkconnect.common.rest.ResponseCode;
+import com.bk.bkconnect.common.rest.ResponseMsg;
+import com.bk.bkconnect.common.rest.SuccessMsg;
 import com.bk.bkconnect.database.driver.TutorDAO;
 import com.bk.bkconnect.database.entity.TutorEnt;
 import com.bk.bkconnect.domain.request.GetTutorFilter;
@@ -34,16 +37,16 @@ class TutorService implements ITutorService {
     public Msg<GetTutorRs> getTutorById(UUID tutorId) {
         var tutor = getTutorEntById(tutorId);
         if (tutorId == null) {
-            return FailMsg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
+            return Msg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
         }
         var rs = GetTutorRs.build(tutor);
-        return SuccessMsg.success(rs);
+        return Msg.success(rs);
     }
 
     @Override
     public Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageSize, int pageNumber) {
         if (!filter.verify()) {
-            return FailMsg.fail(filter.failCode, filter.failReason);
+            return Msg.fail(filter.failCode, filter.failReason);
         }
         // TODO: 27/11/2022  
         return null;
@@ -51,12 +54,15 @@ class TutorService implements ITutorService {
 
     @Override
     public Msg<GetTutorRs> updateTutorInfo(UUID tutorId, UpdateTutorRq rq) {
+        if (PermissionCheck.updateTutorInfo(tutorId)) {
+            return Msg.notAllow();
+        }
         if (!rq.verify()) {
-            return FailMsg.fail(rq.failCode, rq.failReason);
+            return Msg.fail(rq.failCode, rq.failReason);
         }
         var tutor = getTutorEntById(tutorId);
-        if (tutorId == null) {
-            return FailMsg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
+        if (tutor == null) {
+            return Msg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
         }
         rq.flush(tutor);
         tutorDAO.saveAndFlush(tutor);

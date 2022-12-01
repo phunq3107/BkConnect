@@ -4,6 +4,6 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class TutorRequirement {
-    public Integer age;
+    public String  age;
     public String gender;
 }

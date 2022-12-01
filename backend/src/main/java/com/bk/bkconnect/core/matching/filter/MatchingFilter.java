@@ -5,7 +5,7 @@ import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.TutorEnt;
 
 public abstract class MatchingFilter {
-    public abstract MatchingOutput doFilter(PostEnt post, TutorEnt tutor);
+    public abstract MatchingOutput doFilterTutor(PostEnt post, TutorEnt tutor);
 
-    public abstract MatchingOutput doFilter(TutorEnt tutor, PostEnt post);
+    public abstract MatchingOutput doFilterPost(TutorEnt tutor, PostEnt post);
 }

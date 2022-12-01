@@ -1,9 +1,12 @@
 package com.bk.bkconnect.domain.response;
 
+import com.bk.bkconnect.DataStore;
+import com.bk.bkconnect.database.constant.UserRole;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.ext.Address;
 import com.bk.bkconnect.domain.common.UserBrief;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class GetPostRs extends GenericRs<GetPostRs> {
@@ -18,7 +21,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
     public String fee;
     public String level;
     public String gender;
-    public Integer age;
+    public String  age;
     public String noStudents;
     public String description;
     public Boolean isGroup;
@@ -26,6 +29,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
     public Long lastUpdate;
     public String state;
     public UserBrief takeBy;
+    public Float distance;
     public List<UserBrief> attendees;
 
     public static GetPostRs build(PostEnt post) {
@@ -38,6 +42,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
         rs.lastUpdate = post.updateTime == null ? post.createTime : post.updateTime;
         rs.state = post.state;
         rs.location = post.locations != null ? post.locations.stream().toList() : null;
+        rs.distance = post.distance;
         if (post.classInfo != null) {
             rs.timesPerWeek = post.classInfo.timesPerWeek;
             rs.hoursPerLesson = post.classInfo.hoursPerLesson;
@@ -50,7 +55,11 @@ public class GetPostRs extends GenericRs<GetPostRs> {
             rs.age = post.tutorRequirement.age;
             rs.gender = post.tutorRequirement.gender;
         }
-        // TODO: 27/11/2022 takeBy, attendees
+        // TODO: 27/11/2022 takeBy
+        rs.attendees = DataStore.postFollower.getOrDefault(post.id, new HashSet<>()).stream()
+                .map(userId -> UserBrief.build(DataStore.users.get(userId)))
+                .filter(user -> UserRole.STUDENT.equalsIgnoreCase(user.role))
+                .toList();
         return rs;
     }
 

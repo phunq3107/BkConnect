@@ -10,7 +10,7 @@ public class GetCurrentUserRs extends GenericRs<GetCurrentUserRs> {
     public String username;
     public String fullname;
     public String role;
-    public String avatar;
+    public String avatar; // url
 
     public static GetCurrentUserRs build(UserEnt user) {
         var rs = new GetCurrentUserRs();

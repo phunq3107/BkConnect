@@ -19,7 +19,7 @@ public class TutorSubject {
     public UUID subjectId;
     public String name;
     public String level;
-    public Long expectedFee;
+    public Long expectedFee; // -1, int
     public String certificates;
 
 }

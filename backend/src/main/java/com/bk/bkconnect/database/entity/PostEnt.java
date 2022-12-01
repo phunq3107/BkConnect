@@ -6,9 +6,7 @@ import com.bk.bkconnect.database.entity.ext.ClassInfo;
 import com.bk.bkconnect.database.entity.ext.TutorRequirement;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,13 +21,15 @@ public class PostEnt extends AbstractEnt {
     public String subjectLevel;
     public Boolean isGroup;
 
+    public Float distance;
+
     @ElementCollection
     @CollectionTable(name = "POST_CENSOR", joinColumns = @JoinColumn(name = "POST_ID"))
     public Set<CensorInfo> censorInfos = new HashSet<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "POST_LOCATION", joinColumns = @JoinColumn(name = "POST_ID"))
-    public Set<Address> locations= new HashSet<>();
+    public Set<Address> locations = new HashSet<>();
 
     @ManyToOne
     public UserEnt createBy;
@@ -43,7 +43,7 @@ public class PostEnt extends AbstractEnt {
     @Override
     public void initNullField() {
         super.initNullField();
-        if(tutorRequirement==null) tutorRequirement = new TutorRequirement();
-        if(classInfo==null) classInfo = new ClassInfo();
+        if (tutorRequirement == null) tutorRequirement = new TutorRequirement();
+        if (classInfo == null) classInfo = new ClassInfo();
     }
 }

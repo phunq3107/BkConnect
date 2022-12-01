@@ -28,14 +28,14 @@ class SessionService implements ISessionService {
     public Msg<LoginRs> login(LoginRq rq) {
         UserEnt user = userService.getUserEntByUsername(rq.username);
         if (user == null) {
-            return FailMsg.fail(ResponseCode.userNotFound, ResponseMsg.notFound);
+            return Msg.fail(ResponseCode.userNotFound, ResponseMsg.notFound);
         }
         if (!HashingUtils.verify(rq.password, user.password)) {
-            return FailMsg.fail(ResponseCode.wrongPassword, ResponseMsg.wrongPassword);
+            return Msg.fail(ResponseCode.wrongPassword, ResponseMsg.wrongPassword);
         }
         LoginRs rs = new LoginRs();
         rs.accessToken = JwtUtils.createToken(user.username, user.role);
-        return SuccessMsg.success(rs);
+        return Msg.success(rs);
     }
 
     @Override

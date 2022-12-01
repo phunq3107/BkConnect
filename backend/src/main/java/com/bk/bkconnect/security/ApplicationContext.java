@@ -21,6 +21,10 @@ public class ApplicationContext {
         return currentUser().id;
     }
 
+    public static String currentUserRole(){
+        return currentUser().role;
+    }
+
     public static void setCurrentUser(Authentication authentication) {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

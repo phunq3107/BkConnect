@@ -2,6 +2,7 @@ package com.bk.bkconnect.database.entity;
 
 import com.bk.bkconnect.database.entity.ext.Address;
 import com.bk.bkconnect.database.entity.ext.TutorSubject;
+import com.bk.bkconnect.util.TimeUtils;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,5 +22,10 @@ public class TutorEnt extends UserEnt {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "TUTOR_SUBJECT", joinColumns = @JoinColumn(name = "TUTOR_ID"))
     public Set<TutorSubject> subjects;
+
+    public int getAge() {
+        if (userInfo == null || userInfo.dob == null) return -1;
+        return TimeUtils.getYear(System.currentTimeMillis()) - TimeUtils.getYear(userInfo.dob);
+    }
 
 }

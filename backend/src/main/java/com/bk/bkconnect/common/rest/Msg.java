@@ -17,4 +17,8 @@ public abstract class Msg<T> {
     public static <T> FailMsg<T> fail(GenericRq rq) {
         return new FailMsg<>(rq.failCode, rq.failReason);
     }
+
+    public static <T> FailMsg<T> notAllow() {
+        return fail(ResponseCode.notAllow, ResponseMsg.notAllow);
+    }
 }

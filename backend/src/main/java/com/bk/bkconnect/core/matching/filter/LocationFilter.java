@@ -6,12 +6,14 @@ import com.bk.bkconnect.database.entity.TutorEnt;
 
 public class LocationFilter extends MatchingFilter{
     @Override
-    public MatchingOutput doFilter(PostEnt post, TutorEnt tutor) {
-        return null;
+    public MatchingOutput doFilterTutor(PostEnt post, TutorEnt tutor) {
+        var rs = new MatchingOutput(post, tutor);
+        rs.isMatch = true;
+        return rs;
     }
 
     @Override
-    public MatchingOutput doFilter(TutorEnt tutor, PostEnt post) {
+    public MatchingOutput doFilterPost(TutorEnt tutor, PostEnt post) {
         return null;
     }
 }

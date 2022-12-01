@@ -8,13 +8,13 @@ import java.util.UUID;
 
 public class GetTutorFilter extends GenericRq {
     public String fee;
-    public String subject;
-    public String level;
-    public String gender;
-    public String availableTime;
-    public List<Address> location;
-    public Double distance;
-    public boolean getAll;
+    public String subject; // subjectId ','
+    public String level; // all ,1 ,2 ,3
+    public String gender; // all, male, female
+    public String availableTime; // 0-12 12-16 16-19 19-24
+    public List<Address> location; // tutorPlace, studentPlace
+    public Double distance; // float
+    public boolean getAll; //
 
     public List<UUID> getSubjects() {
         return Arrays.stream(subject.split(",")).map(UUID::fromString).toList();

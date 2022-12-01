@@ -4,9 +4,10 @@ import com.bk.bkconnect.DataStore;
 import com.bk.bkconnect.common.rest.Msg;
 import com.bk.bkconnect.common.rest.ResponseCode;
 import com.bk.bkconnect.common.rest.ResponseMsg;
+import com.bk.bkconnect.database.constant.PostState;
 import com.bk.bkconnect.database.constant.StudentPostState;
 import com.bk.bkconnect.database.driver.PostDAO;
-import com.bk.bkconnect.database.driver.StudentPostRelDAO;
+import com.bk.bkconnect.database.driver.StudentPostDAO;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.StudentPostRel;
 import com.bk.bkconnect.domain.request.AddPostRq;
@@ -32,7 +33,7 @@ public interface IPostService {
 class PostService implements IPostService {
 
     private final PostDAO postDAO;
-    private final StudentPostRelDAO studentPostRelDAO;
+    private final StudentPostDAO studentPostDAO;
 
     @Override
     public Msg<GetPostRs> getPostById(UUID postId) {
@@ -60,6 +61,7 @@ class PostService implements IPostService {
         post.id = UUID.randomUUID();
         post.createBy = DataStore.users.get(ApplicationContext.currentUserId());
         post.createTime = System.currentTimeMillis();
+        post.state = PostState.ACTIVE;
         rq.flush(post);
         postDAO.saveAndFlush(post);
         DataStore.updatePost(post);
@@ -71,13 +73,12 @@ class PostService implements IPostService {
 
     private void updateStudentPostRel(UUID studentId, UUID postId, String state) {
         var rel = StudentPostRel.create(studentId, postId, state);
-        studentPostRelDAO.saveAndFlush(rel);
+        studentPostDAO.saveAndFlush(rel);
         switch (state.toUpperCase()) {
-            case StudentPostState.JOIN:
-                DataStore.addPostFollower(postId, studentId);
-            case StudentPostState.LEAVE:
-                DataStore.removePostFollower(postId, studentId);
-            default:
+            case StudentPostState.JOIN -> DataStore.addPostFollower(postId, studentId);
+            case StudentPostState.LEAVE -> DataStore.removePostFollower(postId, studentId);
+            default -> {
+            }
         }
     }
 

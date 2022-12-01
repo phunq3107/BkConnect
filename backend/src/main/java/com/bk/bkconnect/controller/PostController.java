@@ -5,6 +5,7 @@ import com.bk.bkconnect.domain.request.AddPostRq;
 import com.bk.bkconnect.domain.response.GetPostRs;
 import com.bk.bkconnect.service.IPostService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class PostController {
         return GenericResponse.parse(rs);
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/add")
     public GenericResponse<GetPostRs> addPost(@RequestBody AddPostRq rq) {
         var rs = postService.addPost(rq);

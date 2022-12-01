@@ -4,6 +4,8 @@ public class ResponseMsg {
 
     public static final String ok = "Success";
     public static final String notFound = "NotFound";
+    public static final String notAllow = "Not allow";
+
 
     public static final String userNotFound = "User not found";
 

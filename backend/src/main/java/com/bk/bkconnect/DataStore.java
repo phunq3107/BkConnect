@@ -36,6 +36,7 @@ public class DataStore {
     public static void addPostFollower(UUID postId, UUID userId) {
         postFollower.putIfAbsent(postId, new HashSet<>());
         postFollower.get(postId).add(userId);
+
     }
 
     public static void removePostFollower(UUID postId, UUID userId) {

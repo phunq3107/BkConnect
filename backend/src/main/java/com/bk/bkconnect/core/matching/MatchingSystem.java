@@ -14,13 +14,12 @@ public class MatchingSystem {
 
     private MatchingSystem() {
         // TODO: 27/11/2022 change priority
-        filters = new ArrayList<>() {{
-            add(new SubjectFilter());
-            add(new TimeFilter());
-            add(new FeeFilter());
-            add(new LocationFilter());
-            add(new TutorInfoFilter());
-            add(new ClassInfoFilter());
+        this.filters = new ArrayList<>() {{
+            add(new SubjectFilter()); // subject, fee, level
+            add(new TimeFilter()); // timesPerWeek, hourPerLesson, available
+            add(new LocationFilter()); // distance,
+            add(new TutorInfoFilter()); // gender, age
+            add(new ClassInfoFilter()); // group, noStudent
         }};
         noFilters = filters.size();
     }
@@ -45,7 +44,7 @@ public class MatchingSystem {
         for (var filter : filters) {
             for (int i = 0; i < posts.size(); i++) {
                 if (!isContinue.get(i)) continue;
-                var rs = filter.doFilter(tutor, posts.get(i));
+                var rs = filter.doFilterPost(tutor, posts.get(i));
                 filterRs.get(posts.get(i)).add(rs);
                 if (!rs.isAcceptable()) {
                     isContinue.set(i, false);
@@ -55,8 +54,25 @@ public class MatchingSystem {
         return summarizingResult(filterRs.values());
     }
 
+
     private List<MatchingOutput> findMatchTutor(PostEnt post, List<TutorEnt> tutors) {
-        return null;
+        Map<TutorEnt, List<MatchingOutput>> filterRs = new HashMap<>() {{
+            tutors.forEach(tutor -> put(tutor, new ArrayList<>()));
+        }};
+        var isContinue = new ArrayList<Boolean>() {{
+            for (int i = 0; i < tutors.size(); i++) add(true);
+        }};
+        for (var filter : filters) {
+            for (int i = 0; i < tutors.size(); i++) {
+                if (!isContinue.get(i)) continue;
+                var rs = filter.doFilterTutor(post, tutors.get(i));
+                filterRs.get(tutors.get(i)).add(rs);
+                if (!rs.isAcceptable()) {
+                    isContinue.set(i, false);
+                }
+            }
+        }
+        return summarizingResult(filterRs.values());
     }
 
     private List<MatchingOutput> summarizingResult(Collection<List<MatchingOutput>> filterRs) {

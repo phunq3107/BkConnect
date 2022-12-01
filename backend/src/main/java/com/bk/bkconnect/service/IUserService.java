@@ -84,6 +84,9 @@ class UserService implements IUserService, UserDetailsService {
 
     @Override
     public Msg<GetUserRs> updateUserInfo(UUID userId, UpdateUserRq rq) {
+        if(PermissionCheck.updateUserInfo(userId)){
+            return FailMsg.notAllow();
+        }
         if (!rq.verify()) {
             return FailMsg.fail(rq.failCode, rq.failReason);
         }
