@@ -12,18 +12,22 @@ import {useDispatch, useSelector} from "react-redux";
 import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import sessionApi from "../../../apis/sessionApi";
-import {setCurrentUser} from "../../Auth/sessionSlice";
+import {setCurrentUser, setListAddresses, setSessionError} from "../../Auth/sessionSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
 import addressApi from "../../../apis/addressApi";
 import {setUserError} from "../userSlice";
 import AvatarCard from "../components/AvatarCard";
+import ErrorModal from "../../../commons/Modal";
 
 
 function UserInfoPage(props) {
     const currentUser = useSelector(state => state.session.currentUser)
+    const listAddresses = useSelector(state => state.session.listAddresses)
+    const error = useSelector(state => state.session.error)
+
     const dispatch = useDispatch()
     const [userInfo,setUserInfo] = useState(null)
-    const [address,setAddress] = useState(null)
+
 
     useEffect(()=>{
         if (!currentUser){
@@ -35,7 +39,7 @@ function UserInfoPage(props) {
                     const currentUser = unwrapResult(action)
                     userApi.getById(currentUser.id).then(
                         response => {
-                            const data = HandleResponse(response)
+                            const data = HandleResponse(response, setSessionError)
                             setUserInfo(data)
                         }
                     )
@@ -45,18 +49,20 @@ function UserInfoPage(props) {
         else {
             userApi.getById(currentUser.id).then(
                 response => {
-                    const data = HandleResponse(response)
+                    const data = HandleResponse(response, setUserError)
                     setUserInfo(data)
                 })
         }
     },[])
 
     useEffect(()=>{
-        addressApi.getAll().then(
-            response => {
-                setAddress(response.data)
-            }
-        ).catch(err => console.log(err))
+        if (listAddresses == null) {
+            addressApi.getAll().then(
+                response => {
+                    dispatch(setListAddresses(response.data))
+                }
+            ).catch(err => console.log(err))
+        }
     },[])
 
 
@@ -94,10 +100,15 @@ function UserInfoPage(props) {
                 >
                     <Typography mx={3} variant="h6" fontWeight="bold">Hồ sơ cá nhân</Typography>
                     <Divider sx={{py:1}}/>
-                    {userInfo && address && <UserInfoForm onSubmit={handleSubmit} address={address} userInfo={userInfo}/>}
+                    {userInfo && listAddresses && <UserInfoForm onSubmit={handleSubmit} listAddresses={listAddresses} userInfo={userInfo}/>}
                 </Grid>
-
             </Grid>
+            {error &&
+                <ErrorModal
+                    open={true}
+                    description={error.message}
+                    title="Lỗi"
+                    errorSetter={setUserError(null)}/>}
         </>
     );
 }

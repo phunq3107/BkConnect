@@ -1,59 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox, Chip, FormControlLabel, Grid, MenuItem, Select, Stack, Typography} from "@mui/material";
-import {daysOfWeek, timeSlots} from "../../../constants";
+import constants, {daysOfWeek, timeSlots} from "../../../constants";
+import {
+    changeAvailableTimeOfADayInWeek,
+    getAllDaysHaveAvailableTimeSlot,
+    isAvailableAt
+} from "../../../utils/availableTimeUtils";
 
 TimeSelect.propTypes = {
-    selectedDays: PropTypes.arrayOf(PropTypes.object),
-    setSelectedDays: PropTypes.func
+    availableTime: PropTypes.string,
+    onChangeAvailableTime: PropTypes.func
 };
 
 function TimeSelect(props) {
 
-    const selectedDays = props.selectedDays
-    const setSelectedDays = props.setSelectedDays
+    const [selectedDays, setSelectedDays] = useState(() =>
+        getAllDaysHaveAvailableTimeSlot(timeSlots,props.availableTime))
 
-
-    const renderTimeCheckboxes = (day) => {
-        return(
-            <>
-                {timeSlots.map((timeSlot, idx) => {
-                    return (
-                        <FormControlLabel
-                            key={idx}
-                            control={
-                                <Checkbox
-                                    size="small"
-                                    key={idx}
-                                    onChange={(e) => handleChangeTeachingTime(e,day)} name={timeSlot.value}/>
-                            }
-                            label={timeSlot.title}
-                        />
-                    )
-                })}
-            </>
-        )
-    }
-
-    const handleChangeDays = (e) => {
-        const idx = selectedDays.findIndex(day => day.value === e.target.value)
-        if (idx < 0){
-            const selectedDay = daysOfWeek.find(day => day.value === e.target.value)
-            setSelectedDays(prev => [...prev,selectedDay])
-        }
-    }
-
-    const handleDeleteDays = (deletedDay) => {
-        setSelectedDays(prev => prev.filter(day => day.value !== deletedDay.value))
-    }
-
-    const handleChangeTeachingTime = (e,day) => {
-        //TODO
-    }
-
-
-    return (
-        <>
+    const renderDaysOfWeekSelector = () => {
+        return (
             <Select
                 fullWidth
                 margin="dense"
@@ -70,32 +36,96 @@ function TimeSelect(props) {
                 })}
                 <MenuItem value="" sx={{display:"none"}}></MenuItem>
             </Select>
+        )
+    }
 
+
+    const renderTimeCheckboxes = (day) => {
+        return(
+            <>
+                {timeSlots.map((timeSlot, idx) => {
+                    return (
+                        <FormControlLabel
+                            key={idx}
+                            control={
+                                <Checkbox
+                                    size="small"
+                                    key={idx}
+                                    onChange={(e) => handleChangeAvailableTime(e,day)} name={timeSlot.value}
+                                    checked={isAvailableAt(day,timeSlot,props.availableTime)}
+                                />
+                            }
+                            label={timeSlot.title}
+                        />
+                    )
+                })}
+            </>
+        )
+    }
+
+    const renderTimeSelector = (selectedDays) => {
+        return (
+            <Stack direction="column" spacing={1} mt={2}>
+                {selectedDays.map((day,idx) => {
+                    return(
+                        <Stack key={idx} direction="row" spacing={1}>
+                            <Grid item alignSelf="center" width="15%">
+                                <Typography variant="h8" fontWeight="bold">{day.title}</Typography>
+                            </Grid>
+                            <Grid item>
+                                {renderTimeCheckboxes(day)}
+                            </Grid>
+                        </Stack>
+                    )
+                })}
+            </Stack>
+        )
+    }
+
+    const renderButtonsDeleteDay = (days) => {
+        return (
+            <Stack direction="row" spacing={1} mt={1}>
+                {days.map((day, idx) => {
+                    return <Chip size="small" key={idx} label={day.title} onDelete={() => handleDeleteDays(day)}/>
+                })}
+            </Stack>
+        )
+    }
+
+    const handleChangeDays = (e) => {
+        const idx = selectedDays.findIndex(day => day.value === e.target.value)
+        if (idx < 0){
+            const selectedDay = daysOfWeek.find(day => day.value === e.target.value)
+            setSelectedDays(prev => ([...prev,selectedDay].sort((x,y)=>x.value-y.value)))
+        }
+    }
+
+    const handleDeleteDays = (deletedDay) => {
+        setSelectedDays(prev => prev.filter(day => day.value !== deletedDay.value))
+    }
+
+
+    const handleChangeAvailableTime = (e,day) => {
+        const currentAvailableTime = props.availableTime
+        const [fromHour,toHour] = e.target.name.split('-').map(e=>parseInt(e))
+        console.log(fromHour + "-" + toHour)
+        const value = e.target.checked ? constants.AVAILABLE_TIME_VALUE : constants.NON_AVAILABLE_TIME_VALUE
+        const updatedAvailableTime = changeAvailableTimeOfADayInWeek(day,currentAvailableTime,value,fromHour,toHour)
+        props.onChangeAvailableTime(updatedAvailableTime)
+    }
+
+    console.log(props.availableTime.length)
+
+    return (
+        <React.Fragment>
+            {daysOfWeek && renderDaysOfWeekSelector()}
             {selectedDays.length > 0 &&
-                <>
-                    <Stack direction="row" spacing={1} mt={1}>
-                        {selectedDays.map((day, idx) => {
-                            return <Chip size="small" key={idx} label={day.title} onDelete={() => handleDeleteDays(day)}/>
-                        })}
-                    </Stack>
-
-                    <Stack direction="column" spacing={1} mt={2}>
-                        {selectedDays.map((day,idx) => {
-                            return(
-                                <Stack key={idx} direction="row" spacing={1} justifyContent="space-between">
-                                    <Grid item>
-                                        <Typography variant="h8" fontWeight="bold">{day.title}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        {renderTimeCheckboxes(day)}
-                                    </Grid>
-                                </Stack>
-                            )
-                        })}
-                    </Stack>
-                </>
+                <React.Fragment>
+                    {renderButtonsDeleteDay(selectedDays)}
+                    {renderTimeSelector(selectedDays)}
+                </React.Fragment>
             }
-        </>
+        </React.Fragment>
     );
 }
 

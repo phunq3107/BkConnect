@@ -3,7 +3,9 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     currentUser:null,
-    error:null
+    error:null,
+    listAddresses:null,
+    listSubjects:null
 }
 
 const sessionSlice = createSlice({
@@ -20,10 +22,18 @@ const sessionSlice = createSlice({
         setCurrentUser:(state, action) => ({
             ...state,
             currentUser: action.payload
+        }),
+        setListAddresses:(state, action) => ({
+            ...state,
+            listAddresses: action.payload
+        }),
+        setListSubjects: (state, action) => ({
+            ...state,
+            listSubjects: action.payload
         })
     },
 });
 
 const {reducer, actions} = sessionSlice;
-export const {logout, setSessionError, setCurrentUser} = actions
+export const {logout, setSessionError, setCurrentUser, setListAddresses, setListSubjects} = actions
 export default reducer;

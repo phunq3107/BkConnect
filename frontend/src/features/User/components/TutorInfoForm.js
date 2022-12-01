@@ -1,78 +1,203 @@
-import React, {useReducer, useRef, useState} from 'react';
+import React, {useReducer, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Box,
-    InputLabel,
+    Box, Button, Checkbox, FormControlLabel, Grid,
+    InputLabel, Stack, Typography
 } from "@mui/material";
-import {app_colors} from "../../../constants";
+import constants, {app_colors, app_fonts} from "../../../constants";
 import TimeSelect from "./TimeSelect";
 import SubjectSelect from "./SubjectSelect";
+
+import LocationSelect from "./LocationSelect";
+import convertAddress from "../../../utils/addressUtils";
+import JoditEditor from "jodit-react";
+import {Save} from "@mui/icons-material";
+
+import {studentLocation, tutorLocation} from "../../../constants";
 
 
 TutorInfoForm.propTypes = {
     tutorInfo: PropTypes.object,
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    listAddresses: PropTypes.arrayOf(PropTypes.object)
 };
 
-const formReducer = (state,event) =>{
-    return{
-        ...state,
-        [event.name]: event.value
-    }
-}
+const createSubjectsData = (subjects) => {
+    return subjects.map(subject => ( {
+        subjectId: subject.subjectId ? subject.subjectId : null,
+        name: subject.name ? subject.name: null,
+        level: subject.level ? subject.level : null,
+        expectedFee: subject.expectedFee ? parseInt(subject.expectedFee) : -1,
+        certificates: subject.certificates ? subject.certificates : null
+    }))
 
+}
 
 function TutorInfoForm(props) {
     const tutorInfo = props.tutorInfo
 
-    const [formData, setFormData] = useReducer(formReducer, {})
+    const [selectedSubjects, setSelectedSubjects] = useState(tutorInfo.subjects || [])
 
-    const [selectedDays, setSelectedDays] = useState([])
+    const [teachingLocations, setTeachingLocations] = useState(tutorInfo.teachingLocations || [])
 
-    const [selectedSubjects, setSelectedSubjects] = useState([])
+    const [availableTime, setAvailableTime] = useState(() => {
+        return tutorInfo.availableTimes ?
+            tutorInfo.availableTimes :
+            new Array(constants.hoursOfWeek + 1).join(constants.NON_AVAILABLE_TIME_VALUE)
+    })
 
-    const handleChange = event => {
-        setFormData({
-            name: event.target.name,
-            value: event.target.value,
-        });
+    console.log(availableTime)
+
+    const [description,setDescription] = useState(tutorInfo.selfDescription)
+    const editor = useRef(null)
+
+    const listSubjects = props.listSubjects
+
+
+    const renderTeachingLocations = (teachingLocations) => {
+        return(
+            <Stack>
+                {
+                    teachingLocations.map((location,idx)=>{
+                        {
+                            return location.detail !== tutorLocation.detail &&
+                            location.detail !== studentLocation.detail ?
+                                <Typography key={idx} variant="h8">
+                                    {convertAddress(props.listAddresses, location)}
+                                </Typography>
+                                : <React.Fragment key={idx}></React.Fragment>
+                        }
+                    })
+                }
+            </Stack>
+        )
     }
 
-    const listSubjects = [
-        {id:1,name:"Toán 10", group:"Toán", order:3},
-        {id:2,name:"Toán 11", group:"Toán", order:2},
-        {id:3,name:"Toán 12", group:"Toán", order:1},
-        {id:4,name:"Ngữ Văn 10", group:"Ngữ Văn", order:3},
-        {id:5,name:"Ngữ Văn 11", group:"Ngữ Văn", order:2},
-        {id:6,name:"Ngữ Văn 12", group:"Ngữ Văn", order:1}
-    ]
+    const handleChangeTeachingAddresses = (address, isDelete) => {
+        setTeachingLocations(prev=>{
+            const idx = prev.findIndex(
+                location => location.province === address.province
+                    && location.district === address.district
+                    && location.ward === address.ward
+                    && location.detail === address.detail
+            )
+            if (isDelete !== true) {
+                if (idx < 0) {
+                    return [...prev, address]
+                }
+                return prev
+            }
+            else {
+                if (idx > -1){
+                    return [...prev.slice(0,idx),...prev.slice(idx+1)]
+                }
+                return prev
+            }
+        })
+    }
+
+    const handleChangeAvailableTime = (newAvailableTime) => {
+        setAvailableTime(newAvailableTime)
+    }
+
 
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
         const {onSubmit} = props;
         if (onSubmit) {
             const submitData ={
+                teachingLocations: teachingLocations,
+                subjects: createSubjectsData(selectedSubjects),
+                selfDescription: description,
+                availableTime: availableTime
             }
-            onSubmit(submitData);
-        };
-    }
+            onSubmit(submitData)
+        }
 
+    }
 
     return (
         <Box component="form" sx={{ mt: 1, px:5 }} onSubmit={handleUpdateSubmit}>
 
-            <InputLabel id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold"}}>
+            <InputLabel id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}>
                 Thời gian dạy
             </InputLabel>
-            <TimeSelect selectedDays={selectedDays} setSelectedDays={setSelectedDays}/>
+            <TimeSelect availableTime={availableTime} onChangeAvailableTime={handleChangeAvailableTime}/>
 
-            <InputLabel id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold"}}>
+
+            <InputLabel mt={2} id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}>
                 Môn học
             </InputLabel>
-            <SubjectSelect listSubjects={listSubjects} selectedSubjects={selectedSubjects} setSelectedSubjects={setSelectedSubjects}/>
+            {listSubjects && selectedSubjects &&
+                <SubjectSelect
+                listSubjects={listSubjects}
+                selectedSubjects={selectedSubjects}
+                setSelectedSubjects={setSelectedSubjects}
+                />
+            }
+            <InputLabel mt={2} id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}>
+                Địa điểm dạy
+            </InputLabel>
+            <Stack>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            size="small"
+                            name={"studentAddress"}
+                            onChange = {(e) => handleChangeTeachingAddresses(studentLocation,!e.target.checked)}
+                            checked={teachingLocations.map(l=>l.detail).indexOf(studentLocation.detail) > -1}
+                        />
+                    }
+                    label="Địa chỉ học viên"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            size="small"
+                            name={"tutorAddress"}
+                            onChange = {(e)=> handleChangeTeachingAddresses(tutorLocation,!e.target.checked)}
+                            checked={teachingLocations.map(l=>l.detail).indexOf(tutorLocation.detail) > -1}
+                        />
+                    }
+                    label="Địa chỉ gia sư"
+                />
+            </Stack>
+            { teachingLocations.length > 0 &&
+                renderTeachingLocations(teachingLocations)
+            }
+            <LocationSelect listAddresses={props.listAddresses} handleChangeTeachingAddresses={handleChangeTeachingAddresses}/>
 
+            <InputLabel id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold"}}>
+                Giới thiệu
+            </InputLabel>
+
+            <JoditEditor
+                ref={editor}
+                value={description}
+                tabIndex={1}
+                onBlur={newContent => setDescription(newContent)}
+                onChange={newContent => {}}
+            />
+
+            <Grid>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3,
+                        mb: 2 ,
+                        backgroundColor: app_colors._primaryPurple,
+                        '&:hover': {backgroundColor:app_colors._hoverPurple,},
+                        fontFamily: app_fonts._primaryFont,
+                        fontWeight: "bold"
+                    }}
+                >
+                    Cập nhật <Save/>
+                </Button>
+            </Grid>
         </Box>
-    );
+    )
 }
+
 
 export default TutorInfoForm;

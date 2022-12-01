@@ -5,7 +5,7 @@ import {setCurrentUser, setSessionError} from "../../sessionSlice";
 import constants from "../../../../constants";
 import sessionApi from "../../../../apis/sessionApi";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
-import {saveItemToLocalStorage} from "../../../../utils/Storage";
+import {appLocalStorage} from "../../../../utils/Storage";
 import { Box, createTheme, CssBaseline, Grid, Paper, ThemeProvider} from "@mui/material";
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
@@ -31,7 +31,7 @@ function Login(props) {
             const responseData = HandleResponse(response, setSessionError);
             if (responseData) {
                 const accessToken = responseData.accessToken
-                saveItemToLocalStorage(constants.ACCESS_TOKEN_KEY,accessToken)
+                appLocalStorage.saveItem(constants.ACCESS_TOKEN_KEY,accessToken)
                 const res = await sessionApi.getCurrentUser();
                 const currentUser = HandleResponse(res, setSessionError);
                 dispatch(setCurrentUser(currentUser))
