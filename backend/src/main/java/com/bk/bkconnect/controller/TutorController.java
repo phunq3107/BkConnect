@@ -6,13 +6,14 @@ import com.bk.bkconnect.domain.request.UpdateTutorRq;
 import com.bk.bkconnect.domain.response.GetTutorRs;
 import com.bk.bkconnect.service.ITutorService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/tutor")
 @AllArgsConstructor
 public class TutorController {
 
@@ -31,6 +32,7 @@ public class TutorController {
         return GenericResponse.parse(rs);
     }
 
+    @PreAuthorize("hasRole('TUTOR')")
     @PostMapping("/update/{tutorId}")
     public GenericResponse<GetTutorRs> updateTutorInfo(@PathVariable String tutorId, @RequestBody UpdateTutorRq rq) {
         var rs = tutorService.updateTutorInfo(UUID.fromString(tutorId), rq);
