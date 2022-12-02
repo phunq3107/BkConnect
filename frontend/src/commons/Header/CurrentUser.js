@@ -1,11 +1,10 @@
 import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Avatar, Badge,
-    Button,
+    Badge,
     ButtonGroup,
-    ClickAwayListener, Divider,
-    Grow, IconButton, Link,
+    ClickAwayListener,
+    Grow, IconButton,
     MenuItem,
     MenuList,
     Paper,
@@ -15,7 +14,10 @@ import {
 import {useNavigate} from "react-router-dom";
 import UserAvatar from "./UserAvatar";
 import {ChatBubble, Notifications} from "@mui/icons-material";
-import {app_paths} from "../../constants";
+import constants, {app_paths} from "../../constants";
+import {useDispatch} from "react-redux";
+import {logout} from "../../features/Auth/sessionSlice";
+import {appLocalStorage} from "../../utils/Storage";
 
 CurrentUser.propTypes = {
     user: PropTypes.object
@@ -31,6 +33,7 @@ function CurrentUser(props) {
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleMenuItemClick = (event, href) => {
         setOpen(false)
@@ -48,6 +51,13 @@ function CurrentUser(props) {
 
         setOpen(false);
     };
+
+    const handleLogout = (e) => {
+        dispatch(logout())
+        appLocalStorage.removeItem(constants.ACCESS_TOKEN_KEY)
+        navigate("/")
+    }
+
     return (
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
             <IconButton>
@@ -99,8 +109,8 @@ function CurrentUser(props) {
                                             {option.title}
                                         </MenuItem>
                                     ))}
-                                    <MenuItem>
-                                        <Link underline="none" href="/">Đăng xuất</Link>
+                                    <MenuItem onClick={handleLogout}>
+                                        Đăng xuất
                                     </MenuItem>
                                 </MenuList>
                             </ClickAwayListener>

@@ -10,7 +10,7 @@ import AddressSelect from "./AddressSelect";
 
 UserInfoForm.propTypes = {
     userInfo: PropTypes.object,
-    address: PropTypes.arrayOf(PropTypes.object),
+    listAddresses: PropTypes.arrayOf(PropTypes.object),
     onSubmit: PropTypes.func
 };
 
@@ -27,7 +27,6 @@ function UserInfoForm(props) {
     const [formData, setFormData] = useReducer(formReducer, {})
     const [address, setAddress] = React.useState(userInfo.address)
     const [dobValue, setDobValue] = React.useState(()=> dayjs(userInfo.dob));
-
 
     const handleChange = event => {
         setFormData({
@@ -121,9 +120,9 @@ function UserInfoForm(props) {
                     </Grid>
                 </Grid>
                 {userInfo.address &&
-                    props.address &&
+                    props.listAddresses &&
                     <AddressSelect
-                        address={props.address}
+                        listAddresses={props.listAddresses}
                         userAddress={userInfo.address}
                         handleChangeAddress={handleChangeAddress}
                     />}

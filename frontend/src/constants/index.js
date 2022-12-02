@@ -39,6 +39,7 @@ export const app_paths = {
 
 }
 
+
 export const studentButtons = [
     {title:"Hồ sơ cá nhân",href:app_paths.userInfo, icon: <ManageAccounts/>},
     {title:"Lớp của tôi", href:app_paths.userClasses, icon: <AutoStories/>},
@@ -54,11 +55,11 @@ export const tutorButtons = [
 ]
 
 export const timeSlots = [
-    {title:"Khung giờ 1", value:"1"},
-    {title:"Khung giờ 2", value:"2"},
-    {title:"Khung giờ 3", value:"3"},
-    {title:"Khung giờ 4", value:"4"},
-    {title:"Khung giờ 5", value:"5"}
+    {title:"Trước 9h", value:"0-9"},
+    {title:"9h - 12h", value:"9-12"},
+    {title:"12h - 15h", value:"12-15"},
+    {title:"15h - 18h", value:"15-18"},
+    {title:"18h - 24h", value:"18-24"}
 ]
 
 export const subjectLevels = [
@@ -77,11 +78,32 @@ export const daysOfWeek = [
     {title:"Chủ Nhật",value:"6"}
 ]
 
+export const tutorLocation = {
+    province: null,
+    district: null,
+    ward: null,
+    detail: "tutorAddress",
+    longitude: null,
+    latitude: null
+}
+
+export const studentLocation = {
+    province: null,
+    district: null,
+    ward: null,
+    detail: "studentAddress",
+    longitude: null,
+    latitude: null
+}
+
 export default {
     ACCESS_TOKEN_KEY: 'access_token',
     BEARER: 'Bearer ',
     STORAGE_NAME: 'BKConnect_storage',
     bigFontSize: 50,
     ROLE_TUTOR: 'TUTOR',
-    ROLE_STUDENT: 'STUDENT'
+    ROLE_STUDENT: 'STUDENT',
+    NON_AVAILABLE_TIME_VALUE: '0',
+    AVAILABLE_TIME_VALUE: '1',
+    hoursOfWeek: 168
 }

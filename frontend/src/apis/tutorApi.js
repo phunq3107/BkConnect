@@ -8,10 +8,15 @@ const tutorAPI = {
         return axiosClient.get(url, {params});
     },
 
-    getById: (params) => {
-        const url = TUTOR_API_ENDPOINT + '/get';
+    getById: (id, params) => {
+        const url = TUTOR_API_ENDPOINT + `/get/${id}`;
         return axiosClient.get(url, {params});
-    }
+    },
+
+    update:(id, data) => {
+        const url = TUTOR_API_ENDPOINT + `/update/${id}`
+        return axiosClient.post(url,data)
+    },
 }
 
 export default tutorAPI;
