@@ -2,7 +2,10 @@ package com.bk.bkconnect.controller;
 
 import com.bk.bkconnect.common.rest.GenericResponse;
 import com.bk.bkconnect.domain.request.AddPostRq;
+import com.bk.bkconnect.domain.request.GetPostFilter;
+import com.bk.bkconnect.domain.request.GetTutorFilter;
 import com.bk.bkconnect.domain.response.GetPostRs;
+import com.bk.bkconnect.domain.response.PageableRs;
 import com.bk.bkconnect.service.IPostService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +25,13 @@ public class PostController {
         var rs = postService.getPostById(UUID.fromString(postId));
         return GenericResponse.parse(rs);
     }
+
+    public GenericResponse<PageableRs<GetPostRs>> getAll(
+            @RequestBody GetPostFilter filter, @RequestParam int pageNumber, @RequestParam int pageSize) {
+        var rs = postService.getAll(filter, pageNumber, pageSize);
+        return GenericResponse.parse(rs);
+    }
+
 
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/add")

@@ -11,9 +11,12 @@ import com.bk.bkconnect.database.driver.StudentPostDAO;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.StudentPostRel;
 import com.bk.bkconnect.domain.request.AddPostRq;
+import com.bk.bkconnect.domain.request.GetPostFilter;
 import com.bk.bkconnect.domain.response.GetPostRs;
+import com.bk.bkconnect.domain.response.PageableRs;
 import com.bk.bkconnect.security.ApplicationContext;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +26,10 @@ public interface IPostService {
     // for api
     Msg<GetPostRs> getPostById(UUID postId);
 
+    Msg<PageableRs<GetPostRs>> getAll(GetPostFilter filter, int pageNumber, int pageSize);
+
     Msg<GetPostRs> addPost(AddPostRq rq);
+
 
 }
 
@@ -48,6 +54,16 @@ class PostService implements IPostService {
         }
 
         var rs = GetPostRs.build(post);
+        return Msg.success(rs);
+    }
+
+    @Override
+    public Msg<PageableRs<GetPostRs>> getAll(GetPostFilter filter, int pageNumber, int pageSize) {
+        if (!filter.verify()) {
+            return Msg.fail(filter);
+        }
+
+        var rs = PageableRs.build(DataStore.posts.values().stream().toList(), pageNumber, pageSize, GetPostRs::build);
         return Msg.success(rs);
     }
 
