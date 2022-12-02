@@ -10,7 +10,6 @@ import AddressSelect from "./AddressSelect";
 
 UserInfoForm.propTypes = {
     userInfo: PropTypes.object,
-    listAddresses: PropTypes.arrayOf(PropTypes.object),
     onSubmit: PropTypes.func
 };
 
@@ -113,9 +112,7 @@ function UserInfoForm(props) {
                     </Grid>
                 </Grid>
                 {userInfo.address &&
-                    props.listAddresses &&
                     <AddressSelect
-                        listAddresses={props.listAddresses}
                         userAddress={userInfo.address}
                         handleChangeAddress={handleChangeAddress}
                     />}

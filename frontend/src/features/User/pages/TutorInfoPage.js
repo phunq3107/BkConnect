@@ -6,8 +6,7 @@ import AvatarCard from "../components/AvatarCard";
 import {useDispatch, useSelector} from "react-redux";
 import TutorInfoForm from "../components/TutorInfoForm";
 import {useEffect} from "react"
-import addressApi from "../../../apis/addressApi";
-import {setCurrentUser, setListAddresses, setListSubjects} from "../../Auth/sessionSlice";
+import {setCurrentUser, setListSubjects} from "../../Auth/sessionSlice";
 import sessionApi from "../../../apis/sessionApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {unwrapResult} from "@reduxjs/toolkit";
@@ -15,23 +14,15 @@ import tutorApi from "../../../apis/tutorApi";
 import {setUserError} from "../userSlice";
 import subjectApi from "../../../apis/subjectApi";
 
-
 function TutorInfoPage(props) {
     const currentUser = useSelector(state => state.session.currentUser)
-    const listAddresses = useSelector(state => state.session.listAddresses)
     const listSubjects = useSelector(state => state.session.listSubjects)
     const dispatch = useDispatch()
+
 
     const [tutorInfo, setTutorInfo] = useState(null)
 
     useEffect(()=>{
-        if (listAddresses == null) {
-            addressApi.getAll().then(
-                response => {
-                    dispatch(setListAddresses(response.data))
-                }
-            ).catch(err => console.log(err))
-        }
         if (listSubjects == null){
             subjectApi.getAll().then(
                 response =>{
@@ -111,7 +102,6 @@ function TutorInfoPage(props) {
                     {tutorInfo &&
                         <TutorInfoForm
                             onSubmit={handleSubmit}
-                            listAddresses={listAddresses}
                             tutorInfo={tutorInfo}
                             listSubjects={listSubjects}
                         />}

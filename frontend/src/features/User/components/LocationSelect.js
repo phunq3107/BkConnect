@@ -55,7 +55,6 @@ function LocationSelect(props) {
                         </IconButton>
                     </Grid>
                     <AddressSelect
-                        listAddresses={props.listAddresses}
                         userAddress={{}}
                         handleChangeAddress={handleChangeLocation}
                     />

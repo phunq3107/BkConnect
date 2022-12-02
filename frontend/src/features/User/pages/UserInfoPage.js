@@ -12,9 +12,8 @@ import {useDispatch, useSelector} from "react-redux";
 import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import sessionApi from "../../../apis/sessionApi";
-import {setCurrentUser, setListAddresses, setSessionError} from "../../Auth/sessionSlice";
+import {setCurrentUser, setSessionError} from "../../Auth/sessionSlice";
 import {unwrapResult} from "@reduxjs/toolkit";
-import addressApi from "../../../apis/addressApi";
 import {setUserError} from "../userSlice";
 import AvatarCard from "../components/AvatarCard";
 import ErrorModal from "../../../commons/Modal";
@@ -22,7 +21,6 @@ import ErrorModal from "../../../commons/Modal";
 
 function UserInfoPage(props) {
     const currentUser = useSelector(state => state.session.currentUser)
-    const listAddresses = useSelector(state => state.session.listAddresses)
     const error = useSelector(state => state.session.error)
 
     const dispatch = useDispatch()
@@ -55,16 +53,6 @@ function UserInfoPage(props) {
         }
     },[])
 
-    useEffect(()=>{
-        if (listAddresses == null) {
-            addressApi.getAll().then(
-                response => {
-                    dispatch(setListAddresses(response.data))
-                }
-            ).catch(err => console.log(err))
-        }
-    },[])
-
 
     const handleSubmit = async (data) =>{
         try{
@@ -85,7 +73,7 @@ function UserInfoPage(props) {
             <Grid container component="main" sx={{bgcolor: app_colors._primaryBackground, height:'90vh' }} pt={6}>
                 <Grid item md={1.5}/>
 
-                <AvatarCard user={currentUser}/>
+                {currentUser && <AvatarCard user={currentUser}/>}
 
                 <Grid item md={0.5}/>
 
@@ -100,7 +88,7 @@ function UserInfoPage(props) {
                 >
                     <Typography mx={3} variant="h6" fontWeight="bold">Hồ sơ cá nhân</Typography>
                     <Divider sx={{py:1}}/>
-                    {userInfo && listAddresses && <UserInfoForm onSubmit={handleSubmit} listAddresses={listAddresses} userInfo={userInfo}/>}
+                    {userInfo && <UserInfoForm onSubmit={handleSubmit} userInfo={userInfo}/>}
                 </Grid>
             </Grid>
             {error &&

@@ -14,7 +14,7 @@ import JoditEditor from "jodit-react";
 import {Save} from "@mui/icons-material";
 
 import {studentLocation, tutorLocation} from "../../../constants";
-
+import listAddresses from "../../../assets/vietnam_province.json"
 
 TutorInfoForm.propTypes = {
     tutorInfo: PropTypes.object,
@@ -63,7 +63,7 @@ function TutorInfoForm(props) {
                             return location.detail !== tutorLocation.detail &&
                             location.detail !== studentLocation.detail ?
                                 <Typography key={idx} variant="h8">
-                                    {convertAddress(props.listAddresses, location)}
+                                    {convertAddress(listAddresses, location)}
                                 </Typography>
                                 : <React.Fragment key={idx}></React.Fragment>
                         }
@@ -165,7 +165,7 @@ function TutorInfoForm(props) {
             { teachingLocations.length > 0 &&
                 renderTeachingLocations(teachingLocations)
             }
-            <LocationSelect listAddresses={props.listAddresses} handleChangeTeachingAddresses={handleChangeTeachingAddresses}/>
+            <LocationSelect handleChangeTeachingAddresses={handleChangeTeachingAddresses}/>
 
             <InputLabel id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold"}}>
                 Giới thiệu
