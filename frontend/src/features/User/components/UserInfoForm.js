@@ -63,13 +63,6 @@ function UserInfoForm(props) {
         }))
     }
 
-    const handleChangeDetailAddress = (e) =>{
-        setAddress(prev=>({
-            ...prev,
-            detail:e.target.value
-        }))
-    }
-
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box component="form" sx={{ mt: 1, px:5 }} onSubmit={handleUpdateSubmit}>
@@ -126,22 +119,6 @@ function UserInfoForm(props) {
                         userAddress={userInfo.address}
                         handleChangeAddress={handleChangeAddress}
                     />}
-
-                <InputLabel
-                    id="detailAddress-label"
-                    sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}
-                >
-                    Địa chỉ
-                </InputLabel>
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    id="detailAddress"
-                    name="detailAddress"
-                    size="small"
-                    defaultValue={userInfo.address.detail ? userInfo.address.detail : null}
-                    onChange={handleChangeDetailAddress}
-                />
 
                 <Grid container flexDirection="row" justifyContent="space-between" mt={2}>
                     <Grid item width="49%">

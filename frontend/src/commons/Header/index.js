@@ -83,8 +83,8 @@ function Header(props) {
                             href={app_paths.login}
                             variant="contained"
                             sx={{
-                                px:1,
-                                borderRadius:0.5,
+                                p:1,
+                                borderRadius:1.5,
                                 backgroundColor: app_colors._primaryPurple,
                                 '&:hover': {backgroundColor: app_colors._hoverPurple},
                             }}
