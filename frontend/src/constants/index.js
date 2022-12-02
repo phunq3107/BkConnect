@@ -32,9 +32,11 @@ export const app_paths = {
     tutorRequests:"/user/tutor-requests",
     tutorRecommendClass: "/user/tutor-recommend-class",
 
+    post:"/post/*",
+    createPost:"/post/create",
+
     tutorsPage: "#",
     postsPage: "#",
-    findTutor: "#",
     refFree: "#",
 
 }
@@ -63,9 +65,9 @@ export const timeSlots = [
 ]
 
 export const subjectLevels = [
-    {title:"Sinh viên", value:"0"},
-    {title:"Giáo viên", value:"1"},
-    {title:"Gia sư chuyên nghiệp", value:"2"}
+    {title:"Sinh viên", value:"1"},
+    {title:"Giáo viên", value:"2"},
+    {title:"Gia sư chuyên nghiệp", value:"3"}
 ]
 
 export const daysOfWeek = [
@@ -76,6 +78,25 @@ export const daysOfWeek = [
     {title:"Thứ Sáu",value:"4"},
     {title:"Thứ Bảy",value:"5"},
     {title:"Chủ Nhật",value:"6"}
+]
+
+export const lessonTime = [
+    {title:"3 giờ", value:3},
+    {title:"2 giờ 30 phút", value:2.5},
+    {title:"2 giờ", value:2},
+    {title:"1 giờ 45 phút", value:1.75},
+    {title:"1 giờ 30 phút", value:1.5},
+    {title:"1 giờ", value:1},
+    {title:"45 phút", value:0.75},
+    {title:"30 phút", value:0.5},
+]
+
+export const ageRanges = [
+    {title:"Tùy", value:"all"},
+    {title:"18-25 tuổi", value:"18,25"},
+    {title:"25-35 tuổi", value:"25,35"},
+    {title:"35-45 tuổi", value:"35,45"},
+    {title:"Trên 45 tuổi", value:"45,90"},
 ]
 
 export const tutorLocation = {
@@ -105,5 +126,12 @@ export default {
     ROLE_STUDENT: 'STUDENT',
     NON_AVAILABLE_TIME_VALUE: '0',
     AVAILABLE_TIME_VALUE: '1',
-    hoursOfWeek: 168
+    hoursOfWeek: 168,
+    MIN_FEE: 0,
+    MAX_FEE: 100000000,
+    MIN_TIMES_PER_WEEK: 1,
+    MAX_TIMES_PER_WEEK: 15,
+    MIN_NUMBER_OF_STUDENTS: 1,
+    MAX_NUMBER_OF_STUDENTS: 100,
+    DEFAULT_HOURS_PER_LESSON: 1.5
 }

@@ -4,7 +4,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import {useEffect} from "react";
 import sessionApi from "../../../apis/sessionApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
-import {setCurrentUser} from "../../Auth/sessionSlice";
+import {setCurrentUser, setSessionError} from "../../Auth/sessionSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -17,7 +17,7 @@ function HomePage(props) {
         if (!currentUser){
             sessionApi.getCurrentUser().then(
                 response => {
-                    const data = HandleResponse(response)
+                    const data = HandleResponse(response, setSessionError)
                     const action = setCurrentUser(data)
                     dispatch(action)
                 }

@@ -24,8 +24,6 @@ function SubjectSelect(props) {
 
     const {selectedSubjects, setSelectedSubjects, listSubjects} = props
 
-    console.log(selectedSubjects)
-
     const renderSubjectLevelRadio = (subject, subjectIdx) => {
         return(
             <RadioGroup row name="subjectLevel"
@@ -73,8 +71,7 @@ function SubjectSelect(props) {
             </Select>
         )
     }
-    console.log(listSubjects)
-    console.log("11312123")
+
     const renderSelectedSubjects = (selectedSubjects) => {
         return(
             <>

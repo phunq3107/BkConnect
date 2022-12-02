@@ -20,9 +20,10 @@ export const appLocalStorage = {
     },
 
     removeItem: (itemKey) => {
-        const storage = JSON.parse(localStorage.getItem(constants.STORAGE_NAME))
+        let storage = JSON.parse(localStorage.getItem(constants.STORAGE_NAME))
         if (storage && storage.hasOwnProperty(itemKey)){
-            localStorage.removeItem(itemKey)
+            delete storage[itemKey]
+            localStorage.setItem(constants.STORAGE_NAME, JSON.stringify(storage))
         }
     }
 }

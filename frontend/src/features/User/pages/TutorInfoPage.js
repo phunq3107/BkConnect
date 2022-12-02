@@ -6,7 +6,7 @@ import AvatarCard from "../components/AvatarCard";
 import {useDispatch, useSelector} from "react-redux";
 import TutorInfoForm from "../components/TutorInfoForm";
 import {useEffect} from "react"
-import {setCurrentUser, setListSubjects} from "../../Auth/sessionSlice";
+import {setCurrentUser, setListSubjects, setSessionError} from "../../Auth/sessionSlice";
 import sessionApi from "../../../apis/sessionApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {unwrapResult} from "@reduxjs/toolkit";
@@ -43,7 +43,7 @@ function TutorInfoPage(props) {
         if (!currentUser){
             sessionApi.getCurrentUser().then(
                 response => {
-                    const data = HandleResponse(response)
+                    const data = HandleResponse(response, setSessionError)
                     const action = setCurrentUser(data)
                     dispatch(action)
                     const currentUser = unwrapResult(action)

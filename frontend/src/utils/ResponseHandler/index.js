@@ -1,4 +1,3 @@
-import {setError} from "../../features/Auth/sessionSlice";
 import store from "../../configs/store";
 
 export const HandleResponse = (response, errorReceiver) => {

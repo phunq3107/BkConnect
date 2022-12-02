@@ -31,7 +31,7 @@ function UserInfoPage(props) {
         if (!currentUser){
             sessionApi.getCurrentUser().then(
                 response => {
-                    const data = HandleResponse(response)
+                    const data = HandleResponse(response, setSessionError)
                     const action = setCurrentUser(data)
                     dispatch(action)
                     const currentUser = unwrapResult(action)

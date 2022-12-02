@@ -114,8 +114,6 @@ function TimeSelect(props) {
         props.onChangeAvailableTime(updatedAvailableTime)
     }
 
-    console.log(props.availableTime.length)
-
     return (
         <React.Fragment>
             {daysOfWeek && renderDaysOfWeekSelector()}

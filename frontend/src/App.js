@@ -4,6 +4,7 @@ import Auth from "./features/Auth";
 import HomePage from "./features/Home/pages/HomePage";
 import {app_paths} from "./constants";
 import User from "./features/User";
+import Post from "./features/Post";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
                 <Route path={app_paths.home} element={<HomePage/>}/>
                 <Route path={app_paths.auth} element={<Auth/>}/>
                 <Route path={app_paths.user} element={<User/>}/>
+                <Route path={app_paths.post} element={<Post/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

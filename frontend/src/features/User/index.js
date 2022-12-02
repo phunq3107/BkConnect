@@ -3,6 +3,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import {app_paths} from "../../constants";
 import UserInfoPage from "./pages/UserInfoPage";
 import TutorInfoPage from "./pages/TutorInfoPage";
+import NotFound from "../../commons/NotFound";
 
 function User(props) {
     return (
@@ -11,6 +12,7 @@ function User(props) {
 
             <Route path={"/info"} element={<UserInfoPage/>}/>
             <Route path={"/tutor-info"} element={<TutorInfoPage/>}/>
+            <Route path="*" element={<NotFound/>}/>
         </Routes>
     );
 }

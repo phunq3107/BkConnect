@@ -15,7 +15,7 @@ function Header(props) {
         {href:app_paths.home,title:"Trang chủ"},
         {href:app_paths.tutorsPage,title:"Gia sư"},
         {href:app_paths.postsPage,title:"Lớp mới"},
-        {href:app_paths.findTutor,title:"Tìm gia sư"},
+        {href:app_paths.createPost,title:"Tìm gia sư"},
         {href:app_paths.refFree,title:"Học phí tham khảo"},
         {href:app_paths.contact,title:"Liên hệ"},
     ]

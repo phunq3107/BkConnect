@@ -1,12 +1,14 @@
 import React,{useReducer} from 'react';
 import PropTypes from 'prop-types';
-import {Box, Button, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import {app_colors, app_fonts} from "../../../constants";
+import {Box, Button, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
+import {app_colors, app_fonts, studentLocation, tutorLocation} from "../../../constants";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import {Save } from "@mui/icons-material";
-import AddressSelect from "./AddressSelect";
+import AddressSelect from "../../../commons/LocationSelector/AddressSelect";
+import convertAddress from "../../../utils/addressUtils";
+import listAddresses from "../../../assets/vietnam_province.json";
 
 UserInfoForm.propTypes = {
     userInfo: PropTypes.object,
@@ -62,6 +64,24 @@ function UserInfoForm(props) {
         }))
     }
 
+    const renderTeachingLocations = (teachingLocations) => {
+        return(
+            <Stack>
+                {
+                    teachingLocations.map((location,idx)=>{
+                        {
+                            return location.detail !== tutorLocation.detail &&
+                            location.detail !== studentLocation.detail ?
+                                <Typography key={idx} variant="h8">
+                                    {convertAddress(listAddresses, location)}
+                                </Typography>
+                                : <React.Fragment key={idx}></React.Fragment>
+                        }
+                    })
+                }
+            </Stack>
+        )
+    }
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box component="form" sx={{ mt: 1, px:5 }} onSubmit={handleUpdateSubmit}>

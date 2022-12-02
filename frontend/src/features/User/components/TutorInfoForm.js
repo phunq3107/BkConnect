@@ -1,4 +1,4 @@
-import React, {useReducer, useState, useRef} from 'react';
+import React, { useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {
     Box, Button, Checkbox, FormControlLabel, Grid,
@@ -8,7 +8,7 @@ import constants, {app_colors, app_fonts} from "../../../constants";
 import TimeSelect from "./TimeSelect";
 import SubjectSelect from "./SubjectSelect";
 
-import LocationSelect from "./LocationSelect";
+import LocationSelect from "../../../commons/LocationSelector/LocationSelect";
 import convertAddress from "../../../utils/addressUtils";
 import JoditEditor from "jodit-react";
 import {Save} from "@mui/icons-material";
