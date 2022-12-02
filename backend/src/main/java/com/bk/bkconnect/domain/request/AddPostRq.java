@@ -15,7 +15,7 @@ public class AddPostRq extends GenericRq {
     public Float hoursPerLesson; // float
     public String availableTime; // 7*24
     public List<Address> location;
-    public String fee; // int, default = -1 // change: min, max
+    public Long fee; // int, default = -1 // change: min, max
     public String level; // all, 1: sinh vien, 2: giao vien, 3: gia su
     public String gender; // all / male / female
     public Float distance;
