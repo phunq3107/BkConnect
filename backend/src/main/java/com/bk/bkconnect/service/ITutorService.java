@@ -54,7 +54,7 @@ class TutorService implements ITutorService {
 
     @Override
     public Msg<GetTutorRs> updateTutorInfo(UUID tutorId, UpdateTutorRq rq) {
-        if (PermissionCheck.updateTutorInfo(tutorId)) {
+        if (!PermissionCheck.updateTutorInfo(tutorId)) {
             return Msg.notAllow();
         }
         if (!rq.verify()) {
