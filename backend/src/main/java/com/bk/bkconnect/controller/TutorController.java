@@ -4,6 +4,7 @@ import com.bk.bkconnect.common.rest.GenericResponse;
 import com.bk.bkconnect.domain.request.GetTutorFilter;
 import com.bk.bkconnect.domain.request.UpdateTutorRq;
 import com.bk.bkconnect.domain.response.GetTutorRs;
+import com.bk.bkconnect.domain.response.PageableRs;
 import com.bk.bkconnect.service.ITutorService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,9 +27,9 @@ public class TutorController {
     }
 
     @GetMapping("/getAll")
-    public GenericResponse<List<GetTutorRs>> getAllTutor(
-            @RequestBody GetTutorFilter filter, @RequestParam int pageSize, @RequestParam int pageNumber) {
-        var rs = tutorService.getAllTutor(filter, pageSize, pageNumber);
+    public GenericResponse<PageableRs<GetTutorRs>> getAllTutor(
+            @RequestBody GetTutorFilter filter, @RequestParam int pageNumber, @RequestParam int pageSize) {
+        var rs = tutorService.getAllTutor(filter, pageNumber, pageSize);
         return GenericResponse.parse(rs);
     }
 

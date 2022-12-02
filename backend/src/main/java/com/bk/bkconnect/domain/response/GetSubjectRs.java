@@ -6,7 +6,7 @@ public class GetSubjectRs extends GenericRs<GetSubjectRs> {
     public String id;
     public String name;
     public String group;
-    public Integer order;
+    public String order;
 
     public static GetSubjectRs build(SubjectEnt subject) {
         var rs = new GetSubjectRs();

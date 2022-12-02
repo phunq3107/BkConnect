@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 public class SubjectEnt extends AbstractEnt {
 
     public String name;
-    public Integer groupSubjectOrder;
+    public String groupSubjectOrder;
 
     @ManyToOne
     public GroupSubjectEnt groupSubject;

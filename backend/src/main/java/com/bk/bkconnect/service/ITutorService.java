@@ -10,9 +10,11 @@ import com.bk.bkconnect.database.entity.TutorEnt;
 import com.bk.bkconnect.domain.request.GetTutorFilter;
 import com.bk.bkconnect.domain.request.UpdateTutorRq;
 import com.bk.bkconnect.domain.response.GetTutorRs;
+import com.bk.bkconnect.domain.response.PageableRs;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +22,7 @@ public interface ITutorService {
     // for api
     Msg<GetTutorRs> getTutorById(UUID tutorId);
 
-    Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageSize, int pageNumber);
+    Msg<PageableRs<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageNumber, int pageSize);
 
     Msg<GetTutorRs> updateTutorInfo(UUID tutorId, UpdateTutorRq rq);
 
@@ -44,12 +46,13 @@ class TutorService implements ITutorService {
     }
 
     @Override
-    public Msg<List<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageSize, int pageNumber) {
+    public Msg<PageableRs<GetTutorRs>> getAllTutor(GetTutorFilter filter, int pageNumber, int pageSize) {
         if (!filter.verify()) {
-            return Msg.fail(filter.failCode, filter.failReason);
+            return Msg.fail(filter);
         }
-        // TODO: 27/11/2022  
-        return null;
+
+        var rs = PageableRs.build(DataStore.tutors.values().stream().toList(), pageNumber, pageSize, GetTutorRs::build);
+        return Msg.success(rs);
     }
 
     @Override

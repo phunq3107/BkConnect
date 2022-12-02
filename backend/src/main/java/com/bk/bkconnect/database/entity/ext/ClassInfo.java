@@ -8,7 +8,7 @@ public class ClassInfo {
     public Integer timesPerWeek;
     public Float hoursPerLesson;
     public String availableTime;
-    public String fee;
+    public Long fee;
     public String noStudents;
     public String description;
 }

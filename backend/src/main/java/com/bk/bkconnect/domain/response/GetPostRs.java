@@ -18,7 +18,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
     public Float hoursPerLesson;
     public String availableTime;
     public List<Address> location;
-    public String fee;
+    public Long fee;
     public String level;
     public String gender;
     public String  age;

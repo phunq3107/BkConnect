@@ -5,6 +5,8 @@ import com.bk.bkconnect.database.entity.ext.TutorSubject;
 import com.bk.bkconnect.util.TimeUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,11 +19,11 @@ public class TutorEnt extends UserEnt {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "TUTOR_TEACHING_LOCATION", joinColumns = @JoinColumn(name = "TUTOR_ID"))
-    public List<Address> teachingLocations;
+    public List<Address> teachingLocations = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "TUTOR_SUBJECT", joinColumns = @JoinColumn(name = "TUTOR_ID"))
-    public Set<TutorSubject> subjects;
+    public Set<TutorSubject> subjects = new HashSet<>();
 
     public int getAge() {
         if (userInfo == null || userInfo.dob == null) return -1;
