@@ -49,14 +49,21 @@ public class SubjectFilter extends MatchingFilter {
                 if (tutorLevel >= minRequire)
                     return Tuple3.apply(true, "Diff level", 1f);
             }
+            return Tuple3.apply(true, "Diff fee, diff level", 1f);
         }
 
-        if (matchFee(post, tutor) && matchLevel(post, tutor) && tutor.subjects != null) {
-            var canTeach = tutor.subjects.stream()
-                    .map(ts -> DataStore.subjects.get(ts.subjectId))
-                    .anyMatch(subject -> post.subject.groupSubjectOrder.startsWith(subject.groupSubjectOrder));
-            if (canTeach)
-                return Tuple3.apply(true, "Diff subject", 1f);
+        if (tutor.subjects != null) {
+            for (var tutorSubject : tutor.subjects) {
+                var subject = DataStore.subjects.get(tutorSubject.subjectId);
+                if (!post.subject.groupSubjectOrder.startsWith(subject.groupSubjectOrder)) {
+                    continue;
+                }
+                var matchLevel = "ALL".equals(post.subjectLevel) || post.subjectLevel.contains(tutorSubject.level);
+                var matchFee = post.fee == -1 || tutorSubject.expectedFee == -1 || tutorSubject.expectedFee <= post.fee;
+                if(matchFee && matchLevel){
+                    return Tuple3.apply(true,"Diff subject", 1f);
+                }
+            }
         }
         return Tuple3.apply(false, null, null);
     }
