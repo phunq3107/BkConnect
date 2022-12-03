@@ -155,10 +155,14 @@ components:
       items:
         allOf:
           - properties:
-              tutorId:
-                type: string
+              tutor:
+                $ref: './common.yaml#/components/schemas/UserBrief'
               isMatch:
                 type: boolean
               recommendation:
-                type: string
+                type: array
+                allOf:
+                  - type: string
+              likelyRate:
+                type: number
 
