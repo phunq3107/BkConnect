@@ -27,7 +27,7 @@ function SubjectSelect(props) {
     const renderSubjectLevelRadio = (subject, subjectIdx) => {
         return(
             <RadioGroup row name="subjectLevel"
-                        value={subject.level ?? null}
+                        value={subject.level ? subject.level : null}
                         onChange={(e) => handleChangeSubjectLevel(e, subjectIdx)}
             >
                 {

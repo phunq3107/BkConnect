@@ -1,10 +1,7 @@
-import React, { useState, useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {
-    Box, Button, Checkbox, FormControlLabel, Grid,
-    InputLabel, Stack, Typography
-} from "@mui/material";
-import constants, {app_colors, app_fonts} from "../../../constants";
+import {Box, Button, Checkbox, FormControlLabel, Grid, InputLabel, Stack, Typography} from "@mui/material";
+import constants, {app_colors, app_fonts, studentLocation, tutorLocation} from "../../../constants";
 import TimeSelect from "./TimeSelect";
 import SubjectSelect from "./SubjectSelect";
 
@@ -12,8 +9,6 @@ import LocationSelect from "../../../commons/LocationSelector/LocationSelect";
 import convertAddress from "../../../utils/addressUtils";
 import JoditEditor from "jodit-react";
 import {Save} from "@mui/icons-material";
-
-import {studentLocation, tutorLocation} from "../../../constants";
 import listAddresses from "../../../assets/vietnam_province.json"
 
 TutorInfoForm.propTypes = {
@@ -46,7 +41,7 @@ function TutorInfoForm(props) {
             new Array(constants.hoursOfWeek + 1).join(constants.NON_AVAILABLE_TIME_VALUE)
     })
 
-    console.log(availableTime)
+    // console.log(availableTime)
 
     const [description,setDescription] = useState(tutorInfo.selfDescription)
     const editor = useRef(null)

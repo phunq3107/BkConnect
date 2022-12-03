@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import constants from "../../../../constants";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
-import {Box, createTheme, CssBaseline, Grid, Modal, Paper, ThemeProvider, Typography} from "@mui/material";
+import {Box, createTheme, CssBaseline, Grid, ThemeProvider} from "@mui/material";
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
 import RegisterForm from "../../components/RegisterForm";

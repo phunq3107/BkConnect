@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import LoginForm from "../../components/LoginForm";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentUser, setSessionError} from "../../sessionSlice";
@@ -6,7 +6,7 @@ import constants from "../../../../constants";
 import sessionApi from "../../../../apis/sessionApi";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
 import {appLocalStorage} from "../../../../utils/Storage";
-import { Box, createTheme, CssBaseline, Grid, Paper, ThemeProvider} from "@mui/material";
+import {Box, createTheme, CssBaseline, Grid, ThemeProvider} from "@mui/material";
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
 import ErrorModal from "../../../../commons/Modal";

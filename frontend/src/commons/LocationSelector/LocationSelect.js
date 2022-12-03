@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, FormControlLabel, Grid, IconButton, Stack, Typography} from "@mui/material";
+import {Grid, IconButton, Typography} from "@mui/material";
 import {Add, Cancel, Done} from "@mui/icons-material";
 import AddressSelect from "./AddressSelect";
-import {useState} from "react";
 
 LocationSelect.propTypes = {
     handleChangeTeachingAddresses: PropTypes.func

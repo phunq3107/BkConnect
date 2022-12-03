@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
 import {app_colors} from "../../../constants";
@@ -6,9 +6,6 @@ import {useDispatch, useSelector} from "react-redux";
 import subjectApi from "../../../apis/subjectApi";
 import {setListSubjects} from "../../Auth/sessionSlice";
 import CreatePostForm from "../components/CreatePostForm";
-import userApi from "../../../apis/userApi";
-import {HandleResponse} from "../../../utils/ResponseHandler";
-import {setUserError} from "../../User/userSlice";
 
 function CreatePost(props) {
     const listSubjects = useSelector(state => state.session.listSubjects)

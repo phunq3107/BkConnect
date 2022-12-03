@@ -1,19 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../../commons/Header";
-import {
-    CssBaseline,
-    Divider,
-    Grid,
-    Typography
-} from "@mui/material";
+import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import {app_colors} from "../../../constants";
 import UserInfoForm from "../components/UserInfoForm";
 import {useDispatch, useSelector} from "react-redux";
 import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
-import sessionApi from "../../../apis/sessionApi";
-import {setCurrentUser, setSessionError} from "../../Auth/sessionSlice";
-import {unwrapResult} from "@reduxjs/toolkit";
 import {setUserError} from "../userSlice";
 import AvatarCard from "../components/AvatarCard";
 import ErrorModal from "../../../commons/Modal";
@@ -26,32 +18,15 @@ function UserInfoPage(props) {
     const dispatch = useDispatch()
     const [userInfo,setUserInfo] = useState(null)
 
-
     useEffect(()=>{
-        if (!currentUser){
-            sessionApi.getCurrentUser().then(
-                response => {
-                    const data = HandleResponse(response, setSessionError)
-                    const action = setCurrentUser(data)
-                    dispatch(action)
-                    const currentUser = unwrapResult(action)
-                    userApi.getById(currentUser.id).then(
-                        response => {
-                            const data = HandleResponse(response, setSessionError)
-                            setUserInfo(data)
-                        }
-                    )
-                }
-            )
-        }
-        else {
+        if(currentUser){
             userApi.getById(currentUser.id).then(
                 response => {
                     const data = HandleResponse(response, setUserError)
                     setUserInfo(data)
                 })
         }
-    },[])
+    },[currentUser])
 
 
     const handleSubmit = async (data) =>{

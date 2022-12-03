@@ -108,7 +108,6 @@ function TimeSelect(props) {
     const handleChangeAvailableTime = (e,day) => {
         const currentAvailableTime = props.availableTime
         const [fromHour,toHour] = e.target.name.split('-').map(e=>parseInt(e))
-        console.log(fromHour + "-" + toHour)
         const value = e.target.checked ? constants.AVAILABLE_TIME_VALUE : constants.NON_AVAILABLE_TIME_VALUE
         const updatedAvailableTime = changeAvailableTimeOfADayInWeek(day,currentAvailableTime,value,fromHour,toHour)
         props.onChangeAvailableTime(updatedAvailableTime)

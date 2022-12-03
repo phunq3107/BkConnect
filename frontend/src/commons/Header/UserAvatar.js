@@ -2,7 +2,8 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import PropTypes from "prop-types";
 
-function stringToColor(string) {
+function stringToColor(str) {
+    const string = str ? str : "BK"
     let hash = 0;
     let i;
     for (i = 0; i < string.length; i += 1) {
@@ -19,7 +20,7 @@ function stringToColor(string) {
 }
 
 function stringAvatar(name) {
-    const firstLettersInName = name.split(' ').map(word => word[0]).join("")
+    const firstLettersInName = name ? name.split(' ').map(word => word[0]).join("") : "BK"
     return {
         sx: {
             bgcolor: stringToColor(name),
@@ -34,7 +35,7 @@ UserAvatar.propTypes = {
 
 function UserAvatar(props) {
     const user = props.user
-    if (user.avatar && user.avatar !== ""){
+    if (user.avatar && user.avatar !== "") {
         return (
             <Avatar src={user.avatar}>{stringAvatar(user.fullname).children}</Avatar>
         )

@@ -1,16 +1,18 @@
-import React, {useState, useReducer, useRef} from 'react';
+import React, {useReducer, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import constants, {
     ageRanges,
-    app_colors, app_fonts,
+    app_colors,
+    app_fonts,
     lessonTime,
     studentLocation,
     subjectLevels,
     tutorLocation
 } from "../../../constants";
 import {
-    Box, Button, Checkbox,
-    Divider,
+    Box,
+    Button,
+    Checkbox,
     FormControlLabel,
     Grid,
     InputLabel,

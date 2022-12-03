@@ -1,27 +1,12 @@
 import constants, {daysOfWeek} from "../constants";
 
 export const changeAvailableTimeOfADayInWeek = (day,availableTime,value,fromHour,toHour) => {
-
-    const availableTimeInWeek =
-        (availableTime && availableTime.length === constants.hoursOfWeek) ?
-            availableTime :
-            (new Array(constants.hoursOfWeek + 1).join(constants.NON_AVAILABLE_TIME_VALUE))
-
-    const availableTimeInWeekDividedByDays = availableTimeInWeek.match(/(.{1,24})/g)
-    const availableTimeOfDayToChange = availableTimeInWeekDividedByDays[parseInt(day.value)].split('')
-
-    const updatedAvailableTimeOfDay = availableTimeOfDayToChange.map((hour,idx) => {
-        if(idx >= fromHour && idx < toHour)
-            return value
-        else return hour
-    }).join('')
-
-    return(
-        [
-            ...availableTimeInWeekDividedByDays.slice(0,day.value),
-            updatedAvailableTimeOfDay,
-            ...availableTimeInWeekDividedByDays.slice(day.value+1)
-        ].join(''))
+    let rs = ""
+    const startDay = (+day.value) * 24
+    for(let i = 0 ; i<availableTime.length ; i++){
+        rs += (i >= startDay + fromHour && i < startDay + toHour) ? value.toString() : availableTime[i]
+    }
+    return rs
 }
 
 export const isAvailableAt = (day, timeSlot, availableTime) => {

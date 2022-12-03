@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
 import {app_colors} from "../../../constants";
 import AvatarCard from "../components/AvatarCard";
 import {useDispatch, useSelector} from "react-redux";
 import TutorInfoForm from "../components/TutorInfoForm";
-import {useEffect} from "react"
 import {setCurrentUser, setListSubjects, setSessionError} from "../../Auth/sessionSlice";
 import sessionApi from "../../../apis/sessionApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
@@ -40,30 +39,14 @@ function TutorInfoPage(props) {
     },[])
 
     useEffect(()=>{
-        if (!currentUser){
-            sessionApi.getCurrentUser().then(
-                response => {
-                    const data = HandleResponse(response, setSessionError)
-                    const action = setCurrentUser(data)
-                    dispatch(action)
-                    const currentUser = unwrapResult(action)
-                    tutorApi.getById(currentUser.id).then(
-                        response => {
-                            const data = HandleResponse(response, setUserError)
-                            setTutorInfo(data)
-                        }
-                    )
-                }
-            )
-        }
-        else {
+        if(currentUser){
             tutorApi.getById(currentUser.id).then(
                 response => {
                     const data = HandleResponse(response, setUserError)
                     setTutorInfo(data)
                 })
         }
-    },[])
+    },[currentUser])
 
     const handleSubmit = async (data) =>{
         try{

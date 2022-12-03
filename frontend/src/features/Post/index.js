@@ -3,6 +3,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import {app_paths} from "../../constants";
 import CreatePost from "./pages/CreatePost";
 import NotFound from "../../commons/NotFound";
+
 function Post() {
     return (
         <Routes>
