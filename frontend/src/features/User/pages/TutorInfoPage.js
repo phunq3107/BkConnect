@@ -12,6 +12,7 @@ import {unwrapResult} from "@reduxjs/toolkit";
 import tutorApi from "../../../apis/tutorApi";
 import {setUserError} from "../userSlice";
 import subjectApi from "../../../apis/subjectApi";
+import RequireLoginModal from "../../../commons/Modal/RequireLoginModal";
 
 function TutorInfoPage(props) {
     const currentUser = useSelector(state => state.session.currentUser)
@@ -89,8 +90,8 @@ function TutorInfoPage(props) {
                             listSubjects={listSubjects}
                         />}
                 </Grid>
-
             </Grid>
+            <RequireLoginModal/>
         </>
     );
 }

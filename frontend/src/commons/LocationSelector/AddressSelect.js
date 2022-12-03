@@ -11,7 +11,7 @@ AddressSelect.propTypes = {
 };
 
 function AddressSelect(props) {
-    const userAddress = props.userAddress
+    const userAddress = props.userAddress ? props.userAddress : {}
 
     const [selectedProvince, setSelectedProvince] = useState( () => {
             if (userAddress.province) {

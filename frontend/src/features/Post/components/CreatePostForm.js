@@ -26,6 +26,7 @@ import listAddresses from "../../../assets/vietnam_province.json"
 import JoditEditor from "jodit-react";
 import LocationSelect from "../../../commons/LocationSelector/LocationSelect";
 import convertAddress from "../../../utils/addressUtils";
+import RequireLoginModal from "../../../commons/Modal/RequireLoginModal";
 
 CreatePostForm.propTypes = {
     listSubjects: PropTypes.arrayOf(PropTypes.object),
@@ -452,6 +453,8 @@ function CreatePostForm(props) {
                     </Button>
                 </Grid>
             </Grid>
+
+            <RequireLoginModal/>
         </Box>
     );
 }

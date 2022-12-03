@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import constants from "../../../../constants";
+import constants, {errorTypes} from "../../../../constants";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
 import {Box, createTheme, CssBaseline, Grid, ThemeProvider} from "@mui/material";
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
 import RegisterForm from "../../components/RegisterForm";
 import userApi from "../../../../apis/userApi";
-import ErrorModal from "../../../../commons/Modal";
+import ErrorModal from "../../../../commons/Modal/ErrorModal";
 import {setCurrentUser, setSessionError} from "../../sessionSlice";
 import {appLocalStorage} from "../../../../utils/Storage";
 import sessionApi from "../../../../apis/sessionApi";
@@ -26,14 +26,17 @@ function RegisterPage(props) {
     const handleRegister = async (data) =>{
         try{
             const response = await userApi.registerUser(data);
-            const responseData = HandleResponse(response, setSessionError);
+            const responseData = HandleResponse(response, setSessionError, errorTypes.REGISTER);
             if (responseData) {
                 const accessToken = responseData.accessToken
                 appLocalStorage.saveItem(constants.ACCESS_TOKEN_KEY,accessToken)
                 const currentUserRes = await sessionApi.getCurrentUser()
                 const currentUser = HandleResponse(currentUserRes, setSessionError);
-                dispatch(setCurrentUser(currentUser))
-                navigate("/")
+                if (currentUser){
+                    dispatch(setCurrentUser(currentUser))
+                    dispatch(setSessionError(null))
+                    navigate("/")
+                }
             }
         } catch (err){
             console.log(err);
@@ -62,7 +65,7 @@ function RegisterPage(props) {
                 </Grid>
             </Grid>
             {
-                error &&
+                error && error.type && error.type === errorTypes.REGISTER &&
                 <ErrorModal
                     open={true}
                     description={error.message}
