@@ -1,30 +1,19 @@
 package com.bk.bkconnect.core.matching.filter;
 
+import com.bk.bkconnect.common.collections.Pair;
+import com.bk.bkconnect.common.collections.Tuple3;
 import com.bk.bkconnect.core.matching.MatchingOutput;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.TutorEnt;
+import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TimeFilter extends MatchingFilter {
-    @Override
-    public MatchingOutput doFilterTutor(PostEnt post, TutorEnt tutor) {
-        var rs = new MatchingOutput(post, tutor);
-        if (isMatch(post, tutor)) {
-            rs.isMatch = true;
-        } else if (isLikely(post, tutor)) {
-            rs.recommend.add(rcmTutor(post, tutor));
-        }
-        return rs;
-    }
 
     @Override
-    public MatchingOutput doFilterPost(TutorEnt tutor, PostEnt post) {
-        return null;
-    }
-
-    private boolean isMatch(PostEnt post, TutorEnt tutor) {
+    protected boolean isMatch(PostEnt post, TutorEnt tutor) {
         if (tutor.availableTime == null) return false;
         if (post.classInfo == null) return true;
         var hoursPerLesson = post.classInfo.hoursPerLesson;
@@ -57,25 +46,36 @@ public class TimeFilter extends MatchingFilter {
     }
 
     private boolean isLikely(PostEnt post, TutorEnt tutor) {
-        if (tutor.availableTime == null) return false;
+
         var hoursPerLesson = post.classInfo.hoursPerLesson;
         var timesPerWeek = post.classInfo.timesPerWeek;
         var availableTime = post.classInfo.availableTime;
-        return matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek)
-                || matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson), timesPerWeek - 1);
+        if (timesPerWeek > 1 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson), timesPerWeek - 1)) {
+            return true;
+        }
+        if (hoursPerLesson > 2 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek + 1)) {
+            return true;
+        }
+        if (hoursPerLesson > 2 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek)) {
+            return true;
+        }
+        return false;
+
     }
 
-    private String rcmTutor(PostEnt post, TutorEnt tutor) {
+    @Override
+    protected Tuple3<Boolean, String, Float> rcmTutor(PostEnt post, TutorEnt tutor) {
+        if (tutor.availableTime == null) return Tuple3.apply(false, null, null);
         var hoursPerLesson = post.classInfo.hoursPerLesson;
         var timesPerWeek = post.classInfo.timesPerWeek;
         var availableTime = post.classInfo.availableTime;
-        if (matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson), timesPerWeek - 1)) {
-            return "Co the day x-1 buoi, xem them";
-        } else if (matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek + 1)) {
-            return "Giam thoi luong, them so buoi";
-        } else if (matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek)) {
-            return "Giam so gio mot buoi";
+        if (timesPerWeek > 1 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson), timesPerWeek - 1)) {
+            return Tuple3.apply(true, "Day x-1 buoi", 1f);
+        } else if (hoursPerLesson > 2 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek + 1)) {
+            return Tuple3.apply(true, "Giam thoi luong, tang so buoi", 1f);
+        } else if (hoursPerLesson > 2 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek)) {
+            return Tuple3.apply(true, "Giam thoi luon", 1f);
         }
-        return "";
+        return Tuple3.apply(false, "", 1f);
     }
 }

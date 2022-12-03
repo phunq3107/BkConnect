@@ -1,28 +1,15 @@
 package com.bk.bkconnect.core.matching.filter;
 
+import com.bk.bkconnect.common.collections.Pair;
+import com.bk.bkconnect.common.collections.Tuple3;
 import com.bk.bkconnect.core.matching.MatchingOutput;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.TutorEnt;
 
 public class TutorInfoFilter extends MatchingFilter {
-    @Override
-    public MatchingOutput doFilterTutor(PostEnt post, TutorEnt tutor) {
-        var rs = new MatchingOutput(post, tutor);
-        if (isMatch(post, tutor)) {
-            rs.isMatch = true;
-        } else if (isLikely(post, tutor)) {
-            rs.isLikely = true;
-            rs.recommend.add(rcmTutor(post, tutor));
-        }
-        return rs;
-    }
 
     @Override
-    public MatchingOutput doFilterPost(TutorEnt tutor, PostEnt post) {
-        return null;
-    }
-
-    private boolean isMatch(PostEnt post, TutorEnt tutor) {
+    protected boolean isMatch(PostEnt post, TutorEnt tutor) {
         if (tutor.userInfo == null) return false;
         if (tutor.userInfo.dob == null || tutor.userInfo.gender == null) return false;
 
@@ -48,17 +35,12 @@ public class TutorInfoFilter extends MatchingFilter {
         }
     }
 
-
-    private boolean isLikely(PostEnt post, TutorEnt tutor) {
-        if (tutor.userInfo == null) return false;
-        if (tutor.userInfo.dob == null || tutor.userInfo.gender == null) return false;
-        return true;
-    }
-
-    private String rcmTutor(PostEnt post, TutorEnt tutor) {
-        if (matchGender(post, tutor)) return "Diff age";
-        if (matchAge(post, tutor)) return "Diff gender";
-        return "Diff age, diff gender";
+    @Override
+    protected Tuple3<Boolean, String, Float> rcmTutor(PostEnt post, TutorEnt tutor) {
+        if (tutor.userInfo == null) return Tuple3.apply(false, null, null);
+        if (matchGender(post, tutor)) return Tuple3.apply(true, "Diff age", 1f);
+        if (matchAge(post, tutor)) return Tuple3.apply(true, "Diff gender", 1f);
+        return Tuple3.apply(true, "Diff age, diff gender", 1f);
     }
 
 }

@@ -28,6 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/h2-console/**",
             "/session/login",
             "/user/add",
+            "/user/get/**",
+            "/user/getAll",
+            "/tutor/get/**",
+            "/tutor/getAll",
+            "/post/get/**",
+            "/post/getAll",
+            "/subject/getAll**"
     };
 
     private final UserDetailsService userService;

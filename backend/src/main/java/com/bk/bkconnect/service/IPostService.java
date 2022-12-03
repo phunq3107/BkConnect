@@ -1,24 +1,30 @@
 package com.bk.bkconnect.service;
 
 import com.bk.bkconnect.DataStore;
-import com.bk.bkconnect.common.rest.Msg;
-import com.bk.bkconnect.common.rest.ResponseCode;
-import com.bk.bkconnect.common.rest.ResponseMsg;
+import com.bk.bkconnect.common.rest.*;
+import com.bk.bkconnect.core.matching.MatchingSystem;
+import com.bk.bkconnect.database.constant.PostRequester;
 import com.bk.bkconnect.database.constant.PostState;
 import com.bk.bkconnect.database.constant.StudentPostState;
+import com.bk.bkconnect.database.constant.TutorPostState;
 import com.bk.bkconnect.database.driver.PostDAO;
 import com.bk.bkconnect.database.driver.StudentPostDAO;
+import com.bk.bkconnect.database.driver.TutorPostDAO;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.StudentPostRel;
+import com.bk.bkconnect.database.entity.TutorPostRel;
 import com.bk.bkconnect.domain.request.AddPostRq;
 import com.bk.bkconnect.domain.request.GetPostFilter;
+import com.bk.bkconnect.domain.response.GetEnrollTutorRs;
 import com.bk.bkconnect.domain.response.GetPostRs;
 import com.bk.bkconnect.domain.response.PageableRs;
+import com.bk.bkconnect.domain.response.RecommendationRs;
 import com.bk.bkconnect.security.ApplicationContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
@@ -30,6 +36,16 @@ public interface IPostService {
 
     Msg<GetPostRs> addPost(AddPostRq rq);
 
+    Msg<PageableRs<RecommendationRs>> getRecommend(UUID postId, int pageNumber, int pageSize);
+
+    Msg<Boolean> enroll(UUID postId);
+
+    Msg<PageableRs<GetEnrollTutorRs>> getEnrollTutor(UUID postId, int pageNumber, int pageSize);
+
+    // for system
+
+    PostEnt getPostEntById(UUID postId);
+
 
 }
 
@@ -40,15 +56,11 @@ class PostService implements IPostService {
 
     private final PostDAO postDAO;
     private final StudentPostDAO studentPostDAO;
+    private final TutorPostDAO tutorPostDAO;
 
     @Override
     public Msg<GetPostRs> getPostById(UUID postId) {
-        PostEnt post;
-        if (DataStore.posts.containsKey(postId)) {
-            post = DataStore.posts.get(postId);
-        } else {
-            post = postDAO.getById(postId);
-        }
+        PostEnt post = getPostEntById(postId);
         if (post == null) {
             return Msg.fail(ResponseCode.postNotFound, ResponseMsg.postNotFound);
         }
@@ -87,6 +99,54 @@ class PostService implements IPostService {
         return Msg.success(rs);
     }
 
+    @Override
+    public Msg<PageableRs<RecommendationRs>> getRecommend(UUID postId, int pageNumber, int pageSize) {
+        if (!PermissionCheck.getPostRecommend(postId)) {
+            return Msg.notAllow();
+        }
+        var post = getPostEntById(postId);
+        if (post == null) {
+            return Msg.fail(ResponseCode.postNotFound, ResponseMsg.postNotFound);
+        }
+        // TODO: 12/3/2022 save recommend result in data store
+        var matchingOutputs = MatchingSystem.findMatching(post, DataStore.tutors.values().stream().toList());
+        var rs = PageableRs.build(matchingOutputs, pageNumber, pageSize, RecommendationRs::build);
+        return Msg.success(rs);
+    }
+
+    @Override
+    public Msg<Boolean> enroll(UUID postId) {
+        if (!PermissionCheck.enrollPost(postId)) {
+            return Msg.notAllow();
+        }
+        if (!PolicyCheck.tutorEnrollPost(postId)) {
+            return Msg.notAllow();
+        }
+        if (getPostById(postId) == null) {
+            return Msg.fail(ResponseCode.postNotFound, ResponseMsg.postNotFound);
+        }
+        addTutorPostRel(ApplicationContext.currentUserId(), postId, PostRequester.TUTOR, TutorPostState.WAITING);
+        return Msg.success(true);
+    }
+
+    @Override
+    public Msg<PageableRs<GetEnrollTutorRs>> getEnrollTutor(UUID postId, int pageNumber, int pageSize) {
+        if (!PermissionCheck.enrollPost(postId)) {
+            return Msg.notAllow();
+        }
+        var tutorPostRel = tutorPostDAO.getAllByPost(postId);
+        var rs = PageableRs.build(tutorPostRel, pageNumber, pageSize, GetEnrollTutorRs::build);
+        return Msg.success(rs);
+    }
+
+    @Override
+    public PostEnt getPostEntById(UUID postId) {
+        if (DataStore.posts.containsKey(postId)) {
+            return DataStore.posts.get(postId);
+        }
+        return postDAO.getById(postId);
+    }
+
     private void updateStudentPostRel(UUID studentId, UUID postId, String state) {
         var rel = StudentPostRel.create(studentId, postId, state);
         studentPostDAO.saveAndFlush(rel);
@@ -97,6 +157,17 @@ class PostService implements IPostService {
             }
         }
     }
+
+    private void addTutorPostRel(UUID tutorId, UUID postID, String requester, String state) {
+        var rel = TutorPostRel.create(tutorId, postID, state, requester);
+        tutorPostDAO.save(rel);
+    }
+
+    private void updateTutorPostRel(UUID tutorId, UUID postId, String state) {
+        var rel = TutorPostRel.update(tutorId, postId, state);
+        tutorPostDAO.save(rel);
+    }
+
 
 }
 

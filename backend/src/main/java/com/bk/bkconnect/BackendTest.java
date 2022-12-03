@@ -2,14 +2,18 @@ package com.bk.bkconnect;
 
 import com.bk.bkconnect.common.collections.Tuple3;
 import com.bk.bkconnect.controller.*;
+import com.bk.bkconnect.core.matching.MatchingOutput;
+import com.bk.bkconnect.core.matching.MatchingSystem;
 import com.bk.bkconnect.database.constant.UserRole;
 import com.bk.bkconnect.database.driver.*;
 import com.bk.bkconnect.database.entity.*;
+import com.bk.bkconnect.database.entity.ext.Address;
 import com.bk.bkconnect.database.entity.ext.ClassInfo;
 import com.bk.bkconnect.database.entity.ext.TutorSubject;
 import com.bk.bkconnect.database.entity.ext.UserInfo;
 import com.bk.bkconnect.domain.request.GetPostFilter;
 import com.bk.bkconnect.domain.request.GetTutorFilter;
+import com.bk.bkconnect.util.ObjectMapperUtils;
 import com.bk.bkconnect.util.TimeUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -74,22 +78,36 @@ public class BackendTest {
     static UUID post10 = UUID.fromString("92fed096-9090-4fd2-b3ab-f2f1b6ed91ad");
 
     static String _24x7 = new String(new char[7 * 24]).replace('\0', '1');
-    static String _justEvening = new String(new char[7]).replace("\0","000000000000000000111100");
-    static String _justMorning = new String(new char[7]).replace("\0","000000000111100000000000");
+    static String _justEvening = new String(new char[7]).replace("\0", "000000000000000000111100");
+    static String _justMorning = new String(new char[7]).replace("\0", "000000000111100000000000");
 
+
+    static UUID tutor = UUID.fromString("32589634-ee95-4636-91da-c05d9c58c137");
+    static UUID post = UUID.fromString("f0edb82a-b85f-492a-b273-d8440d93f54c");
 
     public void initData() {
         initAdmin();
         initSubject();
         initTutor();
+        createTutor(tutor, "toanTutor", "MALE", TimeUtils.millisOf(1990), List.of(
+                        Tuple3.apply(toan10, "1", 200000L),
+                        Tuple3.apply(toan11, "1", 200000L),
+                        Tuple3.apply(toan12, "1", 200000L)
+                ),
+                _24x7
+        );
         initStudent();
         initPost();
-
+        createPost(post, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L);
     }
 
     public void test() {
-        var rs = postController.getAll(new GetPostFilter(), 1, 10);
-        System.out.println(rs.toJson());
+        var rs = MatchingSystem.findMatching(
+                DataStore.posts.get(post),
+//                // DataStore.tutors.values().stream().toList()
+                List.of(DataStore.tutors.get(tutor))
+        );
+        rs.forEach(MatchingOutput::print);
     }
 
     private void initAdmin() {
@@ -149,7 +167,7 @@ public class BackendTest {
                 ),
                 _24x7
         );
-        createTutor(toanTutor3, "toanTutor3", "MALE", TimeUtils.millisOf(1992), List.of(
+        createTutor(toanTutor3, "toanTutor3", "FEMALE", TimeUtils.millisOf(1992), List.of(
                         Tuple3.apply(toan12, "3", 400000L),
                         Tuple3.apply(toanOnDaiHoc, "3", 600000L)
                 ),
@@ -191,6 +209,8 @@ public class BackendTest {
         for (Tuple3<UUID, String, Long> i : subjects) {
             tutor.subjects.add(TutorSubject.builder().subjectId(i._1).level(i._2).expectedFee(i._3).build());
         }
+        tutor.userInfo.address= new Address();
+        tutor.userInfo.address.province = "thanh_pho_ha_noi";
         tutorDAO.saveAndFlush(tutor);
     }
 
@@ -235,7 +255,8 @@ public class BackendTest {
         post.classInfo.availableTime = availableTime;
         post.classInfo.hoursPerLesson = hpl;
         post.classInfo.timesPerWeek = tpw;
-        post.classInfo.fee = fee;
+        post.fee = fee;
+        post.subjectLevel = "ALL";
 
         postDAO.saveAndFlush(post);
     }

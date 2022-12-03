@@ -1,43 +1,63 @@
 package com.bk.bkconnect.core.matching.filter;
 
+import com.bk.bkconnect.DataStore;
+import com.bk.bkconnect.common.Syntax;
+import com.bk.bkconnect.common.collections.Pair;
+import com.bk.bkconnect.common.collections.Tuple3;
+import com.bk.bkconnect.common.functional._0P1R;
 import com.bk.bkconnect.core.matching.MatchingOutput;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.TutorEnt;
 
-public class SubjectFilter extends MatchingFilter{
+import java.util.Arrays;
+import java.util.UUID;
+
+public class SubjectFilter extends MatchingFilter {
+
     @Override
-    public MatchingOutput doFilterTutor(PostEnt post, TutorEnt tutor) {
-        var rs = new MatchingOutput(post, tutor);
-        rs.isMatch = true;
-        return rs;
+    protected boolean isMatch(PostEnt post, TutorEnt tutor) {
+        if (post.subject == null) return false;
+        return matchSubject(post, tutor) && matchLevel(post, tutor) && matchFee(post, tutor);
+    }
+
+    private boolean matchSubject(PostEnt post, TutorEnt tutor) {
+        return tutor.getTutorSubject(post.subject.id) != null;
+    }
+
+    private boolean matchLevel(PostEnt post, TutorEnt tutor) {
+        return "ALL".equals(post.subjectLevel) || post.subjectLevel.contains(tutor.getTutorSubject(post.subject.id).level);
+    }
+
+    private boolean matchFee(PostEnt post, TutorEnt tutor) {
+        var tutorSubject = tutor.getTutorSubject(post.subject.id);
+        if (tutorSubject == null) return false;
+        return post.fee == -1 || tutorSubject.expectedFee == -1 || tutorSubject.expectedFee <= post.fee;
     }
 
     @Override
-    public MatchingOutput doFilterPost(TutorEnt tutor, PostEnt post) {
-        return null;
+    protected Tuple3<Boolean, String, Float> rcmTutor(PostEnt post, TutorEnt tutor) {
+        if (post.subject == null) return Tuple3.apply(false, null, null);
+        if (matchSubject(post, tutor)) {
+            if (matchLevel(post, tutor)) {
+                return Tuple3.apply(true, "Diff fee", 1f);
+            }
+            if (matchFee(post, tutor)) {
+                var tutorLevel =
+                        Syntax.Try(() -> Integer.valueOf(tutor.getTutorSubject(post.subject.id).level), 0);
+                var minRequire =
+                        Syntax.Try(() -> Arrays.stream(post.subjectLevel.split(",")).map(Integer::valueOf).min(Integer::compareTo).get(), 1);
+                if (tutorLevel >= minRequire)
+                    return Tuple3.apply(true, "Diff level", 1f);
+            }
+        }
+
+        if (matchFee(post, tutor) && matchLevel(post, tutor) && tutor.subjects != null) {
+            var canTeach = tutor.subjects.stream()
+                    .map(ts -> DataStore.subjects.get(ts.subjectId))
+                    .anyMatch(subject -> post.subject.groupSubjectOrder.startsWith(subject.groupSubjectOrder));
+            if (canTeach)
+                return Tuple3.apply(true, "Diff subject", 1f);
+        }
+        return Tuple3.apply(false, null, null);
     }
-
-    /*
-    match: trung mon, trung level, fee
-    giong 2 khac 1
-    fee % -> level  -> mon
-    fee level mon
-    KTT
-    tkt
-    kkt
-    ttk
-
-    likely:
-        mon hoc:
-        level
-        fee
-
-        0
-        | \
-        Toan13 1            Van 11 2
-        Toan12 1             Van 10 2,1   Van 10 nang cao 2,2
-         Toan11 1,1   1,2
-        Toan 10  1,1,1
-
-     */
 }

@@ -38,7 +38,7 @@ public class AddPostRq extends GenericRq {
         post.classInfo.hoursPerLesson = hoursPerLesson;
         post.classInfo.availableTime = availableTime;
         post.locations = location == null ? null : new HashSet<>(location);
-        post.classInfo.fee = fee;
+        post.fee = fee;
         post.subjectLevel = level;
         post.tutorRequirement.age = age;
         post.tutorRequirement.gender = gender;

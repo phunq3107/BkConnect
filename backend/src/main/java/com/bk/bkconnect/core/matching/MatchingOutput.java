@@ -24,4 +24,14 @@ public class MatchingOutput {
     public boolean isAcceptable() {
         return isMatch || isLikely;
     }
+
+    public void print(){
+        System.out.println("------------------------");
+        System.out.println("Post: "+post.id);
+        System.out.println("Tutor: " + tutor.username);
+        System.out.println("Match: " + isMatch);
+        System.out.println("Likely: " + isLikely);
+        System.out.println("Rcm: ");
+        recommend.forEach(System.out::println);
+    }
 }

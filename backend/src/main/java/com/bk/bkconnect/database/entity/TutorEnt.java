@@ -5,10 +5,7 @@ import com.bk.bkconnect.database.entity.ext.TutorSubject;
 import com.bk.bkconnect.util.TimeUtils;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class TutorEnt extends UserEnt {
@@ -28,6 +25,11 @@ public class TutorEnt extends UserEnt {
     public int getAge() {
         if (userInfo == null || userInfo.dob == null) return -1;
         return TimeUtils.getYear(System.currentTimeMillis()) - TimeUtils.getYear(userInfo.dob);
+    }
+
+    public TutorSubject getTutorSubject(UUID subjectId) {
+        if (subjects == null) return null;
+        return subjects.stream().filter(i -> i.subjectId.equals(subjectId)).findFirst().orElse(null);
     }
 
 }

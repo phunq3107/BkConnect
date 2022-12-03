@@ -20,6 +20,8 @@ public class PostEnt extends AbstractEnt {
     public Long updateTime;
     public String subjectLevel;
     public Boolean isGroup;
+    public Long fee;
+
 
     public Float distance;
 

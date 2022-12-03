@@ -151,18 +151,28 @@ components:
             - $ref: './common.yaml#/components/schemas/UserBrief'
 
     RecommendationRs:
-      type: array
-      items:
-        allOf:
-          - properties:
-              tutor:
-                $ref: './common.yaml#/components/schemas/UserBrief'
-              isMatch:
-                type: boolean
-              recommendation:
-                type: array
-                allOf:
-                  - type: string
-              likelyRate:
-                type: number
+      type: object
+      properties:
+        tutor:
+          $ref: './common.yaml#/components/schemas/UserBrief'
+        isMatch:
+          type: boolean
+        recommendation:
+          type: array
+          allOf:
+            - type: string
+        likelyRate:
+          type: number
+
+    GetEnrollTutorRs:
+      type: object
+      properties:
+        tutor:
+          $ref: './common.yaml#/components/schemas/UserBrief'
+        requester:
+          type: string
+        state:
+          type: string
+        time:
+          type: number
 

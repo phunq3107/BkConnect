@@ -38,7 +38,7 @@ class TutorService implements ITutorService {
     @Override
     public Msg<GetTutorRs> getTutorById(UUID tutorId) {
         var tutor = getTutorEntById(tutorId);
-        if (tutorId == null) {
+        if (tutor == null) {
             return Msg.fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
         }
         var rs = GetTutorRs.build(tutor);

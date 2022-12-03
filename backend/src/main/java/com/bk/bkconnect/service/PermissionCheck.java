@@ -17,4 +17,20 @@ public class PermissionCheck {
                 && UserRole.TUTOR.equalsIgnoreCase(currentUserRole());
     }
 
+    public static boolean getPostRecommend(UUID postId) {
+        // TODO: 12/3/2022
+        return true;
+    }
+
+    public static boolean enrollPost(UUID postId) {
+        // TODO: 12/3/2022
+        return true;
+    }
+
+    public static boolean getEnrollTutor(UUID postId){
+        // TODO: 12/3/2022
+        return true;
+    }
+
+
 }

@@ -85,11 +85,10 @@ public class MatchingSystem {
                     rs.tutor = e.get(0).tutor;
                     rs.isMatch = noMatch == noFilters;
                     rs.matchRate = noMatch * 1f / noFilters;
-                    if (!rs.isMatch && noFilters - noMatch <= 2) {
+                    if (!rs.isMatch && noFilters - noMatch <= 5) {
                         rs.isLikely = true;
-                        e.stream()
-                                .sorted(Collections.reverseOrder())
-                                .forEach(r -> rs.recommend.addAll(r.recommend));
+                        e.forEach(r -> rs.recommend.addAll(r.recommend));
+                        //.sorted((a, b) -> -a.matchRate.compareTo(b.matchRate))
                     }
                     return rs;
                 })

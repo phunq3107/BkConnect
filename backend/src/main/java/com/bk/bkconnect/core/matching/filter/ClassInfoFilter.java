@@ -1,19 +1,20 @@
 package com.bk.bkconnect.core.matching.filter;
 
+import com.bk.bkconnect.common.collections.Tuple3;
 import com.bk.bkconnect.core.matching.MatchingOutput;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.TutorEnt;
 
 public class ClassInfoFilter extends MatchingFilter{
+
+
     @Override
-    public MatchingOutput doFilterTutor(PostEnt post, TutorEnt tutor) {
-        var rs = new MatchingOutput(post, tutor);
-        rs.isMatch = true;
-        return rs;
+    public boolean isMatch(PostEnt post, TutorEnt tutorEnt) {
+        return true;
     }
 
     @Override
-    public MatchingOutput doFilterPost(TutorEnt tutor, PostEnt post) {
+    public Tuple3<Boolean, String, Float> rcmTutor(PostEnt post, TutorEnt tutorEnt) {
         return null;
     }
 }

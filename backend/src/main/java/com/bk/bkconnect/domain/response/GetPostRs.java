@@ -47,7 +47,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
             rs.timesPerWeek = post.classInfo.timesPerWeek;
             rs.hoursPerLesson = post.classInfo.hoursPerLesson;
             rs.availableTime = post.classInfo.availableTime;
-            rs.fee = post.classInfo.fee;
+            rs.fee = post.fee;
             rs.noStudents = post.classInfo.noStudents;
             rs.description = post.classInfo.description;
         }
