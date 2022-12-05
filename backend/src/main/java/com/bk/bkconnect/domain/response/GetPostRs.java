@@ -43,6 +43,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
         rs.state = post.state;
         rs.location = post.locations != null ? post.locations.stream().toList() : null;
         rs.distance = post.distance;
+        rs.level = post.subjectLevel;
         if (post.classInfo != null) {
             rs.timesPerWeek = post.classInfo.timesPerWeek;
             rs.hoursPerLesson = post.classInfo.hoursPerLesson;
