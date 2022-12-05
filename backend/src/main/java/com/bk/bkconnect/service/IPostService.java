@@ -159,7 +159,7 @@ class PostService implements IPostService {
     }
 
     private void addTutorPostRel(UUID tutorId, UUID postID, String requester, String state) {
-        var rel = TutorPostRel.create(tutorId, postID, state, requester);
+        var rel = TutorPostRel.create(tutorId, postID, requester, state);
         tutorPostDAO.save(rel);
     }
 
