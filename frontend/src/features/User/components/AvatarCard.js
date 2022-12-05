@@ -46,7 +46,7 @@ function AvatarCard(props) {
         return(
             buttons.map((button,idx) => {
                 return(
-                    <React.Fragment key={idx}>
+                    <Grid item width="100%" key={idx}>
                         <Button
                             variant="outlined"
                             startIcon={button.icon}
@@ -56,8 +56,8 @@ function AvatarCard(props) {
                         >
                             {button.title}
                         </Button>
-                        <Divider sx={{mx:-2}}/>
-                    </React.Fragment>
+                        <Divider/>
+                    </Grid>
                 )
             })
         )
@@ -68,7 +68,8 @@ function AvatarCard(props) {
             item
             xs={false}
             sm={8} md={2}
-            sx={{bgcolor: app_colors._whiteText, height:'60vh'}}
+            sx={{bgcolor: app_colors._whiteText}}
+            height="fit-content"
             borderRadius={1}
             flexDirection="column"
             alignItems="center"
@@ -77,9 +78,13 @@ function AvatarCard(props) {
             px={2}
             rowGap={2}
         >
-            <Typography fontFamily={app_fonts._primaryFont} fontWeight="bold">{user.username}</Typography>
-            <Grid item height="min-content">
-                {user && <Avatar src={user.avatar}  sx={{ width: 150, height: 150 }} />}
+            <Grid item width="100%" container justifyContent="center">
+                <Grid item width="100%" textAlign="center">
+                <Typography fontFamily={app_fonts._primaryFont} fontWeight="bold">{user.username}</Typography>
+                </Grid>
+                <Grid item height="min-content">
+                    {user && <Avatar src={user.avatar}  sx={{ width: 150, height: 150 }} />}
+                </Grid>
             </Grid>
             <Grid item width="100%">
                 <Button
@@ -101,16 +106,13 @@ function AvatarCard(props) {
                     />
                 </Button>
             </Grid>
-            <Grid item width="100%" sx={{mx:-2}}>
-                <Divider sx={{mx:-2}}/>
-                <ButtonGroup orientation="vertical" fullWidth>
+            <Grid item container width="100%">
                     {user.role.toUpperCase() === constants.ROLE_STUDENT ?
                         renderButtonGroup(studentButtons) :
                         user.role.toUpperCase() === constants.ROLE_TUTOR ?
                             renderButtonGroup(tutorButtons) :
                             null
                     }
-                </ButtonGroup>
             </Grid>
         </Grid>
     );

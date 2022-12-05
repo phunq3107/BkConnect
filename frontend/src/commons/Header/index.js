@@ -1,24 +1,33 @@
 import React from 'react';
 import {AppBar, Box, Link, Stack, Toolbar, Typography} from "@mui/material";
-import {app_colors, app_fonts, app_paths} from "../../constants";
+import constants, {app_colors, app_fonts, app_paths} from "../../constants";
 import logoBK from "../../assets/images/logoBK.png";
 import {useSelector} from "react-redux";
 import CurrentUser from "./CurrentUser";
 import {useNavigate} from "react-router-dom";
 
+const studentLinkItems = [
+    {href:app_paths.home,title:"Trang chủ"},
+    {href:app_paths.tutorsPage,title:"Gia sư"},
+    {href:app_paths.postsPage,title:"Lớp mới"},
+    {href:app_paths.createPost,title:"Tìm gia sư"},
+    {href:app_paths.refFree,title:"Học phí tham khảo"},
+    {href:app_paths.contact,title:"Liên hệ"},
+]
+
+const tutorLinkItems = [
+    {href:app_paths.home,title:"Trang chủ"},
+    {href:app_paths.tutorsPage,title:"Gia sư"},
+    {href:app_paths.postsPage,title:"Lớp mới"},
+    {href:app_paths.refFree,title:"Học phí tham khảo"},
+    {href:app_paths.contact,title:"Liên hệ"}
+]
 function Header(props) {
 
     const currentUser = useSelector(state=>state.session.currentUser)
     const navigate = useNavigate();
-
-    const linkItems = [
-        {href:app_paths.home,title:"Trang chủ"},
-        {href:app_paths.tutorsPage,title:"Gia sư"},
-        {href:app_paths.postsPage,title:"Lớp mới"},
-        {href:app_paths.createPost,title:"Tìm gia sư"},
-        {href:app_paths.refFree,title:"Học phí tham khảo"},
-        {href:app_paths.contact,title:"Liên hệ"},
-    ]
+    const linkItems = currentUser && currentUser.role && currentUser.role.toUpperCase() === constants.ROLE_TUTOR ?
+                        tutorLinkItems : studentLinkItems
 
     const renderLinkElements = (items) => {
         return(

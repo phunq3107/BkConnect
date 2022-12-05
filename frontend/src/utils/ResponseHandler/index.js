@@ -1,6 +1,6 @@
 import store from "../../configs/store";
 
-export const HandleResponse = (response, errorReceiver) => {
+export const HandleResponse = (response, errorReceiver, errType) => {
     if (response.status !== 200){
         return //TODO: handle response with status !== 200
     }
@@ -8,7 +8,8 @@ export const HandleResponse = (response, errorReceiver) => {
     if (dataOfResponse.code !== 200){
         const error = {
             message:dataOfResponse.message,
-            code:dataOfResponse.code
+            code:dataOfResponse.code,
+            type: errType ?? null
         }
         store.dispatch(errorReceiver(error))
 

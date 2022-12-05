@@ -2,14 +2,14 @@ import React from 'react';
 import LoginForm from "../../components/LoginForm";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentUser, setSessionError} from "../../sessionSlice";
-import constants from "../../../../constants";
+import constants, {errorTypes} from "../../../../constants";
 import sessionApi from "../../../../apis/sessionApi";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
 import {appLocalStorage} from "../../../../utils/Storage";
 import {Box, createTheme, CssBaseline, Grid, ThemeProvider} from "@mui/material";
 import LeftBanner from "../../components/LeftBanner";
 import FormTitle from "../../components/FormTitle";
-import ErrorModal from "../../../../commons/Modal";
+import ErrorModal from "../../../../commons/Modal/ErrorModal";
 import {useNavigate} from "react-router-dom";
 
 const theme = createTheme();
@@ -28,14 +28,17 @@ function Login(props) {
     const handleLogin = async (data) =>{
         try{
             const response = await sessionApi.login(data);
-            const responseData = HandleResponse(response, setSessionError);
+            const responseData = HandleResponse(response, setSessionError, errorTypes.LOGIN);
             if (responseData) {
                 const accessToken = responseData.accessToken
                 appLocalStorage.saveItem(constants.ACCESS_TOKEN_KEY,accessToken)
                 const res = await sessionApi.getCurrentUser();
                 const currentUser = HandleResponse(res, setSessionError);
-                dispatch(setCurrentUser(currentUser))
-                navigate("/")
+                if (currentUser) {
+                    dispatch(setCurrentUser(currentUser))
+                    dispatch(setSessionError(null))
+                    navigate("/")
+                }
             }
         } catch (err){
             console.log(err);
@@ -62,7 +65,7 @@ function Login(props) {
                         </Box>
                     </Grid>
                 </Grid>
-                {error &&
+                {error && error.type && error.type === errorTypes.LOGIN &&
                     <ErrorModal
                     open={true}
                     description={error.message}

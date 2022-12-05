@@ -8,7 +8,7 @@ import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setUserError} from "../userSlice";
 import AvatarCard from "../components/AvatarCard";
-import ErrorModal from "../../../commons/Modal";
+import ErrorModal from "../../../commons/Modal/ErrorModal";
 
 
 function UserInfoPage(props) {

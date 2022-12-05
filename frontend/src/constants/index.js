@@ -42,6 +42,11 @@ export const app_paths = {
 
 }
 
+export const errorTypes = {
+    REGISTER: "err_register",
+    LOGIN: "err_login"
+}
+
 
 export const studentButtons = [
     {title:"Hồ sơ cá nhân",href:app_paths.userInfo, icon: <ManageAccounts/>},

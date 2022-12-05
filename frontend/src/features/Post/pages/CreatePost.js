@@ -6,6 +6,10 @@ import {useDispatch, useSelector} from "react-redux";
 import subjectApi from "../../../apis/subjectApi";
 import {setListSubjects} from "../../Auth/sessionSlice";
 import CreatePostForm from "../components/CreatePostForm";
+import userApi from "../../../apis/userApi";
+import {HandleResponse} from "../../../utils/ResponseHandler";
+import {setUserError} from "../../User/userSlice";
+import postApi from "../../../apis/postApi";
 
 function CreatePost(props) {
     const listSubjects = useSelector(state => state.session.listSubjects)
@@ -29,11 +33,15 @@ function CreatePost(props) {
     },[])
 
     const handleSubmit = async (data) =>{
-        // try{
-        // } catch (err){
-        //     console.log(err);
-        // }
-        console.log(data)
+        try{
+            const response = await postApi.create(data);
+            const responseData = HandleResponse(response, setUserError);
+            if (responseData) {
+                alert("Tạo bài thành công")
+            }
+        } catch (err){
+            console.log(err)
+        }
     }
 
     return (

@@ -11,6 +11,11 @@ const postApi = {
     getById: (params) => {
         const url = POST_API_END_POINT + '/get';
         return axiosClient.get(url, {params});
+    },
+
+    create: (data) => {
+        const url = POST_API_END_POINT + '/add'
+        return axiosClient.post(url,data)
     }
 }
 export default postApi;

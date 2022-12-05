@@ -26,6 +26,8 @@ import listAddresses from "../../../assets/vietnam_province.json"
 import JoditEditor from "jodit-react";
 import LocationSelect from "../../../commons/LocationSelector/LocationSelect";
 import convertAddress from "../../../utils/addressUtils";
+import RequireLoginModal from "../../../commons/Modal/RequireLoginModal";
+import TimeTable from "./TimeTable";
 
 CreatePostForm.propTypes = {
     listSubjects: PropTypes.arrayOf(PropTypes.object),
@@ -49,12 +51,13 @@ function CreatePostForm(props) {
     const [timesPerWeek, setTimesPerWeek] = useState(constants.MIN_TIMES_PER_WEEK)
     const [noStudents, setNoStudents] = useState("1")
     const [description, setDescription] = useState("")
+    const [times, setTimes] = useState(Array(constants.hoursOfWeek).fill("0"))
 
     const editor = useRef(null)
 
     const renderSubjectSelector = (listSubjects) => {
         return(
-            <Grid container flexDirection="row" columnGap="5%">
+            <Grid container flexDirection="row" columnGap="5%" my={3}>
                 <Grid item flexDirection="column" width="30%">
                     <InputLabel
                         id="subjectGroup-label"
@@ -184,8 +187,10 @@ function CreatePostForm(props) {
                 subject: selectedSubject.subjectId ? selectedSubject.subjectId : null,
                 timesPerWeek: timesPerWeek ? parseInt(timesPerWeek.toString()) : null,
                 location: teachingLocations && teachingLocations.length > 0 ? teachingLocations : [],
-                fee: fee? fee.toString() + "," + fee.toString() : "-1",
+                fee: fee? fee : "-1",
                 description: description,
+                availableTime:times.join(''),
+                distance:null
                 //TODO: distance?
             }
             onSubmit(submitData);
@@ -195,10 +200,26 @@ function CreatePostForm(props) {
 
     return (
         <Box component="form" sx={{ mt: 1, px:5 }} onSubmit={handleCreatePostSubmit}>
+            <Grid item width="100%" my={1}>
+                <InputLabel
+                    id="title-label"
+                    sx={{color:app_colors._blackText, fontWeight:"bold"}}
+                >
+                    Tiêu đề
+                </InputLabel>
+                <TextField
+                    fullWidth
+                    id="title"
+                    type="text"
+                    name="title"
+                    size="small"
+                    onChange={handleChange}
+                />
+            </Grid>
 
             {renderSubjectSelector(listSubjects)}
 
-            <Grid container flexDirection="row" columnGap="5%">
+            <Grid container flexDirection="row" columnGap="5%" my={2}>
                 <Grid item flexDirection="column" width="30%">
                     <InputLabel
                         id="timesPerWeek-label"
@@ -249,8 +270,9 @@ function CreatePostForm(props) {
                 </Grid>
             </Grid>
 
-            <Grid item>
+            <Grid item container width="100%">
                 <Typography sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}>Thời gian học</Typography>
+                <TimeTable times={times} setTimes={setTimes}/>
             </Grid>
 
             <InputLabel mt={2} id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}>
@@ -411,22 +433,6 @@ function CreatePostForm(props) {
             </Grid>
 
             <Typography sx={{color:app_colors._blackText, fontWeight:"bold", my:2,}}>Mô tả</Typography>
-            <Grid item width="50%" px={1} my={1}>
-                <InputLabel
-                    id="title-label"
-                    sx={{color:app_colors._blackText, fontWeight:"bold"}}
-                >
-                    Tiêu đề
-                </InputLabel>
-                <TextField
-                    fullWidth
-                    id="title"
-                    type="text"
-                    name="title"
-                    size="small"
-                    onChange={handleChange}
-                />
-            </Grid>
             <JoditEditor
                 ref={editor}
                 value={description}
@@ -452,6 +458,8 @@ function CreatePostForm(props) {
                     </Button>
                 </Grid>
             </Grid>
+
+            <RequireLoginModal/>
         </Box>
     );
 }
