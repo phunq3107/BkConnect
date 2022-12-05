@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import sessionApi from "./apis/sessionApi";
 import {HandleResponse} from "./utils/ResponseHandler";
 import {setCurrentUser, setSessionError} from "./features/Auth/sessionSlice";
+import Tutor from "./features/Tutor";
 
 function App() {
     const currentUser = useSelector(state => state.session.currentUser)
@@ -34,6 +35,7 @@ function App() {
                 <Route path={app_paths.auth} element={<Auth/>}/>
                 <Route path={app_paths.user} element={<User/>}/>
                 <Route path={app_paths.post} element={<Post/>}/>
+                <Route path={app_paths.tutor} element={<Tutor/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

@@ -9,7 +9,8 @@ export const app_colors = {
     _hoverPurple: "#78448A",
     _primaryGrey: "#999999",
     _blackText: "#000000",
-    _primaryBackground: "#F8F8F8"
+    _primaryBackground: "#F8F8F8",
+    _blueText:"#1DA1F2"
 }
 
 export const app_fonts = {
@@ -33,10 +34,12 @@ export const app_paths = {
     tutorRequests:"/user/tutor-requests",
     tutorRecommendClass: "/user/tutor-recommend-class",
 
-    post:"/post/*",
+    tutor:"/tutor/*",
+
+    post: "/post/*",
     createPost:"/post/create",
 
-    tutorsPage: "#",
+    tutorsPage: "/tutor",
     postsPage: "#",
     refFree: "#",
 
@@ -77,13 +80,13 @@ export const subjectLevels = [
 ]
 
 export const daysOfWeek = [
-    {title:"Thứ Hai",value:"0"},
-    {title:"Thứ Ba",value:"1"},
-    {title:"Thứ Tư",value:"2"},
-    {title:"Thứ Năm",value:"3"},
-    {title:"Thứ Sáu",value:"4"},
-    {title:"Thứ Bảy",value:"5"},
-    {title:"Chủ Nhật",value:"6"}
+    {title:"Thứ Hai",value:"0",code:"MON"},
+    {title:"Thứ Ba",value:"1",code:"TUE"},
+    {title:"Thứ Tư",value:"2",code:"WED"},
+    {title:"Thứ Năm",value:"3",code:"THU"},
+    {title:"Thứ Sáu",value:"4",code:"FRI"},
+    {title:"Thứ Bảy",value:"5",code:"SAT"},
+    {title:"Chủ Nhật",value:"6",code:"SUN"}
 ]
 
 export const lessonTime = [
