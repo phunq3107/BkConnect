@@ -9,6 +9,7 @@ public class ResponseCode {
 
     public static final int wrongPassword = 401;
 
+    public static final int invalidParam = 422;
     public static final int invalidUsername = 422;
     public static final int invalidPassword = 422;
     public static final int invalidUserRole = 422;
@@ -16,6 +17,8 @@ public class ResponseCode {
 
     public static final int userNotFound = 404;
     public static final int postNotFound = 404;
+
+    public static final int fail = 1000;
 
 
 }

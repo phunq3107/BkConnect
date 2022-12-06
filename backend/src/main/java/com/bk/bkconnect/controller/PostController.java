@@ -4,6 +4,7 @@ import com.bk.bkconnect.common.rest.GenericResponse;
 import com.bk.bkconnect.domain.request.AddPostRq;
 import com.bk.bkconnect.domain.request.GetPostFilter;
 import com.bk.bkconnect.domain.request.GetTutorFilter;
+import com.bk.bkconnect.domain.request.UpdateTutorPostStateRq;
 import com.bk.bkconnect.domain.response.GetEnrollTutorRs;
 import com.bk.bkconnect.domain.response.GetPostRs;
 import com.bk.bkconnect.domain.response.PageableRs;
@@ -28,8 +29,9 @@ public class PostController {
         return GenericResponse.parse(rs);
     }
 
+    @GetMapping("/getAll")
     public GenericResponse<PageableRs<GetPostRs>> getAll(
-            @RequestBody GetPostFilter filter, @RequestParam int pageNumber, @RequestParam int pageSize) {
+            GetPostFilter filter, @RequestParam int pageNumber, @RequestParam int pageSize) {
         var rs = postService.getAll(filter, pageNumber, pageSize);
         return GenericResponse.parse(rs);
     }
@@ -50,18 +52,26 @@ public class PostController {
         return GenericResponse.parse(rs);
     }
 
-    @PreAuthorize("hasRole('TUTOR')")
-    @PostMapping("/{postId}/enroll")
-    public GenericResponse<Boolean> enroll(@PathVariable String postId) {
-        var rs = postService.enroll(UUID.fromString(postId));
-        return GenericResponse.parse(rs);
-    }
+//    @Deprecated
+//    @PreAuthorize("hasRole('TUTOR')")
+//    @PostMapping("/{postId}/enroll")
+//    public GenericResponse<Boolean> enroll(@PathVariable String postId) {
+//        var rs = postService.enroll(UUID.fromString(postId));
+//        return GenericResponse.parse(rs);
+//    }
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/{postId}/getEnrollTutor")
     public GenericResponse<PageableRs<GetEnrollTutorRs>> getEnrollTutor(
             @PathVariable String postId, @RequestParam int pageNumber, @RequestParam int pageSize) {
         var rs = postService.getEnrollTutor(UUID.fromString(postId), pageNumber, pageSize);
+        return GenericResponse.parse(rs);
+    }
+
+    @PreAuthorize("hasAnyRole('STUDENT','TUTOR')")
+    @PostMapping("/{postId}/request")
+    public GenericResponse<Boolean> request(@PathVariable String postId, @RequestBody UpdateTutorPostStateRq rq) {
+        var rs = postService.updateTutorPostState(UUID.fromString(postId), rq);
         return GenericResponse.parse(rs);
     }
 

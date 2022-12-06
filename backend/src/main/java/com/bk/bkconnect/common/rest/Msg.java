@@ -21,4 +21,18 @@ public abstract class Msg<T> {
     public static <T> FailMsg<T> notAllow() {
         return fail(ResponseCode.notAllow, ResponseMsg.notAllow);
     }
+
+    public static <T> FailMsg<T> postNotFound() {
+        return fail(ResponseCode.postNotFound, ResponseMsg.postNotFound);
+    }
+
+    public static <T> FailMsg<T> userNotFound() {
+        return fail(ResponseCode.userNotFound, ResponseMsg.userNotFound);
+    }
+
+    public static <T> FailMsg<T> invalidParam() {
+        return fail(ResponseCode.invalidParam, ResponseMsg.invalidParam);
+    }
+
+
 }

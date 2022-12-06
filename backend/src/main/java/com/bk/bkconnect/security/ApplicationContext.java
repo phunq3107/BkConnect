@@ -1,5 +1,6 @@
 package com.bk.bkconnect.security;
 
+import com.bk.bkconnect.database.constant.UserRole;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -21,8 +22,20 @@ public class ApplicationContext {
         return currentUser().id;
     }
 
-    public static String currentUserRole(){
+    public static String currentUserRole() {
         return currentUser().role;
+    }
+
+    public static boolean isAdmin() {
+        return UserRole.ADMIN.equals(currentUserRole());
+    }
+
+    public static boolean isTutor() {
+        return UserRole.TUTOR.equals(currentUserRole());
+    }
+
+    public static boolean isStudent() {
+        return UserRole.STUDENT.equals(currentUserRole());
     }
 
     public static void setCurrentUser(Authentication authentication) {

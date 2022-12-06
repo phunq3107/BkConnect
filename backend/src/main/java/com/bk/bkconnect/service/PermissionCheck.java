@@ -32,5 +32,15 @@ public class PermissionCheck {
         return true;
     }
 
+    public static boolean updateTutorPostState(UUID postId){
+        // TODO: 12/6/2022
+        return true;
+    }
+
+    public static boolean updateTutorPostStateByStudent(UUID postId){
+        // TODO: 12/6/2022
+        return true;
+    }
+
 
 }

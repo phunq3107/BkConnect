@@ -28,7 +28,7 @@ public class TutorController {
 
     @GetMapping("/getAll")
     public GenericResponse<PageableRs<GetTutorRs>> getAllTutor(
-            @RequestBody GetTutorFilter filter, @RequestParam int pageNumber, @RequestParam int pageSize) {
+            GetTutorFilter filter, @RequestParam int pageNumber, @RequestParam int pageSize) {
         var rs = tutorService.getAllTutor(filter, pageNumber, pageSize);
         return GenericResponse.parse(rs);
     }

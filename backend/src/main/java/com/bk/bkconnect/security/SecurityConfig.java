@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/subject/getAll**"
     };
 
-    private final UserDetailsService userService;
     private final JwtAuthFilter jwtAuthFilter;
 
     @Override
@@ -48,8 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-//        http.exceptionHandling().authenticationEntryPoint(new AuthFailEntryPoint());
 
 
         http.cors().configurationSource(corsConfigurationSource());

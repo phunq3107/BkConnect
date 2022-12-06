@@ -90,7 +90,7 @@ public class BackendTest {
         initSubject();
         initTutor();
         createTutor(tutor, "toanTutor", "MALE", TimeUtils.millisOf(1990), List.of(
-                        Tuple3.apply(toan10, "1", 200000L),
+//                        Tuple3.apply(toan10, "2", 200000L),
                         Tuple3.apply(toan11, "1", 200000L),
                         Tuple3.apply(toan12, "1", 200000L)
                 ),
@@ -98,7 +98,7 @@ public class BackendTest {
         );
         initStudent();
         initPost();
-        createPost(post, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L);
+        createPost(post, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L,"1");
     }
 
     public void test() {
@@ -232,14 +232,14 @@ public class BackendTest {
 
 
     private void initPost() {
-        createPost(post1, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L);
-        createPost(post2, "Tìm gia sư toán 11", student1, toan11, _24x7, 2.5f, 2, 250000L);
-        createPost(post3, "Tìm gia sư toán 12", student1, toan12, _24x7, 1.5f, 3, 220000L);
-        createPost(post4, "Tìm gia sư văn 11", student1, van11, _24x7, 2, 3, 200000L);
-        createPost(post5, "Ôn thi khối A môn toán", student1, toanOnDaiHoc, _justEvening, 1.75f, 3, 300000L);
+        createPost(post1, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L,"ALL");
+        createPost(post2, "Tìm gia sư toán 11", student1, toan11, _24x7, 2.5f, 2, 250000L,"ALL");
+        createPost(post3, "Tìm gia sư toán 12", student1, toan12, _24x7, 1.5f, 3, 220000L,"ALL");
+        createPost(post4, "Tìm gia sư văn 11", student1, van11, _24x7, 2, 3, 200000L,"ALL");
+        createPost(post5, "Ôn thi khối A môn toán", student1, toanOnDaiHoc, _justEvening, 1.75f, 3, 300000L,"ALL");
     }
 
-    private void createPost(UUID id, String title, UUID owner, UUID subject, String availableTime, float hpl, int tpw, long fee) {
+    private void createPost(UUID id, String title, UUID owner, UUID subject, String availableTime, float hpl, int tpw, long fee, String level) {
         PostEnt post = new PostEnt();
         post.id = id;
         post.title = title;
@@ -256,7 +256,7 @@ public class BackendTest {
         post.classInfo.hoursPerLesson = hpl;
         post.classInfo.timesPerWeek = tpw;
         post.fee = fee;
-        post.subjectLevel = "ALL";
+        post.subjectLevel = level;
 
         postDAO.saveAndFlush(post);
     }
