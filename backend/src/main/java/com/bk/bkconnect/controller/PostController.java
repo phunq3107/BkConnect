@@ -52,13 +52,6 @@ public class PostController {
         return GenericResponse.parse(rs);
     }
 
-//    @Deprecated
-//    @PreAuthorize("hasRole('TUTOR')")
-//    @PostMapping("/{postId}/enroll")
-//    public GenericResponse<Boolean> enroll(@PathVariable String postId) {
-//        var rs = postService.enroll(UUID.fromString(postId));
-//        return GenericResponse.parse(rs);
-//    }
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/{postId}/getEnrollTutor")
