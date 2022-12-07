@@ -1,0 +1,17 @@
+export const randomImages = [
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/03/gallery-10-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/03/gallery-8-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/03/gallery-7-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/03/gallery-4-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/03/gallery-11-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery07-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery01-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery02-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery07-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery06-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery05-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery04-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery03-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery02-580x452.jpg",
+    "https://demos.wp-guppy.com/tuturn/wp-content/uploads/2022/04/gallery01-580x452.jpg",
+]

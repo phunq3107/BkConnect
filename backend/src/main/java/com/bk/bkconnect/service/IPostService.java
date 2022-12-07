@@ -142,6 +142,7 @@ class PostService implements IPostService {
         var tutorPosts = tutorPostDAO.getAllByTutorAndRequester(ApplicationContext.currentUserId(), PostRequester.STUDENT);
         var rs = tutorPosts.stream()
                 .map(tutorPost -> GetBookingRs.build(getPostEntById(tutorPost.id.rightId), tutorPost))
+                .filter(tutorPost -> !tutorPost.state.equals(TutorPostState.CANCEL))
                 .toList();
         return Msg.success(rs);
     }

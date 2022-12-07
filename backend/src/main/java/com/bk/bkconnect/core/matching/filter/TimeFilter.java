@@ -70,11 +70,11 @@ public class TimeFilter extends MatchingFilter {
         var timesPerWeek = post.classInfo.timesPerWeek;
         var availableTime = post.classInfo.availableTime;
         if (timesPerWeek > 1 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson), timesPerWeek - 1)) {
-            return Tuple3.apply(true, "Day x-1 buoi", 1f);
+            return Tuple3.apply(true, "Có thể dạy %d/%d buổi so với nhu cầu của bạn".formatted(timesPerWeek - 1, timesPerWeek), 1f);
         } else if (hoursPerLesson > 2 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek + 1)) {
-            return Tuple3.apply(true, "Giam thoi luong, tang so buoi", 1f);
+            return Tuple3.apply(true, "Có thể dạy ít hơn %f giờ, nhưng có thể thêm buổi đề phù hợp với bạn".formatted(hoursPerLesson - ((int) Math.ceil(hoursPerLesson) - 1)), 1f);
         } else if (hoursPerLesson > 2 && matchTime(tutor.availableTime, availableTime, (int) Math.ceil(hoursPerLesson) - 1, timesPerWeek)) {
-            return Tuple3.apply(true, "Giam thoi luon", 1f);
+            return Tuple3.apply(true, "Có thể dạy ít hơn %f giờ".formatted(hoursPerLesson - ((int) Math.ceil(hoursPerLesson) - 1)), 1f);
         }
         return Tuple3.apply(false, "", 1f);
     }

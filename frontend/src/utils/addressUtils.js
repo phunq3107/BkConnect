@@ -15,24 +15,22 @@ const convertAddress = (listAddresses, address) => {
             if (address.ward) {
                 ward = district.wards.find(ward => ward.codename === address.ward)
             }
-            if (ward){
+            if (ward) {
                 arr.push(ward.name)
             }
         }
         arr.push(address.detail ? address.detail : "")
         let res = ""
-        for (const e of arr.reverse()){
-            if (e === null || e === ""){
+        for (const e of arr.reverse()) {
+            if (e === null || e === "") {
                 if (address.detail && e !== address.detail) {
                     return res
                 }
-            }
-            else {
+            } else {
                 if (e) {
                     res += e
-                }
-                else res += ""
-                if (arr.indexOf(e) !== arr.length -1 && e !== "" && e !== null){
+                } else res += ""
+                if (arr.indexOf(e) !== arr.length - 1 && e !== "" && e !== null) {
                     res += ", "
                 }
             }
@@ -40,6 +38,9 @@ const convertAddress = (listAddresses, address) => {
         return res
     }
     return address.detail
+}
+export const convertProvinceCode = (provinceCode = "") => {
+    return convertAddress(null, {province: provinceCode})
 }
 
 export default convertAddress

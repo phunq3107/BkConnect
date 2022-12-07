@@ -38,9 +38,9 @@ public class TutorInfoFilter extends MatchingFilter {
     @Override
     protected Tuple3<Boolean, String, Float> rcmTutor(PostEnt post, TutorEnt tutor) {
         if (tutor.userInfo == null) return Tuple3.apply(false, null, null);
-        if (matchGender(post, tutor)) return Tuple3.apply(true, "Diff age", 1f);
-        if (matchAge(post, tutor)) return Tuple3.apply(true, "Diff gender", 1f);
-        return Tuple3.apply(true, "Diff age, diff gender", 1f);
+        if (matchGender(post, tutor)) return Tuple3.apply(true, "Khác với độ tuổi bạn mong muốn", 1f);
+        if (matchAge(post, tutor)) return Tuple3.apply(true, "Khác với giới tính bạn mong muốn", 1f);
+        return Tuple3.apply(true, "Khác với độ tuổi và giới tính bạn mong muốn", 1f);
     }
 
 }

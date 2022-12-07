@@ -19,10 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Year;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @AllArgsConstructor
@@ -85,6 +82,17 @@ public class BackendTest {
     static UUID tutor = UUID.fromString("32589634-ee95-4636-91da-c05d9c58c137");
     static UUID post = UUID.fromString("f0edb82a-b85f-492a-b273-d8440d93f54c");
 
+    static List<String> names = List.of(
+            "Hoàng Hữu Cường", "Đặng Ngọc Thuận", "Đặng Duy Khánh", "Đặng Thiên Ðức", "Nguyễn Anh Quân",
+            "Trần Minh Triệu", "Trần Quang Triệu", "Trần Cao Minh", "Trần Trọng Trí", "Trần Thuận Phương"
+    );
+
+    static Random random = new Random();
+
+    static String randomName() {
+        return names.get(Math.abs(random.nextInt()) % names.size());
+    }
+
     public void initData() {
         initAdmin();
         initSubject();
@@ -98,7 +106,7 @@ public class BackendTest {
         );
         initStudent();
         initPost();
-        createPost(post, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L,"1");
+        createPost(post, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L, "1");
     }
 
     public void test() {
@@ -200,8 +208,8 @@ public class BackendTest {
         tutor.password = "0DTzga2OUQ838bd9941f9d88b43d3840db46eab2ee"; //12345678
         tutor.role = UserRole.TUTOR;
         tutor.userInfo = new UserInfo();
-        tutor.userInfo.fullname = username + " full name";
-        tutor.userInfo.email = username + "@mail.com";
+        tutor.userInfo.fullname = randomName();
+        tutor.userInfo.email = username + "@gmail.com";
         tutor.userInfo.gender = gender;
         tutor.userInfo.dob = dob;
         tutor.availableTime = availableTime;
@@ -209,7 +217,7 @@ public class BackendTest {
         for (Tuple3<UUID, String, Long> i : subjects) {
             tutor.subjects.add(TutorSubject.builder().subjectId(i._1).level(i._2).expectedFee(i._3).build());
         }
-        tutor.userInfo.address= new Address();
+        tutor.userInfo.address = new Address();
         tutor.userInfo.address.province = "thanh_pho_ha_noi";
         tutorDAO.saveAndFlush(tutor);
     }
@@ -225,6 +233,7 @@ public class BackendTest {
         StudentEnt student = new StudentEnt();
         student.id = id;
         student.username = username;
+        student.userInfo.fullname = randomName();
         student.password = "0DTzga2OUQ838bd9941f9d88b43d3840db46eab2ee"; //12345678
         student.role = UserRole.STUDENT;
         studentDAO.saveAndFlush(student);
@@ -232,11 +241,11 @@ public class BackendTest {
 
 
     private void initPost() {
-        createPost(post1, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L,"ALL");
-        createPost(post2, "Tìm gia sư toán 11", student1, toan11, _24x7, 2.5f, 2, 250000L,"ALL");
-        createPost(post3, "Tìm gia sư toán 12", student1, toan12, _24x7, 1.5f, 3, 220000L,"ALL");
-        createPost(post4, "Tìm gia sư văn 11", student1, van11, _24x7, 2, 3, 200000L,"ALL");
-        createPost(post5, "Ôn thi khối A môn toán", student1, toanOnDaiHoc, _justEvening, 1.75f, 3, 300000L,"ALL");
+        createPost(post1, "Tìm gia sư toán 10", student1, toan10, _24x7, 2, 2, 200000L, "ALL");
+        createPost(post2, "Tìm gia sư toán 11", student1, toan11, _24x7, 2.5f, 2, 250000L, "ALL");
+        createPost(post3, "Tìm gia sư toán 12", student1, toan12, _24x7, 1.5f, 3, 220000L, "ALL");
+        createPost(post4, "Tìm gia sư văn 11", student1, van11, _24x7, 2, 3, 200000L, "ALL");
+        createPost(post5, "Ôn thi khối A môn toán", student1, toanOnDaiHoc, _justEvening, 1.75f, 3, 300000L, "ALL");
     }
 
     private void createPost(UUID id, String title, UUID owner, UUID subject, String availableTime, float hpl, int tpw, long fee, String level) {

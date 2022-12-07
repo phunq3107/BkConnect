@@ -3,9 +3,16 @@ import axiosClient from "./axiosClient";
 const TUTOR_API_ENDPOINT = '/tutor'
 
 const tutorAPI = {
-    getAll: (params) =>{
+    getAll: (filter = {}, pageNumber = 1, pageSize = 10) => {
         const url = TUTOR_API_ENDPOINT + '/getAll';
-        return axiosClient.get(url, {params});
+        const config = {
+            params:{
+                ...filter,
+                pageNumber: pageNumber,
+                pageSize:pageSize
+            }
+        }
+        return axiosClient.get(url, config);
     },
 
     getById: (id, params) => {
@@ -13,12 +20,12 @@ const tutorAPI = {
         return axiosClient.get(url, {params});
     },
 
-    update:(id, data) => {
+    update: (id, data) => {
         const url = TUTOR_API_ENDPOINT + `/update/${id}`
-        return axiosClient.post(url,data)
+        return axiosClient.post(url, data)
     },
 
-    getBookings:() =>{
+    getBookings: () => {
         const url = TUTOR_API_ENDPOINT + '/getBooking'
         return axiosClient.get(url)
     },

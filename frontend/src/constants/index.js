@@ -43,7 +43,7 @@ export const app_paths = {
     viewPost:"/post/view",
 
     tutorsPage: "/tutor",
-    postsPage: "#",
+    postsPage: "/post",
     refFree: "#",
 
 }

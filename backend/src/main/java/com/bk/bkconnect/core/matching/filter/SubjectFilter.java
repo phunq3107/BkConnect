@@ -39,7 +39,8 @@ public class SubjectFilter extends MatchingFilter {
         if (post.subject == null) return Tuple3.apply(false, null, null);
         if (matchSubject(post, tutor)) {
             if (matchLevel(post, tutor)) {
-                return Tuple3.apply(true, "Diff fee", 1f);
+                // TODO: 12/7/2022
+                return Tuple3.apply(true, "Có mức học phí cao hơn (%d₫ so với %d₫)".formatted(tutor.getTutorSubject(post.subject.id).expectedFee, post.fee), 1f);
             }
             if (matchFee(post, tutor)) {
                 var tutorLevel =
@@ -47,9 +48,9 @@ public class SubjectFilter extends MatchingFilter {
                 var minRequire =
                         Syntax.Try(() -> Arrays.stream(post.subjectLevel.split(",")).map(Integer::valueOf).min(Integer::compareTo).get(), 1);
                 if (tutorLevel >= minRequire)
-                    return Tuple3.apply(true, "Diff level", 1f);
+                    return Tuple3.apply(true, "Gia sư có trình độ cao hơn", 1f);
             }
-            return Tuple3.apply(true, "Diff fee, diff level", 1f);
+            return Tuple3.apply(true, "Trình độ cao hơn kèm theo học phí tăng (%d₫ so với %d₫)".formatted(tutor.getTutorSubject(post.subject.id).expectedFee, post.fee), 1f);
         }
 
         if (tutor.subjects != null) {
@@ -60,8 +61,8 @@ public class SubjectFilter extends MatchingFilter {
                 }
                 var matchLevel = "ALL".equals(post.subjectLevel) || post.subjectLevel.contains(tutorSubject.level);
                 var matchFee = post.fee == -1 || tutorSubject.expectedFee == -1 || tutorSubject.expectedFee <= post.fee;
-                if(matchFee && matchLevel){
-                    return Tuple3.apply(true,"Diff subject", 1f);
+                if (matchFee && matchLevel) {
+                    return Tuple3.apply(true, "Môn học gia sư dạy có cùng nhóm (%s) với môn học bạn quan tâm".formatted(post.subject.groupSubject.name), 1f);
                 }
             }
         }

@@ -1,12 +1,19 @@
 import axiosClient from "./axiosClient";
 import {states} from "../constants";
 
-const POST_API_END_POINT= '/post'
+const POST_API_END_POINT = '/post'
 
 const postApi = {
-    getAll: (params) => {
+    getAll: (filter, pageNumber = 1, pageSize = 10) => {
         const url = POST_API_END_POINT + '/getAll';
-        return axiosClient.get(url, {params});
+        const config = {
+            params:{
+                ...filter,
+                pageNumber: pageNumber,
+                pageSize:pageSize
+            }
+        }
+        return axiosClient.get(url, config);
     },
 
     getById: (id) => {
