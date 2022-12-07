@@ -131,11 +131,10 @@ function UserInfoForm(props) {
                         </Select>
                     </Grid>
                 </Grid>
-                {userInfo.address &&
                     <AddressSelect
                         userAddress={userInfo.address}
                         handleChangeAddress={handleChangeAddress}
-                    />}
+                    />
 
                 <Grid container flexDirection="row" justifyContent="space-between" mt={2}>
                     <Grid item width="49%">

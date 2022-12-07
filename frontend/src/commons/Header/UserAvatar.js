@@ -35,13 +35,20 @@ UserAvatar.propTypes = {
 
 function UserAvatar(props) {
     const user = props.user
+    let styles = null
+    if (props.width || props.height){
+        styles = {
+            width:props.width,
+            height:props.height
+        }
+    }
     if (user.avatar && user.avatar !== "") {
         return (
-            <Avatar src={user.avatar}>{stringAvatar(user.fullname).children}</Avatar>
+            <Avatar src={user.avatar} sx={styles ? {...styles} : null}>{stringAvatar(user.fullname).children}</Avatar>
         )
     }
     return (
-        <Avatar {...stringAvatar(user.fullname)} />
+        <Avatar {...stringAvatar(user.fullname)}  sx={styles ? {...styles} : null}/>
     );
 }
 

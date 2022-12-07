@@ -12,6 +12,8 @@ import {HandleResponse} from "./utils/ResponseHandler";
 import {setCurrentUser, setSessionError} from "./features/Auth/sessionSlice";
 import Tutor from "./features/Tutor";
 
+//import Tutor from "./features/Tutor";
+
 function App() {
     const currentUser = useSelector(state => state.session.currentUser)
     const dispatch = useDispatch()

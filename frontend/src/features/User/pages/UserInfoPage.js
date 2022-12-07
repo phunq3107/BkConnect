@@ -1,21 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../../commons/Header";
 import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
-import {app_colors} from "../../../constants";
+import {app_colors, errorTypes} from "../../../constants";
 import UserInfoForm from "../components/UserInfoForm";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setUserError} from "../userSlice";
 import AvatarCard from "../components/AvatarCard";
-import ErrorModal from "../../../commons/Modal/ErrorModal";
 
 
 function UserInfoPage(props) {
     const currentUser = useSelector(state => state.session.currentUser)
-    const error = useSelector(state => state.session.error)
+    const error = useSelector(state => state.user.error)
 
-    const dispatch = useDispatch()
     const [userInfo,setUserInfo] = useState(null)
 
     useEffect(()=>{
@@ -32,13 +30,18 @@ function UserInfoPage(props) {
     const handleSubmit = async (data) =>{
         try{
             const response = await userApi.update(currentUser.id,data);
-            const responseData = HandleResponse(response, setUserError);
+            const responseData = HandleResponse(response, setUserError, errorTypes.USER_UPDATE);
             if (responseData) {
                 setUserInfo(responseData)
+                alert("Cập nhật thông tin thành công")
             }
         } catch (err){
             console.log(err);
         }
+    }
+
+    if (!currentUser && !userInfo){
+        return (<></>)
     }
 
     return (
@@ -66,12 +69,12 @@ function UserInfoPage(props) {
                     {userInfo && <UserInfoForm onSubmit={handleSubmit} userInfo={userInfo}/>}
                 </Grid>
             </Grid>
-            {error &&
-                <ErrorModal
-                    open={true}
-                    description={error.message}
-                    title="Lỗi"
-                    errorSetter={setUserError(null)}/>}
+            {/*{error && error.type === errorTypes.USER_UPDATE &&*/}
+            {/*    <ErrorModal*/}
+            {/*        open={true}*/}
+            {/*        description={error.message}*/}
+            {/*        title="Lỗi"*/}
+            {/*        errorSetter={setUserError(null)}/>}*/}
         </>
     );
 }

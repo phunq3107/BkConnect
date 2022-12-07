@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
-import {app_colors} from "../../../constants";
+import {app_colors, app_paths} from "../../../constants";
 import {useDispatch, useSelector} from "react-redux";
 import subjectApi from "../../../apis/subjectApi";
 import {setListSubjects} from "../../Auth/sessionSlice";
@@ -10,10 +10,12 @@ import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setUserError} from "../../User/userSlice";
 import postApi from "../../../apis/postApi";
+import {useNavigate} from "react-router-dom";
 
 function CreatePost(props) {
     const listSubjects = useSelector(state => state.session.listSubjects)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(()=>{
         if (listSubjects == null){
@@ -38,6 +40,7 @@ function CreatePost(props) {
             const responseData = HandleResponse(response, setUserError);
             if (responseData) {
                 alert("Tạo bài thành công")
+                navigate(app_paths.viewPost + "/" +  responseData.id)
             }
         } catch (err){
             console.log(err)

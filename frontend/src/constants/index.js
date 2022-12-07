@@ -31,13 +31,16 @@ export const app_paths = {
     userPosts: "/user/posts",
     userClasses:"/user/classes",
     tutorInfo:"/user/tutor-info",
-    tutorRequests:"/user/tutor-requests",
+
     tutorRecommendClass: "/user/tutor-recommend-class",
 
     tutor:"/tutor/*",
+    tutorRequests:"/tutor/requests",
+    viewTutorInfo: "/tutor/view",
 
     post: "/post/*",
     createPost:"/post/create",
+    viewPost:"/post/view",
 
     tutorsPage: "/tutor",
     postsPage: "#",
@@ -47,7 +50,8 @@ export const app_paths = {
 
 export const errorTypes = {
     REGISTER: "err_register",
-    LOGIN: "err_login"
+    LOGIN: "err_login",
+    USER_UPDATE: "err_user_update"
 }
 
 
@@ -70,7 +74,7 @@ export const timeSlots = [
     {title:"9h - 12h", value:"9-12"},
     {title:"12h - 15h", value:"12-15"},
     {title:"15h - 18h", value:"15-18"},
-    {title:"18h - 24h", value:"18-24"}
+    {title:"18h - 23h", value:"18-23"}
 ]
 
 export const subjectLevels = [
@@ -101,12 +105,20 @@ export const lessonTime = [
 ]
 
 export const ageRanges = [
-    {title:"Tùy", value:"all"},
+    {title:"Tất cả", value:"all"},
     {title:"18-25 tuổi", value:"18,25"},
     {title:"25-35 tuổi", value:"25,35"},
     {title:"35-45 tuổi", value:"35,45"},
     {title:"Trên 45 tuổi", value:"45,90"},
 ]
+
+export const states = {
+    APPROVE: 'APPROVE',
+    CANCEL: 'CANCEL',
+    REJECT: 'REJECT',
+    WAITING: 'WAITING',
+    CREATE: 'CREATE'
+}
 
 export const tutorLocation = {
     province: null,

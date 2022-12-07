@@ -17,6 +17,12 @@ const tutorAPI = {
         const url = TUTOR_API_ENDPOINT + `/update/${id}`
         return axiosClient.post(url,data)
     },
+
+    getBookings:() =>{
+        const url = TUTOR_API_ENDPOINT + '/getBooking'
+        return axiosClient.get(url)
+    },
+
 }
 
 export default tutorAPI;

@@ -309,7 +309,7 @@ function CreatePostForm(props) {
 
             <Grid item width="30%">
                 <InputLabel mt={2} id="teachingTime-label" sx={{color:app_colors._blackText, fontWeight:"bold", mt:2}}>
-                    Học phí <Typography variant="caption">(VNĐ)</Typography>
+                    Học phí <Typography variant="caption">(VNĐ/buổi)</Typography>
                 </InputLabel>
                 <TextField
                     fullWidth
@@ -370,7 +370,7 @@ function CreatePostForm(props) {
                         onChange={handleChange}
                         defaultValue="all"
                     >
-                        <MenuItem value='all'>Tùy</MenuItem>
+                        <MenuItem value='all'>Cả nam và nữ</MenuItem>
                         <MenuItem value='male'>Nam</MenuItem>
                         <MenuItem value='female'>Nữ</MenuItem>
                     </Select>

@@ -24,3 +24,31 @@ export const getAllDaysHaveAvailableTimeSlot = (timeSlots, availableTime) => {
     })
     return res
 }
+
+export const getAllAvailableTimes = (availableTimeStr) => {
+    const days = availableTimeStr.match(/(.{1,24})/g)
+    const res = [[],[],[],[],[],[],[]]
+    for (let i = 0 ; i < 7; i++){
+        let start = -1
+        for (let j = 0 ; j < 24; j++){
+            if (j === 23){
+                if (days[i][j] === "1"){
+                    if (start === -1)
+                        res[i].push(j + "," + j)
+                    else
+                        res[i].push(start + "," + j)
+                }
+            }
+            else {
+                if (days[i][j] === "1" && start === -1) {
+                    start = j
+                }
+                if (days[i][j + 1] === "0" && start !== -1) {
+                    res[i].push(start + "," + j)
+                    start = -1
+                }
+            }
+        }
+    }
+    return res
+}

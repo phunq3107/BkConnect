@@ -5,10 +5,8 @@ import {app_colors} from "../../../constants";
 import AvatarCard from "../components/AvatarCard";
 import {useDispatch, useSelector} from "react-redux";
 import TutorInfoForm from "../components/TutorInfoForm";
-import {setCurrentUser, setListSubjects, setSessionError} from "../../Auth/sessionSlice";
-import sessionApi from "../../../apis/sessionApi";
+import {setListSubjects} from "../../Auth/sessionSlice";
 import {HandleResponse} from "../../../utils/ResponseHandler";
-import {unwrapResult} from "@reduxjs/toolkit";
 import tutorApi from "../../../apis/tutorApi";
 import {setUserError} from "../userSlice";
 import subjectApi from "../../../apis/subjectApi";
@@ -55,6 +53,7 @@ function TutorInfoPage(props) {
             const responseData = HandleResponse(response, setUserError);
             if (responseData) {
                 setTutorInfo(responseData)
+                alert("Cập nhật thông tin thành công")
             }
         } catch (err){
             console.log(err);

@@ -33,7 +33,7 @@ public class TimeFilter extends MatchingFilter {
         }
         var str = sb.toString();
         for (int day = 0; day < 7; day++) {
-            for (int i = day * 24, c = 0; i <= (day + 1) * 24; i++) {
+            for (int i = day * 24, c = 0; i < (day + 1) * 24; i++) {
                 if (str.charAt(i) == '1') c++;
                 else c = 0;
                 if (c >= hpl) {
