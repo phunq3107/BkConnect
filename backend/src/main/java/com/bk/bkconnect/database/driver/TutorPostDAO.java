@@ -14,4 +14,10 @@ import java.util.UUID;
 public interface TutorPostDAO extends JpaRepository<TutorPostRel, AbstractRel.RelId> {
     @Query("from TutorPostRel where id.rightId = ?1")
     List<TutorPostRel> getAllByPost(UUID postId);
+
+    @Query("from TutorPostRel where id.leftId = ?1 and id.rightId = ?2")
+    TutorPostRel getByTutorAndPost(UUID tutorId, UUID postId);
+
+    @Query("from TutorPostRel where id.leftId = ?1 and requester = ?2")
+    List<TutorPostRel> getAllByTutorAndRequester(UUID tutorId, String requester);
 }

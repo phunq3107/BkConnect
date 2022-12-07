@@ -16,10 +16,7 @@ import com.bk.bkconnect.database.entity.TutorPostRel;
 import com.bk.bkconnect.domain.request.AddPostRq;
 import com.bk.bkconnect.domain.request.GetPostFilter;
 import com.bk.bkconnect.domain.request.UpdateTutorPostStateRq;
-import com.bk.bkconnect.domain.response.GetEnrollTutorRs;
-import com.bk.bkconnect.domain.response.GetPostRs;
-import com.bk.bkconnect.domain.response.PageableRs;
-import com.bk.bkconnect.domain.response.RecommendationRs;
+import com.bk.bkconnect.domain.response.*;
 import com.bk.bkconnect.security.ApplicationContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.xml.datatype.DatatypeFactory;
+import java.util.List;
 import java.util.UUID;
 
 public interface IPostService {
@@ -40,12 +38,11 @@ public interface IPostService {
 
     Msg<PageableRs<RecommendationRs>> getRecommend(UUID postId, int pageNumber, int pageSize);
 
-//    @Deprecated
-//    Msg<Boolean> enroll(UUID postId);
-
     Msg<PageableRs<GetEnrollTutorRs>> getEnrollTutor(UUID postId, int pageNumber, int pageSize);
 
     Msg<Boolean> updateTutorPostState(UUID postId, UpdateTutorPostStateRq rq);
+
+    Msg<List<GetBookingRs>> getTutorBooking();
 
     // for system
 
@@ -114,20 +111,6 @@ class PostService implements IPostService {
         return Msg.success(rs);
     }
 
-//    @Override
-//    public Msg<Boolean> enroll(UUID postId) {
-//        if (!PermissionCheck.enrollPost(postId)) {
-//            return Msg.notAllow();
-//        }
-//        if (!PolicyCheck.tutorEnrollPost(postId)) {
-//            return Msg.notAllow();
-//        }
-//        if (getPostById(postId) == null) {
-//            return Msg.fail(ResponseCode.postNotFound, ResponseMsg.postNotFound);
-//        }
-//        addTutorPostRel(ApplicationContext.currentUserId(), postId, PostRequester.TUTOR, TutorPostState.WAITING);
-//        return Msg.success(true);
-//    }
 
     @Override
     public Msg<PageableRs<GetEnrollTutorRs>> getEnrollTutor(UUID postId, int pageNumber, int pageSize) {
@@ -154,6 +137,15 @@ class PostService implements IPostService {
         return updateTutorPostStateByStudent(postId, UUID.fromString(rq.tutorId), rq.state);
     }
 
+    @Override
+    public Msg<List<GetBookingRs>> getTutorBooking() {
+        var tutorPosts = tutorPostDAO.getAllByTutorAndRequester(ApplicationContext.currentUserId(), PostRequester.STUDENT);
+        var rs = tutorPosts.stream()
+                .map(tutorPost -> GetBookingRs.build(getPostEntById(tutorPost.id.rightId), tutorPost))
+                .toList();
+        return Msg.success(rs);
+    }
+
     private Msg<Boolean> updateTutorPostStateByStudent(UUID postId, UUID tutorId, String state) {
         // TODO: 12/6/2022 enhance response if error
         if (!PermissionCheck.updateTutorPostStateByStudent(postId)) return Msg.notAllow();
@@ -164,16 +156,16 @@ class PostService implements IPostService {
             createTutorPostRel(tutorId, postId, PostRequester.STUDENT, state);
             return Msg.success(true);
         }
-        if(!tutorPostRel.state.equals(TutorPostState.CREATE)) return Msg.invalidParam();
-        if(tutorPostRel.requester.equals(PostRequester.TUTOR)){
-            if(state.equals(TutorPostState.APPROVE) || state.equals(TutorPostState.REJECT)){
+        if (!tutorPostRel.state.equals(TutorPostState.CREATE)) return Msg.invalidParam();
+        if (tutorPostRel.requester.equals(PostRequester.TUTOR)) {
+            if (state.equals(TutorPostState.APPROVE) || state.equals(TutorPostState.REJECT)) {
                 updateTutorPostRel(tutorId, postId, state);
                 // TODO: 12/6/2022 notify
                 return Msg.success(true);
             }
         }
-        if(tutorPostRel.requester.equals(PostRequester.STUDENT)){
-            if(state.equals(TutorPostState.CANCEL)) {
+        if (tutorPostRel.requester.equals(PostRequester.STUDENT)) {
+            if (state.equals(TutorPostState.CANCEL)) {
                 updateTutorPostRel(tutorId, postId, state);
                 return Msg.success(true);
             }
@@ -190,15 +182,15 @@ class PostService implements IPostService {
             createTutorPostRel(tutorId, postId, PostRequester.TUTOR, state);
             return Msg.success(true);
         }
-        if(!tutorPostRel.state.equals(TutorPostState.CREATE)) return Msg.invalidParam();
-        if(tutorPostRel.requester.equals(PostRequester.TUTOR)){
-            if(state.equals(TutorPostState.CANCEL)) {
+        if (!tutorPostRel.state.equals(TutorPostState.CREATE)) return Msg.invalidParam();
+        if (tutorPostRel.requester.equals(PostRequester.TUTOR)) {
+            if (state.equals(TutorPostState.CANCEL)) {
                 updateTutorPostRel(tutorId, postId, state);
                 return Msg.success(true);
             }
         }
-        if(tutorPostRel.requester.equals(PostRequester.STUDENT)){
-            if(state.equals(TutorPostState.APPROVE) || state.equals(TutorPostState.REJECT)){
+        if (tutorPostRel.requester.equals(PostRequester.STUDENT)) {
+            if (state.equals(TutorPostState.APPROVE) || state.equals(TutorPostState.REJECT)) {
                 updateTutorPostRel(tutorId, postId, state);
                 // TODO: 12/6/2022 notify
                 return Msg.success(true);
@@ -225,7 +217,9 @@ class PostService implements IPostService {
     }
 
     private void updateTutorPostRel(UUID tutorId, UUID postId, String state) {
-        var rel = TutorPostRel.update(tutorId, postId, state);
+        var rel = tutorPostDAO.getByTutorAndPost(tutorId, postId);
+        rel.state = state;
+        rel.updateTime = System.currentTimeMillis();
         tutorPostDAO.save(rel);
     }
 
