@@ -3,13 +3,33 @@ import postApi from "../../../apis/postApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setSessionError} from "../../Auth/sessionSlice";
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, Button, CssBaseline, Divider, Grid, IconButton, Popover, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    CssBaseline,
+    Divider,
+    Fade,
+    Grid,
+    IconButton,
+    styled,
+    Tooltip,
+    tooltipClasses,
+    Typography
+} from "@mui/material";
 import Header from "../../../commons/Header";
 import constants, {app_colors, app_paths, states} from "../../../constants";
 import PostMainContent from "../components/PostMainContent";
 import UserAvatar from "../../../commons/Header/UserAvatar";
 import {useSelector} from "react-redux";
 import {Check, Clear, Pending} from "@mui/icons-material";
+
+const NoMaxWidthTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))({
+    [`& .${tooltipClasses.tooltip}`]: {
+        maxWidth: 'none',
+    },
+})
 
 function ViewPost(props) {
 
@@ -18,19 +38,7 @@ function ViewPost(props) {
     const [post,setPost] = useState(null)
     const [recommend,setRecommend] = useState(null)
     const [enrollTutors,setEnrollTutors] = useState(null)
-    const [anchorEl, setAnchorEl] = useState(null);
     const [reload,setReload] = useState(false)
-
-    const handleHover = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const popId = open ? 'simple-popover' : undefined;
 
     const navigate = useNavigate()
 
@@ -295,7 +303,6 @@ function ViewPost(props) {
                                             </Grid>
                                         </Grid>
                                     </Grid>
-
                                     <Grid item width="100%">
                                         <Divider/>
                                     </Grid>
@@ -316,29 +323,38 @@ function ViewPost(props) {
                             notMatchResults.map((notMatchResult, idx) => {
                                 return (
                                     <Grid container item width="100%" key={idx} sx={{'&:hover':{bgcolor:'#e1e1e1'}}}>
-                                        <Grid item container flexDirection="row" item width="100%" alignItems="center" columnGap="3%" px="8%">
-                                            <Grid item width="20%">
-                                                <UserAvatar user={notMatchResult.tutor}/>
-                                            </Grid>
-                                            <Grid item container width="77%">
-                                                <Grid item width="100%">
-                                                    <Typography
-                                                        sx={{cursor:"pointer"}}
-                                                        onClick={()=>handleViewTutorInfo(notMatchResult.tutor.id)}
-                                                        variant="subtitle2"
-                                                    >
-                                                        {notMatchResult.tutor.fullname}
-                                                    </Typography>
+                                        <NoMaxWidthTooltip title={<span style={{ whiteSpace: 'pre-line' }}>{getLikelyDescriptions(notMatchResult.recommendation)}</span>}
+                                                 arrow enterDelay={200}
+                                                 TransitionComponent={Fade}
+                                                 TransitionProps={{ timeout: 500 }}
+                                                 placement="left"
+                                                 disableInteractive
+
+                                        >
+                                            <Grid item container flexDirection="row" width="100%" alignItems="center" columnGap="3%" px="8%">
+                                                <Grid item width="20%">
+                                                    <UserAvatar user={notMatchResult.tutor}/>
                                                 </Grid>
-                                                <Grid item width="100%">
-                                                    <Button size="small"
-                                                            sx={{color:app_colors._primaryGrey}}
-                                                            onClick={()=>handleCreateBooking(postId,notMatchResult.tutor.id)}
-                                                    >Gửi yêu cầu
-                                                    </Button>
+                                                <Grid item container width="77%">
+                                                    <Grid item width="100%">
+                                                        <Typography
+                                                            sx={{cursor:"pointer"}}
+                                                            onClick={()=>handleViewTutorInfo(notMatchResult.tutor.id)}
+                                                            variant="subtitle2"
+                                                        >
+                                                            {notMatchResult.tutor.fullname}
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item width="100%">
+                                                        <Button size="small"
+                                                                sx={{color:app_colors._primaryGrey}}
+                                                                onClick={()=>handleCreateBooking(postId,notMatchResult.tutor.id)}
+                                                        >Gửi yêu cầu
+                                                        </Button>
+                                                    </Grid>
                                                 </Grid>
                                             </Grid>
-                                        </Grid>
+                                        </NoMaxWidthTooltip>
 
                                         <Grid item width="100%">
                                             <Divider/>
@@ -357,6 +373,14 @@ function ViewPost(props) {
             </>
         )
         }
+    }
+
+    const getLikelyDescriptions = (descriptionsArr) => {
+        let res= ""
+        for (const desc of descriptionsArr){
+            res += desc +"\n"
+        }
+        return res
     }
 
     useEffect(()=>{
@@ -446,18 +470,6 @@ function ViewPost(props) {
                     {recommend && recommend.data && renderRecommendations(recommend.data)}
                 </Grid>
             </Grid>
-            <Popover
-                id={popId}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}
-            >
-                <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-            </Popover>
         </Box>
     );
 }

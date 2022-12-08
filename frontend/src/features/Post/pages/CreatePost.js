@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from "react-redux";
 import subjectApi from "../../../apis/subjectApi";
 import {setListSubjects} from "../../Auth/sessionSlice";
 import CreatePostForm from "../components/CreatePostForm";
-import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setUserError} from "../../User/userSlice";
 import postApi from "../../../apis/postApi";

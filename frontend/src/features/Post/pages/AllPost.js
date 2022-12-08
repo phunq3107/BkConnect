@@ -5,9 +5,7 @@ import {app_colors} from "../../../constants";
 import GetAllPostFilter from "../components/GetAllPostFilter";
 import GetAllPostResult from "../components/GetAllPostResult";
 import postApi from "../../../apis/postApi";
-import {useDispatch, useSelector} from "react-redux";
 import subjectApi from "../../../apis/subjectApi";
-import {setListSubjects} from "../../Auth/sessionSlice";
 
 function AllPost(props) {
     const [listSubjects, setListSubjects] = useState([])

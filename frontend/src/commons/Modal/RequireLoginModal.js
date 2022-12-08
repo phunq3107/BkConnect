@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Box, Button, Modal, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";

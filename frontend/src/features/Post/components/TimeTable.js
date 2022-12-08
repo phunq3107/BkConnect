@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
-import constants, {daysOfWeek} from "../../../constants";
-import {Box, Button, Container, Grid, Stack, Typography} from "@mui/material";
+import {daysOfWeek} from "../../../constants";
+import {Container, Grid, Typography} from "@mui/material";
 
 
 TimeTable.propTypes = {

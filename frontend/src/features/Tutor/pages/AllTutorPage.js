@@ -3,7 +3,6 @@ import {CssBaseline, Grid} from "@mui/material";
 import Header from "../../../commons/Header";
 import {app_colors} from "../../../constants";
 import AllTutorResult from "../components/AllTutorResult";
-import postApi from "../../../apis/postApi";
 import tutorApi from "../../../apis/tutorApi";
 
 const AllTutorPage = (props) => {
