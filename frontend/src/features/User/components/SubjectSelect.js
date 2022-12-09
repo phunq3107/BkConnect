@@ -12,7 +12,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {subjectLevels} from "../../../constants";
+import {subjectLevels} from "../../../constants/userOptions";
 
 SubjectSelect.propTypes = {
     selectedSubjects: PropTypes.arrayOf(PropTypes.object),

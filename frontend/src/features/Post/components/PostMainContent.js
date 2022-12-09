@@ -1,14 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import constants, {
-    app_colors,
-    app_fonts,
-    daysOfWeek,
-    lessonTime,
-    studentLocation,
-    subjectLevels,
-    tutorLocation
-} from "../../../constants";
+import constants, {studentLocation, tutorLocation} from "../../../constants/value";
 import PostHeader from "./PostHeader";
 import {Button, Divider, Grid, Typography} from "@mui/material";
 import PostDescription from "./PostDescription";
@@ -32,6 +24,8 @@ import convertAddress from "../../../utils/addressUtils";
 import listAddresses from "../../../assets/vietnam_province.json";
 import {useSelector} from "react-redux";
 import {getAllAvailableTimes} from "../../../utils/availableTimeUtils";
+import {daysOfWeek, lessonTime, subjectLevels} from "../../../constants/userOptions";
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 PostMainContent.propTypes = {
     post: PropTypes.object

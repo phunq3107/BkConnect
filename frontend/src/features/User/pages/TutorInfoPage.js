@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
-import {app_colors} from "../../../constants";
 import AvatarCard from "../components/AvatarCard";
 import {useDispatch, useSelector} from "react-redux";
 import TutorInfoForm from "../components/TutorInfoForm";
@@ -11,6 +10,7 @@ import tutorApi from "../../../apis/tutorApi";
 import {setUserError} from "../userSlice";
 import subjectApi from "../../../apis/subjectApi";
 import RequireLoginModal from "../../../commons/Modal/RequireLoginModal";
+import {app_colors} from "../../../constants/styles";
 
 function TutorInfoPage(props) {
     const currentUser = useSelector(state => state.session.currentUser)

@@ -1,14 +1,6 @@
 import React, {useReducer, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import constants, {
-    ageRanges,
-    app_colors,
-    app_fonts,
-    lessonTime,
-    studentLocation,
-    subjectLevels,
-    tutorLocation
-} from "../../../constants";
+import constants, {studentLocation, tutorLocation} from "../../../constants/value";
 import {
     Box,
     Button,
@@ -28,6 +20,8 @@ import LocationSelect from "../../../commons/LocationSelector/LocationSelect";
 import convertAddress from "../../../utils/addressUtils";
 import RequireLoginModal from "../../../commons/Modal/RequireLoginModal";
 import TimeTable from "./TimeTable";
+import {ageRanges, lessonTime, subjectLevels} from "../../../constants/userOptions";
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 CreatePostForm.propTypes = {
     listSubjects: PropTypes.arrayOf(PropTypes.object),

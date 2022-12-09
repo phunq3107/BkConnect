@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Grid, Link, Typography} from "@mui/material";
-import {app_colors, tutorLocation} from "../../../constants";
+import {tutorLocation} from "../../../constants/value";
 import {randomImage} from "../../../utils/randomUtils";
 import {useNavigate} from "react-router-dom";
 import {dynamicPath} from "../../../constants/router";
@@ -8,6 +8,7 @@ import UserAvatar from "../../../commons/Header/UserAvatar";
 import {limitString} from "../../../utils/syntax";
 import {getAvailableDay} from "../../../utils/availableTimeUtils";
 import {convertProvinceCode} from "../../../utils/addressUtils";
+import {app_colors} from "../../../constants/styles";
 
 
 const AllTutorResult = (props) => {

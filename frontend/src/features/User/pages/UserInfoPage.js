@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Header from "../../../commons/Header";
 import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
-import {app_colors, errorTypes} from "../../../constants";
+import {errorTypes} from "../../../constants/value";
 import UserInfoForm from "../components/UserInfoForm";
 import {useSelector} from "react-redux";
 import userApi from "../../../apis/userApi";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setUserError} from "../userSlice";
 import AvatarCard from "../components/AvatarCard";
+import {app_colors} from "../../../constants/styles";
 
 
 function UserInfoPage(props) {

@@ -2,8 +2,8 @@ import React from 'react';
 import {Box, Button, Modal, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {app_paths} from "../../constants";
 import {setSessionError} from "../../features/Auth/sessionSlice";
+import {app_paths} from "../../constants/router";
 
 RequireLoginModal.propTypes = {
 

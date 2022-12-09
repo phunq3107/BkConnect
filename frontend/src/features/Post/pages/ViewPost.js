@@ -17,11 +17,13 @@ import {
     Typography
 } from "@mui/material";
 import Header from "../../../commons/Header";
-import constants, {app_colors, app_paths, states} from "../../../constants";
+import constants, {requestStates} from "../../../constants/value";
 import PostMainContent from "../components/PostMainContent";
 import UserAvatar from "../../../commons/Header/UserAvatar";
 import {useSelector} from "react-redux";
 import {Check, Clear, Pending} from "@mui/icons-material";
+import {app_colors} from "../../../constants/styles";
+import {app_paths} from "../../../constants/router";
 
 const NoMaxWidthTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -112,7 +114,7 @@ function ViewPost(props) {
         if (!request || !request.state || !request.requester){
             return(<></>)
         }
-        if (request.state === states.CANCEL){
+        if (request.state === requestStates.CANCEL){
             return(
                 <Grid item width="100%" container flexDirection="row">
                     <Grid item width="100%">
@@ -121,7 +123,7 @@ function ViewPost(props) {
                 </Grid>
             )
         }
-        if (request.state === states.CREATE){
+        if (request.state === requestStates.CREATE){
             if (request.requester === constants.ROLE_STUDENT){
                 return(
                     <Grid item width="100%" container flexDirection="row">
@@ -162,7 +164,7 @@ function ViewPost(props) {
                 )
             }
         }
-        if (request.state === states.APPROVE){
+        if (request.state === requestStates.APPROVE){
             if (request.requester === constants.ROLE_TUTOR){
                 return (
                     <Grid item width="100%" container flexDirection="row">
@@ -182,7 +184,7 @@ function ViewPost(props) {
                 )
             }
         }
-        if (request.state === states.REJECT){
+        if (request.state === requestStates.REJECT){
             if (request.requester === constants.ROLE_TUTOR){
                 return (
                     <Grid item width="100%" container flexDirection="row">
@@ -295,11 +297,11 @@ function ViewPost(props) {
                                                 </Typography>
                                             </Grid>
                                             <Grid item width="100%">
-                                                <Button size="small"
+                                                <IconButton size="small"
                                                         sx={{color:app_colors._primaryGrey}}
                                                         onClick={()=>handleCreateBooking(postId,matchResult.tutor.id)}
-                                                >Gửi yêu cầu
-                                                </Button>
+                                                ><Typography color="black" variant="caption">Gửi yêu cầu</Typography>
+                                                </IconButton>
                                             </Grid>
                                         </Grid>
                                     </Grid>

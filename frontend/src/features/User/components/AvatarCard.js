@@ -1,8 +1,10 @@
 import React from 'react';
 import {Button, Divider, Grid, Typography} from "@mui/material";
-import constants, {app_colors, app_fonts, studentButtons, tutorButtons} from "../../../constants";
+import constants from "../../../constants/value";
 import Avatar from "@mui/material/Avatar";
 import {useLocation, useNavigate} from "react-router-dom";
+import {studentButtons, tutorButtons} from "../../../constants/userOptions";
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 
 function AvatarCard(props) {

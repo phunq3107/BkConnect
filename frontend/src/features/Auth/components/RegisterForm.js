@@ -12,8 +12,9 @@ import {
     RadioGroup,
     TextField,
 } from "@mui/material";
-import {app_colors, app_fonts, app_paths} from "../../../constants";
 import {ArrowForward} from "@mui/icons-material";
+import {app_colors, app_fonts} from "../../../constants/styles";
+import {app_paths} from "../../../constants/router";
 
 RegisterForm.propTypes = {
     onSubmit: PropTypes.func

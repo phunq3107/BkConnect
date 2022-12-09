@@ -2,8 +2,8 @@ import React from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import RegisterPage from "./pages/Register";
-import {app_paths} from "../../constants";
 import NotFound from "../../commons/NotFound";
+import {app_paths} from "../../constants/router";
 
 function Auth() {
     return (

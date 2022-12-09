@@ -2,7 +2,6 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import NotFound from "./commons/NotFound";
 import Auth from "./features/Auth";
 import HomePage from "./features/Home/pages/HomePage";
-import {app_paths} from "./constants";
 import User from "./features/User";
 import Post from "./features/Post";
 import React, {useEffect} from 'react';
@@ -11,6 +10,7 @@ import sessionApi from "./apis/sessionApi";
 import {HandleResponse} from "./utils/ResponseHandler";
 import {setCurrentUser, setSessionError} from "./features/Auth/sessionSlice";
 import Tutor from "./features/Tutor";
+import {app_paths} from "./constants/router";
 
 //import Tutor from "./features/Tutor";
 

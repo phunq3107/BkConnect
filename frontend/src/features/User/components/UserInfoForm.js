@@ -1,7 +1,7 @@
 import React, {useReducer} from 'react';
 import PropTypes from 'prop-types';
 import {Box, Button, Grid, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
-import {app_colors, app_fonts, studentLocation, tutorLocation} from "../../../constants";
+import {studentLocation, tutorLocation} from "../../../constants/value";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -9,6 +9,7 @@ import {Save} from "@mui/icons-material";
 import AddressSelect from "../../../commons/LocationSelector/AddressSelect";
 import convertAddress from "../../../utils/addressUtils";
 import listAddresses from "../../../assets/vietnam_province.json";
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 UserInfoForm.propTypes = {
     userInfo: PropTypes.object,

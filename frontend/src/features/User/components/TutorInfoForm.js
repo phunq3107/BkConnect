@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Box, Button, Checkbox, FormControlLabel, Grid, InputLabel, Stack, Typography} from "@mui/material";
-import constants, {app_colors, app_fonts, studentLocation, tutorLocation} from "../../../constants";
+import constants, {studentLocation, tutorLocation} from "../../../constants/value";
 import TimeSelect from "./TimeSelect";
 import SubjectSelect from "./SubjectSelect";
 
@@ -10,6 +10,7 @@ import convertAddress from "../../../utils/addressUtils";
 import JoditEditor from "jodit-react";
 import {Save} from "@mui/icons-material";
 import listAddresses from "../../../assets/vietnam_province.json"
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 TutorInfoForm.propTypes = {
     tutorInfo: PropTypes.object,

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Grid, Link, Typography} from "@mui/material";
-import constants, {app_colors, tutorLocation} from "../../../constants";
+import constants, {tutorLocation} from "../../../constants/value";
 import {randomImage} from "../../../utils/randomUtils";
 import {dynamicPath} from "../../../constants/router";
 import UserAvatar from "../../../commons/Header/UserAvatar";
@@ -8,6 +8,7 @@ import {getAvailableDay} from "../../../utils/availableTimeUtils";
 import {limitString} from "../../../utils/syntax";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {app_colors} from "../../../constants/styles";
 
 
 function GetAllPostResult(props) {

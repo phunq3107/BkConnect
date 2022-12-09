@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-import {states} from "../constants";
+import {requestStates} from "../constants/value";
 
 const POST_API_END_POINT = '/post'
 
@@ -48,7 +48,7 @@ const postApi = {
         const url = POST_API_END_POINT + `/${postId}/request`;
         const data = {
                 tutorId:tutorId,
-                state: states.CREATE
+                state: requestStates.CREATE
         }
         return axiosClient.post(url,data)
     },
@@ -57,7 +57,7 @@ const postApi = {
         const url = POST_API_END_POINT + `/${postId}/request`;
         const data = {
                 tutorId: tutorId,
-                state: states.APPROVE,
+                state: requestStates.APPROVE,
             }
         return axiosClient.post(url, data)
     },
@@ -66,7 +66,7 @@ const postApi = {
         const url = POST_API_END_POINT + `/${postId}/request`;
         const data = {
                 tutorId: tutorId,
-                state: states.REJECT,
+                state: requestStates.REJECT,
         }
         return axiosClient.post(url, data)
     },
@@ -75,7 +75,7 @@ const postApi = {
         const url = POST_API_END_POINT + `/${postId}/request`;
         const data = {
                 tutorId: tutorId,
-                state: states.CANCEL
+                state: requestStates.CANCEL
         }
         return axiosClient.post(url, data)
     },

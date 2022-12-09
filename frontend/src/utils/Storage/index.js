@@ -1,4 +1,4 @@
-import constants from "../../constants";
+import constants from "../../constants/value";
 
 export const appLocalStorage = {
     getItem: (itemKey) => {

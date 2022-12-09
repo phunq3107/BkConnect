@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
-import {CssBaseline, Divider, Grid, Typography} from "@mui/material";
+import {CircularProgress, CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
-import {app_colors, app_paths} from "../../../constants";
 import {useDispatch, useSelector} from "react-redux";
 import subjectApi from "../../../apis/subjectApi";
 import {setListSubjects} from "../../Auth/sessionSlice";
@@ -10,6 +9,8 @@ import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setUserError} from "../../User/userSlice";
 import postApi from "../../../apis/postApi";
 import {useNavigate} from "react-router-dom";
+import {app_colors} from "../../../constants/styles";
+import {app_paths} from "../../../constants/router";
 
 function CreatePost(props) {
     const listSubjects = useSelector(state => state.session.listSubjects)
@@ -44,6 +45,10 @@ function CreatePost(props) {
         } catch (err){
             console.log(err)
         }
+    }
+
+    if (!listSubjects){
+        return <CircularProgress/>
     }
 
     return (

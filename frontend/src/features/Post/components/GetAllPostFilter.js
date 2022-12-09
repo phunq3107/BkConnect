@@ -11,15 +11,9 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {
-    ageRanges,
-    app_colors,
-    daysOfWeek,
-    studentLocation,
-    subjectLevels,
-    timeSlots,
-    tutorLocation
-} from "../../../constants";
+import {studentLocation, tutorLocation} from "../../../constants/value";
+import {ageRanges, daysOfWeek, subjectLevels, timeSlots} from "../../../constants/userOptions";
+import {app_colors} from "../../../constants/styles";
 
 const renderGroupSubject = (group, groupSubjects, handleChangeField) => {
     return (<>

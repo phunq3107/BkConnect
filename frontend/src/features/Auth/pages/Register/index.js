@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import constants, {errorTypes} from "../../../../constants";
+import constants, {errorTypes} from "../../../../constants/value";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
 import {Box, createTheme, CssBaseline, Grid, ThemeProvider} from "@mui/material";
 import LeftBanner from "../../components/LeftBanner";

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {CssBaseline, Grid} from "@mui/material";
 import Header from "../../../commons/Header";
-import {app_colors} from "../../../constants";
 import GetAllPostFilter from "../components/GetAllPostFilter";
 import GetAllPostResult from "../components/GetAllPostResult";
 import postApi from "../../../apis/postApi";
 import subjectApi from "../../../apis/subjectApi";
+import {app_colors} from "../../../constants/styles";
 
 function AllPost(props) {
     const [listSubjects, setListSubjects] = useState([])

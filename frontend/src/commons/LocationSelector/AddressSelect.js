@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import {app_colors} from "../../constants";
 import listAddresses from "../../assets/vietnam_province.json"
+import {app_colors} from "../../constants/styles";
 
 AddressSelect.propTypes = {
     listAddresses: PropTypes.arrayOf(PropTypes.object),

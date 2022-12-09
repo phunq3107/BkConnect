@@ -1,6 +1,6 @@
 import axios from 'axios'
 import queryString from 'query-string'
-import constants from "../constants";
+import constants from "../constants/value";
 import {appLocalStorage} from "../utils/Storage";
 
 const axiosClient = axios.create({

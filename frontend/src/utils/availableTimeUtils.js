@@ -1,4 +1,5 @@
-import constants, {daysOfWeek} from "../constants";
+import constants from "../constants/value";
+import {daysOfWeek} from "../constants/userOptions";
 
 export const changeAvailableTimeOfADayInWeek = (day, availableTime, value, fromHour, toHour) => {
     let rs = ""

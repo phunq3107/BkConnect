@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Box, CssBaseline, Divider, Grid, IconButton, Select, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
-import {app_colors, daysOfWeek, lessonTime, states} from "../../../constants";
+import {requestStates} from "../../../constants/value";
 import AvatarCard from "../../User/components/AvatarCard";
 import {useSelector} from "react-redux";
 
@@ -14,6 +14,8 @@ import dayjs from "dayjs";
 import {getAllAvailableTimes} from "../../../utils/availableTimeUtils";
 import tutorApi from "../../../apis/tutorApi";
 import {setUserError} from "../../User/userSlice";
+import {daysOfWeek, lessonTime} from "../../../constants/userOptions";
+import {app_colors} from "../../../constants/styles";
 
 
 function TutorBookings(props) {
@@ -153,15 +155,15 @@ function TutorBookings(props) {
         }
         let title = ""
         let borderColor = ""
-        if (state === states.APPROVE){
+        if (state === requestStates.APPROVE){
             borderColor="#86DFA6"
             title="Đã chấp thuận"
         }
-        if (state === states.CREATE){
+        if (state === requestStates.CREATE){
             borderColor="#1488db"
             title="Đang chờ"
         }
-        if (state === states.REJECT){
+        if (state === requestStates.REJECT){
             borderColor="#F63F3F"
             title="Đã từ chối"
         }
@@ -204,10 +206,11 @@ function TutorBookings(props) {
                 {
                     bookings.map((booking,idx) =>{
                         return(
-                            <Grid item key={idx} width="100%" mt="3%" container>
-                                <Grid item container flexDirection="row" width="100%">
-                                    <Grid item container width="10%">
-                                        {booking.post.createBy && <UserAvatar user={booking.post.createBy} width="100%"/>}
+                            <>
+                            <Grid item key={idx} width="100%" mt="3%" container mb="1%">
+                                <Grid item container flexDirection="row" width="100%" minHeight="20%">
+                                    <Grid item container width="10%" height="100%">
+                                        {booking.post.createBy && <UserAvatar user={booking.post.createBy} height="100%" width="100%"/>}
                                     </Grid>
                                     <Grid item container width="87%" ml="3%" flexDirection="row" height="100%">
                                         <Grid item alignSelf="center" width="max-content">
@@ -234,7 +237,7 @@ function TutorBookings(props) {
 
                                             </IconButton>
                                         </Grid>
-                                        {booking.state === states.CREATE &&
+                                        {booking.state === requestStates.CREATE &&
                                             <>
                                                 <Grid item>
                                                     <IconButton onClick={() => handleApproveBooking(booking.post)}>
@@ -252,10 +255,11 @@ function TutorBookings(props) {
                                         }
                                     </Grid>
                                 </Grid>
-                                <Grid item width="100%">
+                            </Grid>
+                                <Grid item width="100%" mt="3%">
                                     <Divider sx={{mx:"-4%"}}/>
                                 </Grid>
-                            </Grid>
+                            </>
                         )
                     })
                 }

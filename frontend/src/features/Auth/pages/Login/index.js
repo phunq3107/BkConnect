@@ -2,7 +2,7 @@ import React from 'react';
 import LoginForm from "../../components/LoginForm";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentUser, setSessionError} from "../../sessionSlice";
-import constants, {errorTypes} from "../../../../constants";
+import constants, {errorTypes} from "../../../../constants/value";
 import sessionApi from "../../../../apis/sessionApi";
 import {HandleResponse} from "../../../../utils/ResponseHandler";
 import {appLocalStorage} from "../../../../utils/Storage";

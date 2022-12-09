@@ -1,6 +1,7 @@
 import React from 'react';
 import {Typography} from "@mui/material";
-import constants, {app_colors, app_fonts} from "../../../constants";
+import constants from "../../../constants/value";
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 
 function FormTitle(props) {

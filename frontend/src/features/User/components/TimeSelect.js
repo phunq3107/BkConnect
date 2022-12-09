@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox, Chip, FormControlLabel, Grid, MenuItem, Select, Stack, Typography} from "@mui/material";
-import constants, {daysOfWeek, timeSlots} from "../../../constants";
+import constants from "../../../constants/value";
 import {
     changeAvailableTimeOfADayInWeek,
     getAllDaysHaveAvailableTimeSlot,
     isAvailableAt
 } from "../../../utils/availableTimeUtils";
+import {daysOfWeek, timeSlots} from "../../../constants/userOptions";
 
 TimeSelect.propTypes = {
     availableTime: PropTypes.string,

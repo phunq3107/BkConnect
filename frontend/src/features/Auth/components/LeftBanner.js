@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Grid, Stack, Typography} from "@mui/material";
 import teacherImage from "../../../assets/images/teacher.png"
 import logoBK from "../../../assets/images/logoBK.png"
-import {app_colors} from "../../../constants"
+import {app_colors} from "../../../constants/styles";
 
 function LeftBanner(props) {
     return (

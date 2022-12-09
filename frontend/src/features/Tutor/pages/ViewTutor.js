@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
-import {app_colors, app_fonts, daysOfWeek, studentLocation, subjectLevels, tutorLocation} from "../../../constants";
+import {studentLocation, tutorLocation} from "../../../constants/value";
 import UserAvatar from "../../../commons/Header/UserAvatar";
 import {CheckCircle, FavoriteBorder, LocationOn, Man, Paid, School, Woman} from "@mui/icons-material";
 import convertAddress from "../../../utils/addressUtils";
@@ -10,6 +10,8 @@ import tutorApi from "../../../apis/tutorApi";
 import {useParams} from "react-router-dom";
 import {HandleResponse} from "../../../utils/ResponseHandler";
 import {setSessionError} from "../../Auth/sessionSlice";
+import {daysOfWeek, subjectLevels} from "../../../constants/userOptions";
+import {app_colors, app_fonts} from "../../../constants/styles";
 
 ViewTutor.propTypes = {
 
