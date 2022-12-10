@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Divider, Grid, IconButton, Typography} from "@mui/material";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {Clear} from "@mui/icons-material";
 import dayjs from "dayjs";
 import {lessonTime} from "../../../constants/userOptions";
@@ -115,7 +115,7 @@ function MyClassesItem(props) {
                 <Grid item container width="87%" ml="3%" flexDirection="row" height="100%">
                     <Grid item alignSelf="center" width="max-content">
                         <Typography variant="h8" fontWeight="bold">
-                            {clazz.post.createBy.username}
+                            {clazz.post.createBy.fullname || clazz.post.createBy.username}
                         </Typography>
                     </Grid>
                     {renderClassState(clazz.state)}

@@ -19,7 +19,7 @@ import {
 import Header from "../../../commons/Header";
 import constants, {requestStates} from "../../../constants/value";
 import PostMainContent from "../components/PostMainContent";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {useSelector} from "react-redux";
 import {Check, Clear, Pending} from "@mui/icons-material";
 import {app_colors} from "../../../constants/styles";

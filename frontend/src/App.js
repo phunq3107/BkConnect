@@ -8,9 +8,10 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import sessionApi from "./apis/sessionApi";
 import {HandleResponse} from "./utils/ResponseHandler";
-import {setCurrentUser, setSessionError} from "./features/Auth/sessionSlice";
+import {setCurrentUser, setNotifications, setSessionError} from "./features/Auth/sessionSlice";
 import Tutor from "./features/Tutor";
 import {app_paths} from "./constants/router";
+import notificationApi from "./apis/notificationApi";
 
 //import Tutor from "./features/Tutor";
 
@@ -27,7 +28,16 @@ function App() {
                 }
             )
         }
-    },[])
+        if (currentUser){
+            notificationApi.getNotifications().then(
+                res => {
+                    const data = HandleResponse(res, setSessionError)
+                    const action = setNotifications(data)
+                    dispatch(action)
+                }
+            )
+        }
+    },[currentUser])
   return (
     <div className="App">
         <BrowserRouter>

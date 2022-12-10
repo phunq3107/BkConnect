@@ -1,6 +1,6 @@
 import React from 'react';
 import {Grid, Typography} from "@mui/material";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 
 PostHeader.propTypes = {
 

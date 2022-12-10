@@ -11,6 +11,7 @@ import {useSelector} from "react-redux";
 import constants from "../../../constants/value"
 import {FormControlLabel, Radio, RadioGroup, Zoom} from "@mui/material";
 import {cancelClassReasons} from "../../../constants/userOptions";
+import {renderNotiString} from "../../../utils/notificationUtils";
 
 function CancelClassDialog(props) {
 
@@ -53,9 +54,13 @@ function CancelClassDialog(props) {
         setExistReason(cancelClassReasons[e.target.value])
     }
 
+    console.log([
+        renderNotiString("Bạn nhận được yêu cầu đăng kí nhận lớp từ  ${title=Gia sư Nguyễn Anh Quân|href=/tutor/view/5240568a-48b9-407c-bf95-868bc1053dd5|style=bold} tại bài đăng ${title=Tìm gia sư toán 10|href=/tutor/view/6f3c6513-d87d-4f77-9148-61a0fb47b5aa|style=bold}")
+    ])
     return (
             <Dialog open={props.open} TransitionComponent={Zoom} transitionDuration={400}>
                 <DialogTitle>Xác nhận hủy lớp</DialogTitle>
+
                 <DialogContent>
                     <DialogContentText>
                         {"Bạn muốn hủy lớp? Vui lòng cho chúng tôi biết thêm lí do khiến bạn hủy lớp và nhắn gửi gì đó đến " + recipient}

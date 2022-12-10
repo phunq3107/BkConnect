@@ -3,7 +3,7 @@ import {Box, Grid, Link, Typography} from "@mui/material";
 import constants, {tutorLocation} from "../../../constants/value";
 import {randomImage} from "../../../utils/randomUtils";
 import {dynamicPath} from "../../../constants/router";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {getAvailableDay} from "../../../utils/availableTimeUtils";
 import {limitString} from "../../../utils/syntax";
 import {useSelector} from "react-redux";

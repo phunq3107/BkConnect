@@ -6,7 +6,7 @@ import AvatarCard from "../../User/components/AvatarCard";
 import {useSelector} from "react-redux";
 
 import {HandleResponse} from "../../../utils/ResponseHandler";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {Check, Clear} from "@mui/icons-material";
 import postApi from "../../../apis/postApi";
 import {setSessionError} from "../../Auth/sessionSlice";
@@ -215,7 +215,7 @@ function TutorBookings(props) {
                                     <Grid item container width="87%" ml="3%" flexDirection="row" height="100%">
                                         <Grid item alignSelf="center" width="max-content">
                                             <Typography variant="h8" fontWeight="bold">
-                                                {booking.post.createBy.username}
+                                                {booking.post.createBy.fullname || booking.post.createBy.username}
                                             </Typography>
                                         </Grid>
                                         {renderRequestState(booking.state,booking.requester)}

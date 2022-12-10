@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, Button, CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
 import {studentLocation, tutorLocation} from "../../../constants/value";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {CheckCircle, FavoriteBorder, LocationOn, Man, Paid, School, Woman} from "@mui/icons-material";
 import convertAddress from "../../../utils/addressUtils";
 import {getAllAvailableTimes} from "../../../utils/availableTimeUtils";

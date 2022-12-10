@@ -4,7 +4,7 @@ import {tutorLocation} from "../../../constants/value";
 import {randomImage} from "../../../utils/randomUtils";
 import {useNavigate} from "react-router-dom";
 import {dynamicPath} from "../../../constants/router";
-import UserAvatar from "../../../commons/Header/UserAvatar";
+import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {limitString} from "../../../utils/syntax";
 import {getAvailableDay} from "../../../utils/availableTimeUtils";
 import {convertProvinceCode} from "../../../utils/addressUtils";

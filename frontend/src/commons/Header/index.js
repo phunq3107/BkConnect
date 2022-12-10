@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AppBar, Box, Link, Stack, Toolbar, Typography} from "@mui/material";
 import constants from "../../constants/value";
 import logoBK from "../../assets/images/logoBK.png";
 import {useSelector} from "react-redux";
-import CurrentUser from "./CurrentUser";
+import CurrentUser from "./components/CurrentUser";
 import {useNavigate} from "react-router-dom";
 import {app_colors, app_fonts} from "../../constants/styles";
 import {app_paths} from "../../constants/router";
@@ -30,6 +30,7 @@ function Header(props) {
     const navigate = useNavigate();
     const linkItems = currentUser && currentUser.role && currentUser.role.toUpperCase() === constants.ROLE_TUTOR ?
                         tutorLinkItems : studentLinkItems
+
 
     const renderLinkElements = (items) => {
         return(
