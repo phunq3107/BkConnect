@@ -14,6 +14,10 @@ public abstract class Msg<T> {
         return new FailMsg<>(code, message);
     }
 
+    public static <T> FailMsg<T> fail( String message) {
+        return new FailMsg<>(ResponseCode.fail, message);
+    }
+
     public static <T> FailMsg<T> fail(GenericRq rq) {
         return new FailMsg<>(rq.failCode, rq.failReason);
     }

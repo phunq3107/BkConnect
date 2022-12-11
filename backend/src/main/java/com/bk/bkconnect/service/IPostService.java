@@ -40,7 +40,7 @@ public interface IPostService {
 
     Msg<PageableRs<GetEnrollTutorRs>> getEnrollTutor(UUID postId, int pageNumber, int pageSize);
 
-    Msg<Boolean> updateTutorPostState(UUID postId, UpdateTutorPostStateRq rq);
+    Msg<String> updateTutorPostState(UUID postId, UpdateTutorPostStateRq rq);
 
 
     Msg<List<GetBookingRs>> getTutorBooking();
@@ -128,10 +128,11 @@ class PostService implements IPostService {
     }
 
     @Override
-    public Msg<Boolean> updateTutorPostState(UUID postId, UpdateTutorPostStateRq rq) {
+    public Msg<String> updateTutorPostState(UUID postId, UpdateTutorPostStateRq rq) {
         if (!rq.verify()) return Msg.fail(rq);
         if (!PermissionCheck.updateTutorPostState(postId)) return Msg.notAllow();
         if (getPostById(postId) == null) return Msg.postNotFound();
+
         if (ApplicationContext.isTutor()) return updateTutorPostStateByTutor(postId, rq.state);
         return updateTutorPostStateByStudent(postId, UUID.fromString(rq.tutorId), rq.state);
     }
@@ -162,59 +163,81 @@ class PostService implements IPostService {
                 .toList();
     }
 
-    private Msg<Boolean> updateTutorPostStateByStudent(UUID postId, UUID tutorId, String state) {
+    private Msg<String> updateTutorPostStateByStudent(UUID postId, UUID tutorId, String state) {
         if (!PermissionCheck.updateTutorPostStateByStudent(postId)) return Msg.notAllow();
         if (!DataStore.tutors.containsKey(tutorId)) return Msg.userNotFound();
 
         var rel = getLatestActiveTutorPostRel(tutorId, postId);
         if (rel == null) {
-            if (!state.equals(TutorPostState.CREATE)) return Msg.invalidParam();
+            if (!state.equals(TutorPostState.CREATE)) return Msg.success("Thao tác không hợp lệ");
             createTutorPostRel(tutorId, postId, PostRequester.STUDENT, ApplicationContext.currentUserId());
-            return Msg.success(true);
+            return Msg.success("Tạo yêu cầu thành công");
         }
 
         if (rel.requester.equals(PostRequester.TUTOR)) {
-            if (state.equals(TutorPostState.APPROVE) || state.equals(TutorPostState.REJECT)) {
-                updateTutorPostRel(rel, state);
-                if (state.equalsIgnoreCase(TutorPostState.APPROVE)) classService.createClass(postId, tutorId);
-                return Msg.success(true);
+            switch (state) {
+                case TutorPostState.APPROVE, TutorPostState.REJECT -> {
+                    updateTutorPostRel(rel, state);
+                    if (state.equalsIgnoreCase(TutorPostState.APPROVE)) classService.createClass(postId, tutorId);
+                    return Msg.success("Thao tác thành công");
+                }
+                case TutorPostState.CREATE -> {
+                    return Msg.success("Bạn đã nhận yêu cầu từ gia sư này từ trước");
+                }
+                default -> {
+                }
             }
         }
 
         if (rel.requester.equals(PostRequester.STUDENT)) {
-            if (state.equals(TutorPostState.CANCEL)) {
-                updateTutorPostRel(rel, state);
-                return Msg.success(true);
+            switch (state) {
+                case TutorPostState.CANCEL -> {
+                    updateTutorPostRel(rel, state);
+                    return Msg.success("Hủy yêu cầu thành công");
+                }
+                default -> {
+                }
             }
         }
-        return Msg.invalidParam();
+        return Msg.success("Thao tác không hợp lệ");
 
     }
 
-    private Msg<Boolean> updateTutorPostStateByTutor(UUID postId, String state) {
+    private Msg<String> updateTutorPostStateByTutor(UUID postId, String state) {
         var tutorId = ApplicationContext.currentUserId();
         var ownerId = DataStore.posts.get(postId).createBy.id;
         var rel = getLatestActiveTutorPostRel(tutorId, postId);
         if (rel == null) {
-            if (!state.equals(TutorPostState.CREATE)) return Msg.invalidParam();
+            if (!state.equals(TutorPostState.CREATE)) return Msg.success("Thao tác không hợp lệ");
             createTutorPostRel(tutorId, postId, PostRequester.TUTOR, null);
-            return Msg.success(true);
+            return Msg.success("Tạo yêu cầu thành công");
         }
 
         if (rel.requester.equals(PostRequester.TUTOR)) {
-            if (state.equals(TutorPostState.CANCEL)) {
-                updateTutorPostRel(rel, state);
-                return Msg.success(true);
+            switch (state) {
+                case TutorPostState.CANCEL -> {
+                    updateTutorPostRel(rel, state);
+                    return Msg.success("Hủy yêu cầu thành công");
+                }
+                default -> {
+                }
             }
         }
         if (rel.requester.equals(PostRequester.STUDENT)) {
-            if (state.equals(TutorPostState.APPROVE) || state.equals(TutorPostState.REJECT)) {
-                updateTutorPostRel(rel, state);
-                if (state.equalsIgnoreCase(TutorPostState.APPROVE)) classService.createClass(postId, tutorId);
-                return Msg.success(true);
+            switch (state) {
+                case TutorPostState.APPROVE, TutorPostState.REJECT -> {
+                    updateTutorPostRel(rel, state);
+                    if (state.equalsIgnoreCase(TutorPostState.APPROVE)) classService.createClass(postId, tutorId);
+                    return Msg.success("Thao tác thành công");
+                }
+                case TutorPostState.CREATE -> {
+                    return Msg.success("Bạn đã nhận yêu cầu từ bài post này từ trước");
+                }
+                default -> {
+                }
             }
         }
-        return Msg.invalidParam();
+        return Msg.success("Thao tác không hợp lệ");
     }
 
 
@@ -240,8 +263,9 @@ class PostService implements IPostService {
         var rel = TutorPostRel.create(tutorId, postID, requester, studentId);
         tutorPostDAO.save(rel);
         switch (requester.toUpperCase()) {
-            case PostRequester.TUTOR ->
-                    notifyPublisher.save(NotifyMessageFactory.tutorCreatePostRequest(tutorId, postID, studentId));
+            case PostRequester.TUTOR -> getPostAttendees(postID).forEach(id -> {
+                notifyPublisher.save(NotifyMessageFactory.tutorCreatePostRequest(tutorId, postID, id));
+            });
             case PostRequester.STUDENT ->
                     notifyPublisher.save(NotifyMessageFactory.studentCreatePostRequest(postID, tutorId));
             default -> {

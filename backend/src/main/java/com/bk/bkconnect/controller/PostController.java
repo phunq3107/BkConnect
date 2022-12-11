@@ -63,7 +63,7 @@ public class PostController {
 
     @PreAuthorize("hasAnyRole('STUDENT','TUTOR')")
     @PostMapping("/{postId}/request")
-    public GenericResponse<Boolean> request(@PathVariable String postId, @RequestBody UpdateTutorPostStateRq rq) {
+    public GenericResponse<String> request(@PathVariable String postId, @RequestBody UpdateTutorPostStateRq rq) {
         var rs = postService.updateTutorPostState(UUID.fromString(postId), rq);
         return GenericResponse.parse(rs);
     }
