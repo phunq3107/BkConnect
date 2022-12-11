@@ -12,7 +12,7 @@ public class GetEnrollTutorRs extends GenericRs<GetEnrollTutorRs> {
 
     public static GetEnrollTutorRs build(TutorPostRel rel) {
         var rs = new GetEnrollTutorRs();
-        rs.tutor = UserBrief.build(DataStore.tutors.get(rel.left.id));
+        rs.tutor = UserBrief.build(DataStore.tutors.get(rel.tutorId));
         rs.requester = rel.requester;
         rs.state = rel.state;
         rs.time = rel.updateTime;

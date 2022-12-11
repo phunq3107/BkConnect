@@ -1,41 +1,34 @@
 package com.bk.bkconnect.database.entity;
 
 import com.bk.bkconnect.database.constant.TutorPostState;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 @Entity
-public class TutorPostRel extends AbstractRel<TutorEnt, PostEnt> {
+public class TutorPostRel extends AbstractEnt {
 
     public Long createTime;
     public Long updateTime;
     public String requester;
 
-    public static TutorPostRel create(UUID tutorId, UUID postId, String requester, String state) {
+    @Type(type = "uuid-char")
+    public UUID tutorId;
+    @Type(type = "uuid-char")
+    public UUID postId;
+    @Type(type = "uuid-char")
+    public UUID studentId;
+
+    public static TutorPostRel create(UUID tutorId, UUID postId, String requester, UUID studentId) {
         var rs = new TutorPostRel();
-        rs.id = new RelId(tutorId, postId);
-        rs.left = new TutorEnt();
-        rs.left.id = tutorId;
-        rs.right = new PostEnt();
-        rs.right.id = postId;
-        rs.state = state;
+        rs.id = UUID.randomUUID();
+        rs.tutorId = tutorId;
+        rs.postId = postId;
+        rs.studentId = studentId;
+        rs.state = TutorPostState.CREATE;
         rs.requester = requester;
         rs.updateTime = rs.createTime = System.currentTimeMillis();
         return rs;
     }
-
-    public static TutorPostRel update(UUID tutorId, UUID postId, String state) {
-        var rs = new TutorPostRel();
-        rs.id = new RelId(tutorId, postId);
-        rs.left = new TutorEnt();
-        rs.left.id = tutorId;
-        rs.right = new PostEnt();
-        rs.right.id = postId;
-        rs.state = state;
-        rs.updateTime = System.currentTimeMillis();
-        return rs;
-    }
-
 }

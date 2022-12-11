@@ -4,6 +4,7 @@ import com.bk.bkconnect.common.collections.Tuple3;
 import com.bk.bkconnect.controller.*;
 import com.bk.bkconnect.core.matching.MatchingOutput;
 import com.bk.bkconnect.core.matching.MatchingSystem;
+import com.bk.bkconnect.database.constant.StudentPostState;
 import com.bk.bkconnect.database.constant.UserRole;
 import com.bk.bkconnect.database.driver.*;
 import com.bk.bkconnect.database.entity.*;
@@ -11,15 +12,14 @@ import com.bk.bkconnect.database.entity.ext.Address;
 import com.bk.bkconnect.database.entity.ext.ClassInfo;
 import com.bk.bkconnect.database.entity.ext.TutorSubject;
 import com.bk.bkconnect.database.entity.ext.UserInfo;
-import com.bk.bkconnect.domain.request.GetPostFilter;
-import com.bk.bkconnect.domain.request.GetTutorFilter;
-import com.bk.bkconnect.util.ObjectMapperUtils;
 import com.bk.bkconnect.util.TimeUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.Year;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -36,6 +36,8 @@ public class BackendTest {
     GroupSubjectDAO groupSubjectDAO;
     SubjectDAO subjectDAO;
     PostDAO postDAO;
+
+    StudentPostDAO studentPostDAO;
 
     static UUID admin = UUID.fromString("68dcb2e7-5f35-4cf7-a683-5b349ead2cb1");
 
@@ -268,6 +270,8 @@ public class BackendTest {
         post.subjectLevel = level;
 
         postDAO.saveAndFlush(post);
+
+        studentPostDAO.saveAndFlush(StudentPostRel.create(owner, id, StudentPostState.JOIN));
     }
 
 }

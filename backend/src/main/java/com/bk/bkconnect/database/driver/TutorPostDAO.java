@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @Repository
 public interface TutorPostDAO extends JpaRepository<TutorPostRel, AbstractRel.RelId> {
-    @Query("from TutorPostRel where id.rightId = ?1")
+    @Query("from TutorPostRel where postId = ?1")
     List<TutorPostRel> getAllByPost(UUID postId);
 
-    @Query("from TutorPostRel where id.leftId = ?1 and id.rightId = ?2")
-    TutorPostRel getByTutorAndPost(UUID tutorId, UUID postId);
+    @Query("from TutorPostRel where tutorId = ?1 and postId = ?2 order by createTime")
+    List<TutorPostRel> getByTutorAndPost(UUID tutorId, UUID postId);
 
-    @Query("from TutorPostRel where id.leftId = ?1 and requester = ?2")
+    @Query("from TutorPostRel where tutorId = ?1 and requester = ?2")
     List<TutorPostRel> getAllByTutorAndRequester(UUID tutorId, String requester);
 }

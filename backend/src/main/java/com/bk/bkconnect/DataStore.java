@@ -22,6 +22,8 @@ public class DataStore {
 
     public static final ConcurrentMap<UUID, Set<UUID>> postFollower = new ConcurrentHashMap<>();
 
+    public static final ConcurrentMap<UUID, Set<UUID>> roomchatMembers = new ConcurrentHashMap<>();
+
     public static void updateUser(UserEnt user) {
         if (user == null) return;
         users.put(user.id, user);
@@ -41,6 +43,12 @@ public class DataStore {
 
     public static void removePostFollower(UUID postId, UUID userId) {
         if (postFollower.containsKey(postId)) postFollower.get(postId).remove(userId);
+    }
+
+    public static boolean addRoomchatMember(UUID roomchatId, UUID userId) {
+        if (!roomchatMembers.containsKey(roomchatId))
+            roomchatMembers.put(roomchatId, new HashSet<>());
+        return roomchatMembers.get(roomchatId).add(userId);
     }
 
 }
