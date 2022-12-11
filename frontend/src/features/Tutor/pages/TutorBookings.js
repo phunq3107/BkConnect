@@ -210,7 +210,7 @@ function TutorBookings(props) {
                         return(
                             <>
                                 <Grid item key={idx} width="100%" mt="3%" container mb="1%">
-                                    <Grid item container flexDirection="row" width="100%" minHeight="20%">
+                                    <Grid item container flexDirection="row" width="100%" height="15%">
                                         <Grid item container width="10%" height="100%">
                                             {booking.post.createBy && <UserAvatar user={booking.post.createBy} height="100%" width="100%"/>}
                                         </Grid>
@@ -233,7 +233,7 @@ function TutorBookings(props) {
                                         <Grid item container flexDirection="row" width="100%" mt="2%">
                                             {renderListFields(booking)}
                                         </Grid>
-                                        <Grid item container flexDirection="row" width="100%" mt="2%" justifyContent="end">
+                                        <Grid item container flexDirection="row" width="100%" mb="2%" mt="1%" justifyContent="end">
                                             {booking.state === requestStates.CREATE &&
                                                 <>
                                                     <Grid item>
