@@ -16,12 +16,14 @@ import tutorApi from "../../../apis/tutorApi";
 import {setUserError} from "../../User/userSlice";
 import {daysOfWeek, lessonTime} from "../../../constants/userOptions";
 import {app_colors} from "../../../constants/styles";
+import ResponseMessageModal from "../../../commons/Modal/ResponseMessageModal";
 
 
 function TutorBookings(props) {
     const currentUser = useSelector(state => state.session.currentUser)
     const [bookings,setBookings] = useState(null)
     const [reload,setReload] = useState(false)
+    const [responseMessage, setResponseMessage] = useState(null)
 
     useEffect(()=>{
         if(currentUser){
@@ -130,7 +132,7 @@ function TutorBookings(props) {
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data) {
-                    alert("Đã chấp thuận yêu cầu")
+                    setResponseMessage(data)
                     setReload(prev => !prev)
                 }
             }
@@ -142,7 +144,7 @@ function TutorBookings(props) {
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data) {
-                    alert("Đã từ chối yêu cầu")
+                    setResponseMessage(data)
                     setReload(prev => !prev)
                 }
             }
@@ -207,55 +209,50 @@ function TutorBookings(props) {
                     bookings.map((booking,idx) =>{
                         return(
                             <>
-                            <Grid item key={idx} width="100%" mt="3%" container mb="1%">
-                                <Grid item container flexDirection="row" width="100%" minHeight="20%">
-                                    <Grid item container width="10%" height="100%">
-                                        {booking.post.createBy && <UserAvatar user={booking.post.createBy} height="100%" width="100%"/>}
-                                    </Grid>
-                                    <Grid item container width="87%" ml="3%" flexDirection="row" height="100%">
-                                        <Grid item alignSelf="center" width="max-content">
-                                            <Typography variant="h8" fontWeight="bold">
-                                                {booking.post.createBy.fullname || booking.post.createBy.username}
-                                            </Typography>
+                                <Grid item key={idx} width="100%" mt="3%" container mb="1%">
+                                    <Grid item container flexDirection="row" width="100%" minHeight="20%">
+                                        <Grid item container width="10%" height="100%">
+                                            {booking.post.createBy && <UserAvatar user={booking.post.createBy} height="100%" width="100%"/>}
                                         </Grid>
-                                        {renderRequestState(booking.state,booking.requester)}
-                                        <Grid item marginLeft="auto" alignSelf="center">
-                                            <Typography variant="h8" fontWeight="bold">
-                                                {booking.post.fee} VNĐ/buổi
-                                            </Typography>
+                                        <Grid item container width="87%" ml="3%" flexDirection="row" height="100%">
+                                            <Grid item alignSelf="center" width="max-content">
+                                                <Typography variant="h8" fontWeight="bold">
+                                                    {booking.post.createBy.fullname || booking.post.createBy.username}
+                                                </Typography>
+                                            </Grid>
+                                            {renderRequestState(booking.state,booking.requester)}
+                                            <Grid item marginLeft="auto" alignSelf="center">
+                                                <Typography variant="h8" fontWeight="bold">
+                                                    {booking.post.fee} VNĐ/buổi
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item container width="100%">
+                                        <Grid item container flexDirection="row" width="100%" mt="2%">
+                                            {renderListFields(booking)}
+                                        </Grid>
+                                        <Grid item container flexDirection="row" width="100%" mt="2%" justifyContent="end">
+                                            {booking.state === requestStates.CREATE &&
+                                                <>
+                                                    <Grid item>
+                                                        <IconButton onClick={() => handleApproveBooking(booking.post)}>
+                                                            <Check sx={{color: "#86DFA6"}}/>
+                                                            <Typography color="black">Chấp thuận</Typography>
+                                                        </IconButton>
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <IconButton onClick={()=>handleRejectBooking(booking.post)}>
+                                                        <Clear sx={{color:"#F63F3F"}}/>
+                                                        <Typography color="black">Từ chối</Typography>
+                                                        </IconButton>
+                                                    </Grid>
+                                                </>
+                                            }
                                         </Grid>
                                     </Grid>
                                 </Grid>
-
-                                <Grid item container width="100%">
-                                    <Grid item container flexDirection="row" width="100%" mt="2%">
-                                        {renderListFields(booking)}
-                                    </Grid>
-                                    <Grid item container flexDirection="row" width="100%" mt="2%" justifyContent="end">
-                                        <Grid item>
-                                            <IconButton>
-
-                                            </IconButton>
-                                        </Grid>
-                                        {booking.state === requestStates.CREATE &&
-                                            <>
-                                                <Grid item>
-                                                    <IconButton onClick={() => handleApproveBooking(booking.post)}>
-                                                        <Check sx={{color: "#86DFA6"}}/>
-                                                        <Typography color="black">Chấp thuận</Typography>
-                                                    </IconButton>
-                                                </Grid>
-                                                <Grid item>
-                                                    <IconButton onClick={()=>handleRejectBooking(booking.post)}>
-                                                    <Clear sx={{color:"#F63F3F"}}/>
-                                                    <Typography color="black">Từ chối</Typography>
-                                                    </IconButton>
-                                                </Grid>
-                                            </>
-                                        }
-                                    </Grid>
-                                </Grid>
-                            </Grid>
                                 <Grid item width="100%" mt="3%">
                                     <Divider sx={{mx:"-4%"}}/>
                                 </Grid>
@@ -265,6 +262,10 @@ function TutorBookings(props) {
                 }
             </>
         )
+    }
+
+    const handleCloseDialog = () => {
+        setResponseMessage(null)
     }
 
     if (!bookings){
@@ -317,6 +318,11 @@ function TutorBookings(props) {
 
                 </Grid>
             </Grid>
+            <ResponseMessageModal
+                closeDialog={handleCloseDialog}
+                responseMessage={responseMessage}
+                open={responseMessage !== null}
+            />
         </Box>
     );
 }

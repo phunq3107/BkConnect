@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {
     Badge,
     ButtonGroup,
-    ClickAwayListener,
+    ClickAwayListener, Grid,
     Grow,
     IconButton,
     MenuItem,
     MenuList,
     Paper,
-    Popper
+    Popper, Typography
 } from "@mui/material";
 import {useRef, useState} from "react";
 import {Notifications} from "@mui/icons-material";
@@ -82,17 +82,26 @@ function NotificationsButton(props) {
                                 placement === 'bottom' ? 'center top' : 'center bottom',
                         }}
                     >
-                        <Paper>
+                        <Paper sx={{maxWidth: 400}}>
                             <ClickAwayListener onClickAway={handleCloseNotifications}>
                                 <MenuList id="notifications-menu" autoFocusItem>
-                                    {notifications.map((noti, index) => (
-                                        <MenuItem
-                                            key={index}
-                                            onClick={(event) => handleNotificationClick(event, noti)}
-                                        >
-                                            {renderNotiString(noti.title)}
+                                    {
+                                        notifications && notifications.length > 0 ?
+                                        notifications.map((noti, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                onClick={(event) => handleNotificationClick(event, noti)}
+                                            >
+                                                <Grid item xs zeroMinWidth>
+                                                    <Typography noWrap>{renderNotiString(noti.title)}</Typography>
+                                                </Grid>
+                                            </MenuItem>
+                                        ))
+                                        :
+                                        <MenuItem>
+                                            <Typography>Hiện chưa có thông báo nào dành cho bạn</Typography>
                                         </MenuItem>
-                                    ))}
+                                    }
                                 </MenuList>
                             </ClickAwayListener>
                         </Paper>

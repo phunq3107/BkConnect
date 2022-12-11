@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import PropTypes from 'prop-types';
 import Dialog from "@mui/material/Dialog";
-import {Button, Fade} from "@mui/material";
+import {Button, Fade, Typography} from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -30,24 +30,23 @@ function NotificationDialog(props) {
     }
 
     return (
-        <div>
+        <>
             <Dialog
                 open={props.open}
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="notification-dialog-description"
             >
-                <DialogTitle>{renderNotiString(notification.title)}</DialogTitle>
+                <DialogTitle>
+                    <Typography>{renderNotiString(notification.title)}</Typography>
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="notification-dialog-description">
                         {renderNotiString(notification.content)}
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Xem chi tiết</Button>
-                </DialogActions>
             </Dialog>
-        </div>
+        </>
     );
 }
 

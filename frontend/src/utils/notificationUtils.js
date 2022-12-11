@@ -1,17 +1,18 @@
 import {Link, Typography} from "@mui/material";
 import React from 'react'
 
+const START_TOKEN = '$'
+
 export const renderNotiString = (notiString) => {
     const dividedStr = divideStr(notiString)
     return(
-        <Typography>
+        <>
             {
                 dividedStr.map((str,idx) => {
-                    console.log(str)
                     if (str[0] === '{'){
                         const props = getTokenObject(str)
                         return (
-                            <Link href={props.href}>
+                            <Link href={props.href} key={idx}>
                                 {props.title}
                             </Link>
                         )
@@ -23,7 +24,7 @@ export const renderNotiString = (notiString) => {
                     )
                 })
             }
-        </Typography>
+        </>
     )
 }
 
@@ -42,7 +43,7 @@ const divideStr = (notiString) => {
     const res = []
     let str= ""
     for (const c of notiString){
-        if (c === '$'){
+        if (c === START_TOKEN){
             res.push(str)
             str =""
         }
@@ -51,6 +52,9 @@ const divideStr = (notiString) => {
             str = ""
         }
         else str += c
+    }
+    if (str !== ""){
+        res.push(str)
     }
    return res
 }

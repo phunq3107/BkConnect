@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, CssBaseline, Divider, Grid} from "@mui/material";
+import {Box, Button, CircularProgress, CssBaseline, Divider, Grid, Typography} from "@mui/material";
 import Header from "../../../commons/Header";
 import value,{alertTypes, studentLocation} from "../../../constants/value";
 import {useSelector} from "react-redux";
@@ -60,53 +60,6 @@ const testClasses = [
             requester: 'STUDENT',
             state: 'CREATE'
     },
-    {
-        post:{
-            id: '123456789',
-            title: 'Tìm gia sư',
-            subject: {
-                id: 1,
-                name: "Toán 11",
-                group:"Toán học",
-                order: "1"
-            },
-            timesPerWeek: 2,
-            hoursPerLesson: 2.5,
-            availableTime: Array(168).fill("1"),
-            location:[
-                studentLocation,
-                {
-                    province:'thanh_pho_ho_chi_minh',
-                    district:'quan_10',
-                    ward:'phuong_14',
-                    detail:'To Hien Thanh'
-                }
-            ],
-            fee: 200000,
-            level: "1",
-            gender: 'female',
-            age: '18,25',
-            description: 'Tìm gia sư Tìm gia sư Tìm gia sư Tìm gia sư Tìm gia sư Tìm gia sư Tìm gia sư Tìm gia sư Tìm gia sư',
-            isGroup: false,
-            createBy:{
-                id:'12345',
-                username: 'hungvinh3591',
-                fullname: 'Đặng Phước Vĩnh Hưng',
-                avatar: '',
-                role: 'STUDENT',
-                extInfo: null
-            },
-            lastUpdate: 12345679,
-            state: 'DONE',
-            distance: null,
-            attendees:[],
-            noStudents: "2,3"
-        },
-        createTime:123456789,
-        updateTime:987654321,
-        requester: 'STUDENT',
-        state: 'CREATE'
-    }
 ]
 function MyClassesPage() {
     const currentUser = useSelector(state => state.session.currentUser)
@@ -204,7 +157,7 @@ function MyClassesPage() {
                         <Divider sx={{mx:"-4%"}}/>
                     </Grid>
 
-                    {
+                    {   classes.length > 0 ?
                         classes.map((clazz,idx) => {
                             return(
                                 <MyClassesItem
@@ -213,6 +166,11 @@ function MyClassesPage() {
                                     onSelectCancelledClass={openCancelClassDialog}/>
                             )
                         })
+                        :
+                        <Grid item width="100%" mt="3%">
+                            <Typography>Hiện tại chưa có yêu cầu nhận lớp nào</Typography>
+                        </Grid>
+
                     }
                 </Grid>
             </Grid>

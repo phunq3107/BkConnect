@@ -21,9 +21,10 @@ import constants, {requestStates} from "../../../constants/value";
 import PostMainContent from "../components/PostMainContent";
 import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {useSelector} from "react-redux";
-import {Check, Clear, Pending} from "@mui/icons-material";
+import {Add, Check, Clear, Pending} from "@mui/icons-material";
 import {app_colors} from "../../../constants/styles";
 import {app_paths} from "../../../constants/router";
+import ResponseMessageModal from "../../../commons/Modal/ResponseMessageModal";
 
 const NoMaxWidthTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -41,17 +42,22 @@ function ViewPost(props) {
     const [recommend,setRecommend] = useState(null)
     const [enrollTutors,setEnrollTutors] = useState(null)
     const [reload,setReload] = useState(false)
+    const [responseMessage, setResponseMessage] = useState(null)
 
     const navigate = useNavigate()
 
     const currentUser = useSelector(state => state.session.currentUser)
+
+    const handleCloseDialog = () => {
+        setResponseMessage(null)
+    }
 
     const handleEnroll = () =>{
         postApi.createRequest(postId,null).then(
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data){
-                    alert("Đăng ký nhận lớp thành công")
+                    setResponseMessage(data)
                 }
             }
         )
@@ -62,7 +68,7 @@ function ViewPost(props) {
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data) {
-                    alert("Đã chấp thuận yêu cầu")
+                    setResponseMessage(data)
                     setReload(prev => !prev)
                 }
             }
@@ -74,7 +80,7 @@ function ViewPost(props) {
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data) {
-                    alert("Đã từ chối yêu cầu")
+                    setResponseMessage(data)
                     setReload(prev => !prev)
                 }
             }
@@ -86,7 +92,7 @@ function ViewPost(props) {
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data) {
-                    alert("Đã gửi yêu cầu đến gia sư")
+                    setResponseMessage(data)
                     setReload(prev => !prev)
                 }
 
@@ -99,7 +105,7 @@ function ViewPost(props) {
             res => {
                 const data = HandleResponse(res,setSessionError)
                 if (data) {
-                    alert("Đã hủy yêu cầu")
+                    setResponseMessage(data)
                     setReload(prev => !prev)
                 }
             }
@@ -300,7 +306,10 @@ function ViewPost(props) {
                                                 <IconButton size="small"
                                                         sx={{color:app_colors._primaryGrey}}
                                                         onClick={()=>handleCreateBooking(postId,matchResult.tutor.id)}
-                                                ><Typography color="black" variant="caption">Gửi yêu cầu</Typography>
+                                                ><Typography color="black" variant="caption">
+                                                    <Add fontSize="small" sx={{color:"#bfbfbf"}}/>
+                                                    Gửi yêu cầu
+                                                </Typography>
                                                 </IconButton>
                                             </Grid>
                                         </Grid>
@@ -348,11 +357,14 @@ function ViewPost(props) {
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item width="100%">
-                                                        <Button size="small"
-                                                                sx={{color:app_colors._primaryGrey}}
-                                                                onClick={()=>handleCreateBooking(postId,notMatchResult.tutor.id)}
-                                                        >Gửi yêu cầu
-                                                        </Button>
+                                                        <IconButton size="small"
+                                                                    sx={{color:app_colors._primaryGrey}}
+                                                                    onClick={()=>handleCreateBooking(postId,notMatchResult.tutor.id)}
+                                                        ><Typography color="black" variant="caption">
+                                                            <Add fontSize="small" sx={{color:"#bfbfbf"}}/>
+                                                            Gửi yêu cầu
+                                                        </Typography>
+                                                        </IconButton>
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
@@ -424,55 +436,62 @@ function ViewPost(props) {
         )
     }
     return (
-        <Box>
-            <CssBaseline/>
-            <Header/>
+        <>
+            <Box>
+                <CssBaseline/>
+                <Header/>
 
-            <Grid container component="main" height="fit-content" sx={{bgcolor: app_colors._primaryBackground, minHeight:'90vh' }} pt={6}>
+                <Grid container component="main" height="fit-content" sx={{bgcolor: app_colors._primaryBackground, minHeight:'90vh' }} pt={6}>
 
-                <Grid item md={1}/>
+                    <Grid item md={1}/>
 
-                <PostMainContent post={post} handleEnroll={handleEnroll}/>
+                    <PostMainContent post={post} handleEnroll={handleEnroll}/>
 
-                <Grid item md={0.2}/>
+                    <Grid item md={0.2}/>
 
-                <Grid
-                    container
-                    item
-                    xs={false}
-                    sm={8} md={2.3}
-                    sx={{bgcolor: app_colors._whiteText}}
-                    height="fit-content"
-                    borderRadius={1}
-                    flexDirection="column"
-                    alignItems="center"
-                    boxShadow={3}
-                    py={2}
-                    rowGap={2}
-                >
-                    <Grid item container width="100%">
-                        <Typography sx={{px:"5%"}}>Học viên tham gia</Typography>
-                        {
-                            post.attendees.map((user,idx) => {
-                                return (
-                                    <Grid container flexDirection="row" item width="100%" key={idx} alignItems="center" columnGap="3%" px="8%">
-                                        <UserAvatar user={user}/>
-                                        <Typography>{user.fullname ? user.fullname : "User"}</Typography>
-                                    </Grid>
-                                )
-                            })
-                        }
-                    </Grid>
-                    {enrollTutors && enrollTutors.data &&
+                    <Grid
+                        container
+                        item
+                        xs={false}
+                        sm={8} md={2.3}
+                        sx={{bgcolor: app_colors._whiteText}}
+                        height="fit-content"
+                        borderRadius={1}
+                        flexDirection="column"
+                        alignItems="center"
+                        boxShadow={3}
+                        py={2}
+                        rowGap={2}
+                    >
                         <Grid item container width="100%">
-                            <Typography sx={{px:"5%"}}>Gia sư nhận lớp</Typography>
-                            { renderEnrollTutors(enrollTutors.data)}
+                            <Typography sx={{px:"5%"}}>Học viên tham gia</Typography>
+                            {
+                                post.attendees.map((user,idx) => {
+                                    return (
+                                        <Grid container flexDirection="row" item width="100%" key={idx} alignItems="center" columnGap="3%" px="8%">
+                                            <UserAvatar user={user}/>
+                                            <Typography>{user.fullname ? user.fullname : "User"}</Typography>
+                                        </Grid>
+                                    )
+                                })
+                            }
                         </Grid>
-                    }
-                    {recommend && recommend.data && renderRecommendations(recommend.data)}
+                        {enrollTutors && enrollTutors.data &&
+                            <Grid item container width="100%">
+                                <Typography sx={{px:"5%"}}>Gia sư nhận lớp</Typography>
+                                { renderEnrollTutors(enrollTutors.data)}
+                            </Grid>
+                        }
+                        {recommend && recommend.data && renderRecommendations(recommend.data)}
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Box>
+            </Box>
+            <ResponseMessageModal
+                closeDialog={handleCloseDialog}
+                responseMessage={responseMessage}
+                open={responseMessage !== null}
+            />
+        </>
     );
 }
 
