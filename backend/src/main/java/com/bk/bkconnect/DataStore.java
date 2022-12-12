@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class DataStore {
 
@@ -19,8 +20,9 @@ public class DataStore {
     public static final ConcurrentMap<UUID, SubjectEnt> subjects = new ConcurrentHashMap<>();
 
     public static final ConcurrentMap<UUID, PostEnt> posts = new ConcurrentHashMap<>();
+    public static final ConcurrentSkipListSet<UUID> activePosts = new ConcurrentSkipListSet<>();
 
-    public static final ConcurrentMap<UUID, Set<UUID>> postFollower = new ConcurrentHashMap<>();
+    public static final ConcurrentMap<UUID, Set<UUID>> postAttendees = new ConcurrentHashMap<>();
 
     public static final ConcurrentMap<UUID, Set<UUID>> roomchatMembers = new ConcurrentHashMap<>();
 
@@ -35,14 +37,14 @@ public class DataStore {
         posts.put(post.id, post);
     }
 
-    public static void addPostFollower(UUID postId, UUID userId) {
-        postFollower.putIfAbsent(postId, new HashSet<>());
-        postFollower.get(postId).add(userId);
+    public static void addPostAttendee(UUID postId, UUID userId) {
+        postAttendees.putIfAbsent(postId, new HashSet<>());
+        postAttendees.get(postId).add(userId);
 
     }
 
-    public static void removePostFollower(UUID postId, UUID userId) {
-        if (postFollower.containsKey(postId)) postFollower.get(postId).remove(userId);
+    public static void removePostAttendee(UUID postId, UUID userId) {
+        if (postAttendees.containsKey(postId)) postAttendees.get(postId).remove(userId);
     }
 
     public static boolean addRoomchatMember(UUID roomchatId, UUID userId) {

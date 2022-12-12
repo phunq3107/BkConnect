@@ -2,15 +2,11 @@ package com.bk.bkconnect.core.matching.filter;
 
 import com.bk.bkconnect.DataStore;
 import com.bk.bkconnect.common.Syntax;
-import com.bk.bkconnect.common.collections.Pair;
 import com.bk.bkconnect.common.collections.Tuple3;
-import com.bk.bkconnect.common.functional._0P1R;
-import com.bk.bkconnect.core.matching.MatchingOutput;
 import com.bk.bkconnect.database.entity.PostEnt;
 import com.bk.bkconnect.database.entity.TutorEnt;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 public class SubjectFilter extends MatchingFilter {
 
@@ -25,7 +21,7 @@ public class SubjectFilter extends MatchingFilter {
     }
 
     private boolean matchLevel(PostEnt post, TutorEnt tutor) {
-        return "ALL".equals(post.subjectLevel) || post.subjectLevel.contains(tutor.getTutorSubject(post.subject.id).level);
+        return "ALL".equalsIgnoreCase(post.subjectLevel) || post.subjectLevel.contains(tutor.getTutorSubject(post.subject.id).level);
     }
 
     private boolean matchFee(PostEnt post, TutorEnt tutor) {
@@ -39,18 +35,18 @@ public class SubjectFilter extends MatchingFilter {
         if (post.subject == null) return Tuple3.apply(false, null, null);
         if (matchSubject(post, tutor)) {
             if (matchLevel(post, tutor)) {
-                // TODO: 12/7/2022
                 return Tuple3.apply(true, "Có mức học phí cao hơn (%d₫ so với %d₫)".formatted(tutor.getTutorSubject(post.subject.id).expectedFee, post.fee), 1f);
             }
-            if (matchFee(post, tutor)) {
-                var tutorLevel =
-                        Syntax.Try(() -> Integer.valueOf(tutor.getTutorSubject(post.subject.id).level), 0);
-                var minRequire =
-                        Syntax.Try(() -> Arrays.stream(post.subjectLevel.split(",")).map(Integer::valueOf).min(Integer::compareTo).get(), 1);
-                if (tutorLevel >= minRequire)
+            var tutorLevel =
+                    Syntax.Try(() -> Integer.valueOf(tutor.getTutorSubject(post.subject.id).level), 0);
+            var minRequire =
+                    Syntax.Try(() -> Arrays.stream(post.subjectLevel.split(",")).map(Integer::valueOf).min(Integer::compareTo).get(), 1);
+            if (tutorLevel >= minRequire) {
+                if (matchFee(post, tutor)) {
                     return Tuple3.apply(true, "Gia sư có trình độ cao hơn", 1f);
+                }
+                return Tuple3.apply(true, "Trình độ gia sư cao hơn kèm theo học phí tăng (%d₫ so với %d₫)".formatted(tutor.getTutorSubject(post.subject.id).expectedFee, post.fee), 1f);
             }
-            return Tuple3.apply(true, "Trình độ cao hơn kèm theo học phí tăng (%d₫ so với %d₫)".formatted(tutor.getTutorSubject(post.subject.id).expectedFee, post.fee), 1f);
         }
 
         if (tutor.subjects != null) {

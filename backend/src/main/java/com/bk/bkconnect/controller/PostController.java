@@ -68,4 +68,5 @@ public class PostController {
         return GenericResponse.parse(rs);
     }
 
+
 }

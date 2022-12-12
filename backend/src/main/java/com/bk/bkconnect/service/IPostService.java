@@ -178,7 +178,7 @@ class PostService implements IPostService {
             switch (state) {
                 case TutorPostState.APPROVE, TutorPostState.REJECT -> {
                     updateTutorPostRel(rel, state);
-                    if (state.equalsIgnoreCase(TutorPostState.APPROVE)) classService.createClass(postId, tutorId);
+                    if (state.equalsIgnoreCase(TutorPostState.APPROVE)) startClass(postId, tutorId);
                     return Msg.success("Thao tác thành công");
                 }
                 case TutorPostState.CREATE -> {
@@ -227,7 +227,7 @@ class PostService implements IPostService {
             switch (state) {
                 case TutorPostState.APPROVE, TutorPostState.REJECT -> {
                     updateTutorPostRel(rel, state);
-                    if (state.equalsIgnoreCase(TutorPostState.APPROVE)) classService.createClass(postId, tutorId);
+                    if (state.equalsIgnoreCase(TutorPostState.APPROVE)) startClass(postId, tutorId);
                     return Msg.success("Thao tác thành công");
                 }
                 case TutorPostState.CREATE -> {
@@ -245,8 +245,8 @@ class PostService implements IPostService {
         var rel = StudentPostRel.create(studentId, postId, state);
         studentPostDAO.saveAndFlush(rel);
         switch (state.toUpperCase()) {
-            case StudentPostState.JOIN -> DataStore.addPostFollower(postId, studentId);
-            case StudentPostState.LEAVE -> DataStore.removePostFollower(postId, studentId);
+            case StudentPostState.JOIN -> DataStore.addPostAttendee(postId, studentId);
+            case StudentPostState.LEAVE -> DataStore.removePostAttendee(postId, studentId);
             default -> {
             }
         }
@@ -299,6 +299,16 @@ class PostService implements IPostService {
             default -> {
             }
         }
+    }
+
+    private void startClass(UUID postId, UUID tutorId) {
+        var post = DataStore.posts.get(postId);
+        post.state = PostState.DONE;
+        postDAO.save(post);
+        DataStore.updatePost(post);
+        DataStore.activePosts.remove(postId);
+
+        classService.createClass(postId, tutorId);
     }
 
 

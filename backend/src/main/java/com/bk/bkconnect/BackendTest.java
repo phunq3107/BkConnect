@@ -268,6 +268,7 @@ public class BackendTest {
         post.classInfo.timesPerWeek = tpw;
         post.fee = fee;
         post.subjectLevel = level;
+        post.state = "ACTIVE";
 
         postDAO.saveAndFlush(post);
 

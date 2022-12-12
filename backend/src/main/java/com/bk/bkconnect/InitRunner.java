@@ -1,11 +1,14 @@
 package com.bk.bkconnect;
 
+import com.bk.bkconnect.database.constant.PostState;
 import com.bk.bkconnect.database.constant.StudentPostState;
 import com.bk.bkconnect.database.driver.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -30,10 +33,13 @@ public class InitRunner implements CommandLineRunner {
         subjectDAO.findAll().forEach(subject -> {
             DataStore.subjects.put(subject.id, subject);
         });
-        postDAO.findAll().forEach(DataStore::updatePost);
+        postDAO.findAll().forEach(post -> {
+            DataStore.updatePost(post);
+            if (Objects.equals(post.state, PostState.ACTIVE)) DataStore.activePosts.add(post.id);
+        });
         // TODO: 28/11/2022 init post follower
         studentPostDAO.getAllByState(StudentPostState.JOIN).forEach(
-                rel -> DataStore.addPostFollower(rel.right.id, rel.left.id)
+                rel -> DataStore.addPostAttendee(rel.right.id, rel.left.id)
         );
 
         //roomchats

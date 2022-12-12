@@ -19,7 +19,7 @@ public class TagUtils {
     }
 
     public static String postTag(String title, UUID postId) {
-        return renderTag(title, RenderUrl.tutorDetail(postId), "bold");
+        return renderTag(title, RenderUrl.postDetail(postId), "bold");
     }
 
     public static String roomchatTag(String title, UUID roomchatId) {

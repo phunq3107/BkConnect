@@ -57,7 +57,7 @@ public class GetPostRs extends GenericRs<GetPostRs> {
             rs.gender = post.tutorRequirement.gender;
         }
         // TODO: 27/11/2022 takeBy
-        rs.attendees = DataStore.postFollower.getOrDefault(post.id, new HashSet<>()).stream()
+        rs.attendees = DataStore.postAttendees.getOrDefault(post.id, new HashSet<>()).stream()
                 .map(userId -> UserBrief.build(DataStore.users.get(userId)))
                 .filter(user -> UserRole.STUDENT.equalsIgnoreCase(user.role))
                 .toList();
