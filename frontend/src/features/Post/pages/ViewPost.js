@@ -184,7 +184,7 @@ function ViewPost(props) {
                 return (
                     <Grid item width="100%" container flexDirection="row">
                         <Grid item width="100%">
-                            <Typography color="black" variant="caption">Gia sư đã chấp thuận</Typography>
+                            <Typography color="black" variant="caption" fontWeight="bold">Gia sư đã chấp thuận</Typography>
                         </Grid>
                     </Grid>
                 )
