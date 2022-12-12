@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import constants, {studentLocation, tutorLocation} from "../../../constants/value";
+import constants, {postStates, studentLocation, tutorLocation} from "../../../constants/value";
 import PostHeader from "./PostHeader";
 import {Button, Divider, Grid, Typography} from "@mui/material";
 import PostDescription from "./PostDescription";
@@ -195,6 +195,8 @@ function PostMainContent(props) {
             </Grid>
         )
     }
+
+
     return (
         <Grid
             item
@@ -212,7 +214,11 @@ function PostMainContent(props) {
         >
             <PostHeader author={post.createBy}/>
             <Grid item width="100%" mt="2%"><Divider sx={{mx:-2}}/></Grid>
-            <PostDescription content={post.description ? post.description : ""} title={post.title ? post.title : ""}/>
+            <PostDescription
+                content={post.description ? post.description : ""} title={post.title ? post.title : ""}
+                 state={post.state}
+                fee={post.fee}
+            />
 
             <Grid item container flexDirection="row" width="100%" columnGap="3%" mt="2%">
                 <Grid item container flexDirection="row" width="30%" alignItems="center">

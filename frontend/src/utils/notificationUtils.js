@@ -3,7 +3,7 @@ import React from 'react'
 
 const START_TOKEN = '$'
 
-export const renderNotiString = (notiString) => {
+export const renderNotiString = (notiString, callApiOnClick) => {
     const dividedStr = divideStr(notiString)
     return(
         <>
@@ -11,6 +11,13 @@ export const renderNotiString = (notiString) => {
                 dividedStr.map((str,idx) => {
                     if (str[0] === '{'){
                         const props = getTokenObject(str)
+                        if (props.kind === "api" && callApiOnClick){
+                            return (
+                                <Link key={idx} onClick={() => callApiOnClick(props.href)}>
+                                    {props.title}
+                                </Link>
+                            )
+                        }
                         return (
                             <Link href={props.href} key={idx}>
                                 {props.title}

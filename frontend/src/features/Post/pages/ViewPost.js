@@ -17,7 +17,7 @@ import {
     Typography
 } from "@mui/material";
 import Header from "../../../commons/Header";
-import constants, {requestStates} from "../../../constants/value";
+import constants, {postStates, requestStates} from "../../../constants/value";
 import PostMainContent from "../components/PostMainContent";
 import UserAvatar from "../../../commons/UserAvatar/UserAvatar";
 import {useSelector} from "react-redux";
@@ -256,14 +256,20 @@ function ViewPost(props) {
     }
 
     const renderRecommendations = (recommends) => {
+        if (post.state !== postStates.ACTIVE && post.state !== postStates.PENDING){
+            return
+        }
         if (recommends.length === 0){
             return (
                 <Grid container flexDirection="row" item width="100%" alignItems="center" columnGap="3%" px="8%">
-                    <Pending fontSize="small"/>
-                    <Typography variant="caption"
-                    >
-                        Chưa tìm thấy đề xuất phù hợp cho bạn
-                    </Typography>
+                    <Grid item>
+                        <Pending fontSize="small"/>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="caption">
+                            Chưa tìm thấy đề xuất phù hợp cho bạn
+                        </Typography>
+                    </Grid>
                 </Grid>
             )
         }
@@ -305,11 +311,17 @@ function ViewPost(props) {
                                             <Grid item width="100%">
                                                 <IconButton size="small"
                                                         sx={{color:app_colors._primaryGrey}}
-                                                        onClick={()=>handleCreateBooking(postId,matchResult.tutor.id)}
-                                                ><Typography color="black" variant="caption">
-                                                    <Add fontSize="small" sx={{color:"#bfbfbf"}}/>
-                                                    Gửi yêu cầu
-                                                </Typography>
+                                                        onClick={()=>handleCreateBooking(postId,matchResult.tutor.id)}>
+                                                    <Typography color="black" variant="caption">
+                                                    <Grid container flexDirection="row">
+                                                        <Grid item>
+                                                            <Add fontSize="small" sx={{color:"#bfbfbf"}}/>
+                                                        </Grid>
+                                                        <Grid item>
+                                                            Gửi yêu cầu
+                                                        </Grid>
+                                                    </Grid>
+                                                    </Typography>
                                                 </IconButton>
                                             </Grid>
                                         </Grid>
@@ -321,9 +333,14 @@ function ViewPost(props) {
                             )
                     }):
                         <Grid container flexDirection="row" item width="100%" alignItems="center" columnGap="3%" px="8%">
-                            <Typography variant="caption">
-                                <Pending fontSize="small"/> Chưa tìm thấy gia sư phù hợp
-                            </Typography>
+                            <Grid item>
+                                <Pending fontSize="small"/>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="caption">
+                                    Chưa tìm thấy gia sư phù hợp
+                                </Typography>
+                            </Grid>
                         </Grid>
                 }
                  </Grid>
@@ -361,8 +378,14 @@ function ViewPost(props) {
                                                                     sx={{color:app_colors._primaryGrey}}
                                                                     onClick={()=>handleCreateBooking(postId,notMatchResult.tutor.id)}
                                                         ><Typography color="black" variant="caption">
-                                                            <Add fontSize="small" sx={{color:"#bfbfbf"}}/>
-                                                            Gửi yêu cầu
+                                                            <Grid container flexDirection="row">
+                                                                <Grid item>
+                                                                    <Add fontSize="small" sx={{color:"#bfbfbf"}}/>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    Gửi yêu cầu
+                                                                </Grid>
+                                                            </Grid>
                                                         </Typography>
                                                         </IconButton>
                                                     </Grid>

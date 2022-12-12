@@ -25,10 +25,9 @@ export const requestStates = {
 }
 
 export const postStates = {
-    CREATE: 'CREATE',
+    ACTIVE: 'ACTIVE',
     PENDING: 'PENDING',
     DONE: 'DONE',
-    REMOVE: 'REMOVE',
 }
 
 export const tutorLocation = {

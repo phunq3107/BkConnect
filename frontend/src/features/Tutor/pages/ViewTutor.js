@@ -144,7 +144,7 @@ function ViewTutor(props) {
                                                       sx={{bgcolor:"#f0faf7", borderColor:"#dcede8", p:0.5}}
                                                       border={1}
                                                       borderRadius={1}
-                                                      width="10%"
+                                                      width="11%"
                                                       textAlign="center"
                                                 >
                                                     <Typography fontSize="small" sx={{color:"#2c7b63"}}>{timeSlot}</Typography>
